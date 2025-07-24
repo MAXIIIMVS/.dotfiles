@@ -1,5 +1,7 @@
 # 🛠️ My Dotfiles
 
+**My dotfiles. DON'T USE THEM unless you're me (or know exactly what you're doing). No support, no mercy.**
+
 My personal dotfiles for managing system and app configurations using GNU Stow and Git submodules.
 
 ## 📦 Requirements
@@ -14,7 +16,7 @@ My personal dotfiles for managing system and app configurations using GNU Stow a
 ### 1. Clone the repo
 
 ```bash
-git clone --recurse-submodules git@github.com:MAXIIIMVS/dotfiles.git ~/.dotfiles
+git clone --recurse-submodules git@github.com:MAXIIIMVS/.dotfiles.git ~/.dotfiles
 cd ~/.dotfiles
 ```
 
@@ -47,4 +49,4 @@ git commit -am "Update submodules"
 
 ## 🔒 License
 
-Feel free to use, fork, or learn from this — but keep your secrets out of your dotfiles 😉.
+Feel free to fork, or learn from this — but keep your secrets out of your dotfiles 😉.
