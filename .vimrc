@@ -15,7 +15,7 @@ set encoding=utf-8
 set expandtab
 set fillchars=eob:\ 
 set formatoptions-=cro
-set guifont=FiraCode\ Nerd\ Font\ Mono\ Medium
+set guifont=FiraCode\ Nerd\ Font\ Medium
 set guitablabel=%t
 set hidden
 set hlsearch
