@@ -1,0 +1,9 @@
+[submodule ".config/lazygit/themes/catppuccin"]
+	path = .config/lazygit/themes/catppuccin
+	url = https://github.com/catppuccin/lazygit.git
+[submodule "/home/mustafa/.dotfiles/.config/zathura/zathura_catppuccin"]
+	path = /home/mustafa/.dotfiles/.config/zathura/zathura_catppuccin
+	url = https://github.com/catppuccin/zathura.git
+[submodule ".config/zathura/zathura_catppuccin"]
+	path = .config/zathura/zathura_catppuccin
+	url = https://github.com/catppuccin/zathura.git

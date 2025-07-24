@@ -1,0 +1,13 @@
+plugin/packer_compiled.lua
+Session.vim
+lazy-lock.json
+credentials.vim
+spell
+indent.log
+.luarc.json
+tags
+.gdb_history
+startup.log
+.scratch.vim
+.todo.vim
+.todo.md
