@@ -91,16 +91,6 @@ return require("lazy").setup({
 			"TermExec",
 		},
 	},
-	-- {
-	-- 	"alex-popov-tech/store.nvim",
-	-- 	cmd = "Store",
-	-- 	keys = {
-	-- 		{ "<space>tx", "<cmd>Store<cr>", desc = "Store" },
-	-- 	},
-	-- 	opts = {
-	-- 		proportions = { list = 0.4, preview = 0.6 },
-	-- 	},
-	-- },
 	-- ────────────────────────────────── B ──────────────────────────────────
 	-- ────────────────────────────────── C ──────────────────────────────────
 	{
@@ -257,6 +247,9 @@ return require("lazy").setup({
 				hover = { enabled = false },
 				signature = { enabled = false },
 			},
+			-- presets = {
+			-- 	lsp_doc_border = true,
+			-- },
 		},
 		dependencies = { "MunifTanjim/nui.nvim" },
 	},
@@ -377,7 +370,7 @@ MEMENTO VIVERE]],
 						},
 						{
 							icon = "󱁤 ",
-							desc = "Manage LSP/Formatters/...                    ",
+							desc = "Manage external editor tooling",
 							action = ":Mason",
 							key = "m",
 						},
@@ -409,10 +402,7 @@ MEMENTO VIVERE]],
 			zen = {
 				enabled = true,
 				toggles = { dim = false },
-				show = {
-					statusline = true,
-					-- tabline = true,
-				},
+				show = { statusline = true },
 			},
 			styles = {
 				zen = {
@@ -835,6 +825,12 @@ MEMENTO VIVERE]],
 	},
 	-- ────────────────────────────────── M ──────────────────────────────────
 	{
+		"maskudo/devdocs.nvim",
+		dependencies = "folke/snacks.nvim",
+		cmd = "DevDocs",
+		opts = {},
+	},
+	{
 		"mason-org/mason.nvim",
 		event = { "BufReadPre", "BufNewFile" },
 		cmd = { "Mason", "MasonInstall", "MasonInstallAll", "MasonUpdate", "MasonUninstallAll" },
@@ -856,7 +852,7 @@ MEMENTO VIVERE]],
 			local on_attach = function(client, bufnr)
 				require("lsp_signature").on_attach({
 					hint_enable = false,
-					floating_window = false,
+					floating_window = true,
 					toggle_key = "<M-x>",
 					bind = true,
 					handler_opts = { border = "rounded" },

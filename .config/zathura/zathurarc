@@ -5,5 +5,5 @@ set sandbox none
 include catppuccin-mocha
 set highlight-color "#000000"       # Background of the number box
 set highlight-fg "#ffffff"          # Text color of the link number
-set highlight-transparency "0.1"    # 0 = opaque, 1 = fully transparent
+set highlight-transparency "0.5"    # 0 = opaque, 1 = fully transparent
 # set scroll-step 100

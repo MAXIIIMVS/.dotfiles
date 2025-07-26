@@ -1,15 +1,24 @@
 # NOTE: bash background: #171421 or #1D182E or #191724
 
 # cursor color is #FF006D
-# NOTE: bash font: patched version of  FiraCode Nerd Font Mono (Medium|Retina) 10 (icons in nvim-tree are big, no italics) (use tweaks)
+# NOTE: bash font: patched version of  FiraCode Nerd Font [Mono] (Medium|Retina|SemiBold) 9 (icons in nvim-tree are big, no italics) (use tweaks)
 # the old version without patch was FiraMono Nerd Font Medium 10.
 # NOTE: default color: text: #D0CFCC, background: #1D182E
 # NOTE: bold color: #BAC415
 # NOTE: cursor color: text: #EFE9F3, background: #FF006D
 # no highlight color
-# transparent background: like 20ish%
+# transparent background: like 20%ish
+
+# TODO: organize this mess
 
 export SHELL=/usr/bin/bash
+
+# Man pages
+# export MANPAGER='nvim +Man!'
+
+# Set up neovim as the default editor.
+export EDITOR="$(which nvim)"
+export VISUAL="$EDITOR"
 
 # export FZF_DEFAULT_COMMAND="fd . $HOME"
 export FZF_DEFAULT_COMMAND='fd --type f --strip-cwd-prefix'
@@ -23,7 +32,6 @@ export ATAC_KEY_BINDINGS=/home/mustafa/.config/atac/vim_key_bindings.toml
 export DOTNET_CLI_TELEMETRY_OPTOUT=1
 export DOTNET_ROOT=$HOME/dotnet
 export LG_CONFIG_FILE="$HOME/.config/lazygit/config.yml,$HOME/.config/lazygit/themes/catppuccin/themes-mergable/mocha/peach.yml"
-export EDITOR=nvim
 export GOPATH=$HOME/go
 
 # If not running interactively, don't do anything

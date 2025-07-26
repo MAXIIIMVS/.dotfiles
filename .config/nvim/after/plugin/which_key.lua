@@ -86,6 +86,35 @@ require("which-key").add({
 		silent = false,
 	},
 	{ ",x", "<cmd>BufferLinePickClose<CR>", desc = "Pick a buffer to close", nowait = true, remap = false },
+	{
+		",z",
+		function()
+			-- NOTE: requires pandoc and zathura
+			if vim.bo.filetype ~= "markdown" then
+				print("Not a Markdown file.")
+				return
+			end
+			local file_path = vim.fn.expand("%:p")
+			local pdf_path = vim.fn.tempname() .. ".pdf"
+			local ok = vim.fn.system({
+				"pandoc",
+				"-V",
+				"geometry:margin=1in",
+				"-i",
+				file_path,
+				"-o",
+				pdf_path,
+			})
+			if vim.v.shell_error ~= 0 then
+				print("Error generating PDF with pandoc.")
+				return
+			end
+			vim.fn.jobstart({ "zathura", pdf_path }, { detach = true })
+		end,
+		desc = "Open with zathura",
+		nowait = true,
+		remap = false,
+	},
 	{ "-", "<cmd>silent Oil<CR>", desc = "Current directory", nowait = true, remap = false },
 	{ ";", group = "Quick", nowait = true, remap = false },
 	{ ";1", "<cmd>BufferLineGoToBuffer 1<CR>", desc = "Go to 1st buffer", nowait = true, remap = false },
@@ -1159,12 +1188,19 @@ require("which-key").add({
 		remap = false,
 	},
 	{
-		"<space>tn",
+		"<space>tN",
 		function()
 			require("noice").cmd(vim.g.noice_enabled and "disable" or "enable")
 			vim.g.noice_enabled = not vim.g.noice_enabled
 		end,
 		desc = "Noice",
+		nowait = true,
+		remap = false,
+	},
+	{
+		"<space>tn",
+		"<cmd>lua Snacks.notifier.show_history()<CR>",
+		desc = "Notifier history",
 		nowait = true,
 		remap = false,
 	},
@@ -1313,6 +1349,11 @@ require("which-key").add({
 		remap = false,
 	},
 	{ "<leader>c", "<cmd>silent CatppuccinCompile<CR>", desc = "Recompile Catppuccin", nowait = true, remap = false },
+	{ "<leader>d", group = "DevDocs", nowait = true, remap = false },
+	{ "<leader>dd", ":DevDocs delete ", desc = "Delete devdocs for ...", nowait = true, remap = false, silent = false },
+	{ "<leader>df", "<cmd>DevDocs fetch<CR>", desc = "Fetch DevDocs", nowait = true, remap = false },
+	{ "<leader>dg", ":DevDocs get ", desc = "Get devdocs for ...", nowait = true, remap = false, silent = false },
+	{ "<leader>di", "<cmd>DevDocs install<CR>", desc = "Install DevDocs", nowait = true, remap = false },
 	{ "<leader>h", group = "Hex", nowait = true, remap = false },
 	{ "<leader>hr", "<cmd>%!xxd<CR> :set filetype=xxd<CR>", desc = "Show", nowait = true, remap = false },
 	{
