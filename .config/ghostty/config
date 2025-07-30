@@ -1,0 +1,6 @@
+theme = catppuccin-mocha.conf
+window-decoration = false
+font-family = "FiraCode Nerd Font"
+font-size = 9
+font-style= semibold
+background-opacity = 0.8
