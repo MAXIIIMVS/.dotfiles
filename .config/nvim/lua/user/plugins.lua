@@ -389,7 +389,7 @@ MEMENTO VIVERE]],
 						{ icon = "󰈆 ", key = "q", desc = "Quit", action = ":qa" },
 						{
 							align = "center",
-							text = "󰆥 " .. "Life begins at the end of your comfort zone" .. " 󰆥",
+							text = "󰆥 " .. "If you love what you are doing, you will be successful." .. " 󰆥",
 						},
 					},
 				},
@@ -1186,7 +1186,6 @@ MEMENTO VIVERE]],
 				lightbulb = {
 					enable = false,
 					virtual_text = false,
-					-- debounce = 0,
 				},
 				outline = {
 					win_width = 40,

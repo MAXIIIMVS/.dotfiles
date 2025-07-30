@@ -248,13 +248,6 @@ require("which-key").add({
 		silent = true,
 	},
 	{
-		";L",
-		":lua vim.lsp.stop_client(vim.lsp.get_clients())<CR>",
-		desc = "Stop LSP",
-		nowait = true,
-		remap = false,
-	},
-	{
 		";l",
 		"<cmd>lua Snacks.picker.lsp_symbols()<CR>",
 		desc = "Show LSP document symbols",
@@ -501,7 +494,6 @@ require("which-key").add({
 		remap = false,
 	},
 	{ "g?", "<cmd>WhichKey<CR>", desc = "WhichKey", nowait = true, remap = false },
-	{ "gA", "<cmd>normal! ga<CR>", desc = "ASCII code", nowait = true, remap = false },
 	{ "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>", desc = "Go to declaration", nowait = true, remap = false },
 	{ "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", desc = "Go to definition", nowait = true, remap = false },
 	{ "gF", "<c-w>vgf", desc = "Edit the file in a vertical split", nowait = true, remap = false },
@@ -512,6 +504,23 @@ require("which-key").add({
 		"grl",
 		"<cmd>Lspsaga finder def+ref+imp<CR>",
 		desc = "Show the definition, reference, implementation...",
+		nowait = true,
+		remap = false,
+	},
+	{
+		"grR",
+		function()
+			vim.lsp.stop_client(vim.lsp.get_clients())
+			vim.cmd("e")
+		end,
+		desc = "Restart LSP",
+		nowait = true,
+		remap = false,
+	},
+	{
+		"grs",
+		":lua vim.lsp.stop_client(vim.lsp.get_clients())<CR>",
+		desc = "Stop LSP",
 		nowait = true,
 		remap = false,
 	},

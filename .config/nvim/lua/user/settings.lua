@@ -10,72 +10,6 @@ for type, icon in pairs(signs) do
 	vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
 end
 
--- TODO: uncomment when you're ready
--- vim.lsp.handlers["textDocument/completion"] = function(err, result, ctx, config)
--- 	if err or not result or not result.items then
--- 		vim.lsp.handlers["textDocument/completion"](err, result, ctx, config)
--- 		return
--- 	end
--- 	-- Sort so that snippets come first
--- 	table.sort(result.items, function(a, b)
--- 		local snippet_kind = 15
--- 		if a.kind == snippet_kind and b.kind ~= snippet_kind then
--- 			return true
--- 		elseif b.kind == snippet_kind and a.kind ~= snippet_kind then
--- 			return false
--- 		else
--- 			return (a.sortText or "") < (b.sortText or "")
--- 		end
--- 	end)
--- 	vim.lsp.handlers["textDocument/completion"](err, result, ctx, config)
--- end
---
--- -- enable autocompletion: nvim v.0.0.11
--- vim.api.nvim_create_autocmd("LspAttach", {
--- 	callback = function(event)
--- 		local client = vim.lsp.get_client_by_id(event.data.client_id)
--- 		if client:supports_method("textDocument/completion") then
--- 			vim.lsp.completion.enable(true, client.id, event.buf, { autotrigger = true })
--- 		end
--- 	end,
--- })
---
--- vim.keymap.set("i", "<c-space>", vim.lsp.completion.get)
---
--- vim.keymap.set("i", "<CR>", function()
--- 	if vim.fn.pumvisible() == 1 then
--- 		local selected = vim.fn.complete_info({ "selected" }).selected
--- 		-- If no item selected, select the first one manually
--- 		if selected == -1 then
--- 			vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<C-n><C-y>", true, true, true), "n", true)
--- 			return ""
--- 		else
--- 			return vim.api.nvim_replace_termcodes("<C-y>", true, true, true)
--- 		end
--- 	end
--- 	return vim.api.nvim_replace_termcodes("<CR>", true, true, true)
--- end, { expr = true, noremap = true })
---
--- vim.keymap.set({ "i", "s" }, "<Tab>", function()
--- 	if vim.fn.pumvisible() == 1 then
--- 		return "<C-n>"
--- 	elseif vim.snippet.active({ direction = 1 }) then
--- 		return "<Cmd>lua vim.snippet.jump(1)<CR>"
--- 	else
--- 		return vim.lsp.completion.get()
--- 	end
--- end, { expr = true, silent = true })
---
--- vim.keymap.set({ "i", "s" }, "<S-Tab>", function()
--- 	if vim.fn.pumvisible() == 1 then
--- 		return "<C-p>"
--- 	elseif vim.snippet.active({ direction = -1 }) then
--- 		return "<Cmd>lua vim.snippet.jump(-1)<CR>"
--- 	else
--- 		return vim.lsp.completion.get()
--- 	end
--- end, { expr = true, silent = true })
-
 -- enable diagnostics: nvim v.0.0.11
 -- vim.diagnostic.config({ virtual_text = true })
 -- vim.diagnostic.config({ virtual_text = { current_line = true } })
@@ -123,10 +57,25 @@ function open_todo_window()
 		vim.cmd("q")
 		return
 	end
+
 	local root = vim.fn["FindRootDirectory"]() -- NOTE: depends on vim-rooter
 	local todo_file = root .. "/.todo.md"
 	if vim.fn.filereadable(todo_file) == 0 then
-		vim.fn.writefile({}, todo_file) -- Create an empty file
+		local default_content = {
+			"# To-do",
+			"",
+			"## 🔴 Critical (Do Today)",
+			"",
+			"## 🟡 High Priority (This Week)",
+			"",
+			"## 🔵 Medium Priority (When Possible)",
+			"",
+			"## ⚪ Low Priority/Backlog",
+			"",
+			"## ✅ Done",
+			"",
+		}
+		vim.fn.writefile(default_content, todo_file)
 	end
 	local buf = vim.api.nvim_create_buf(false, true) -- Create a scratch buffer
 	vim.api.nvim_buf_set_option(buf, "filetype", "vimwiki")
@@ -136,6 +85,7 @@ function open_todo_window()
 	local height = math.floor(vim.o.lines * 0.8)
 	local row = math.floor((vim.o.lines - height) / 2)
 	local col = math.floor((vim.o.columns - width) / 2)
+
 	local win = vim.api.nvim_open_win(buf, true, {
 		relative = "editor",
 		width = width,
@@ -146,8 +96,8 @@ function open_todo_window()
 		border = "rounded",
 	})
 	vim.g.is_todo_open = true
-	vim.api.nvim_win_set_option(win, "number", true)
-	vim.api.nvim_win_set_option(win, "relativenumber", true)
+	-- vim.api.nvim_win_set_option(win, "number", true)
+	-- vim.api.nvim_win_set_option(win, "relativenumber", true)
 	vim.api.nvim_win_set_option(win, "spell", true)
 	vim.api.nvim_buf_set_keymap(buf, "n", "q", "<cmd>q<CR>", { noremap = true, silent = true })
 	vim.api.nvim_buf_set_keymap(buf, "n", "<C-c>", "<cmd>q<CR>", { noremap = true, silent = true })
@@ -156,8 +106,26 @@ function open_todo_window()
 		callback = function()
 			vim.g.is_todo_open = false
 			local lines = vim.api.nvim_buf_get_lines(buf, 0, -1, false)
-			vim.fn.writefile(lines, todo_file)
-			vim.api.nvim_buf_delete(buf, { force = true })
+			local is_empty = true
+			for _, line in ipairs(lines) do
+				if line:match("%S") then -- Check if line contains non-whitespace characters
+					is_empty = false
+					break
+				end
+			end
+			if is_empty then
+				vim.ui.input({
+					prompt = "File is empty. Save anyway? (y/n): ",
+				}, function(input)
+					if input and input:lower() == "y" then
+						vim.fn.writefile(lines, todo_file)
+					end
+					vim.api.nvim_buf_delete(buf, { force = true })
+				end)
+			else
+				vim.fn.writefile(lines, todo_file)
+				vim.api.nvim_buf_delete(buf, { force = true })
+			end
 		end,
 	})
 end

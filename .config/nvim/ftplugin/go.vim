@@ -6,7 +6,7 @@ let @t='make test'
 let @v='make vendor'
 let @x='make run'
 
-if filereadable("Makefile")
+if filereadable('Makefile') || filereadable('makefile')
   setlocal makeprg=make\ build
 else
   let &l:makeprg = 'GOMOD=off go build -o ' . expand('%:r') . ' ' . expand('%')
