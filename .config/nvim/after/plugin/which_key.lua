@@ -494,37 +494,13 @@ require("which-key").add({
 		remap = false,
 	},
 	{ "g?", "<cmd>WhichKey<CR>", desc = "WhichKey", nowait = true, remap = false },
+	{ "ga", "<cmd>Lspsaga code_action<CR>", desc = "Code actions", nowait = true, remap = false },
 	{ "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>", desc = "Go to declaration", nowait = true, remap = false },
 	{ "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", desc = "Go to definition", nowait = true, remap = false },
 	{ "gF", "<c-w>vgf", desc = "Edit the file in a vertical split", nowait = true, remap = false },
+	{ "gn", "<cmd>Lspsaga rename<CR>", desc = "Rename the symbol", nowait = true, remap = false },
 	{ "gP", "<cmd>Lspsaga peek_type_definition<CR>", desc = "Peek type definition", nowait = true, remap = false },
 	{ "gp", "<cmd>Lspsaga peek_definition<CR>", desc = "Show the definition", nowait = true, remap = false },
-	{ "gra", "<cmd>Lspsaga code_action<CR>", desc = "Code actions", nowait = true, remap = false },
-	{
-		"grl",
-		"<cmd>Lspsaga finder def+ref+imp<CR>",
-		desc = "Show the definition, reference, implementation...",
-		nowait = true,
-		remap = false,
-	},
-	{
-		"grR",
-		function()
-			vim.lsp.stop_client(vim.lsp.get_clients())
-			vim.cmd("e")
-		end,
-		desc = "Restart LSP",
-		nowait = true,
-		remap = false,
-	},
-	{
-		"grs",
-		":lua vim.lsp.stop_client(vim.lsp.get_clients())<CR>",
-		desc = "Stop LSP",
-		nowait = true,
-		remap = false,
-	},
-	{ "grn", "<cmd>Lspsaga rename<CR>", desc = "Rename the symbol", nowait = true, remap = false },
 	{
 		"gs",
 		function()
@@ -1086,6 +1062,32 @@ require("which-key").add({
 	{ "<space>gwp", "<cmd>G worktree prune<CR>", desc = "prune", nowait = true, remap = false },
 	{ "<space>gwr", ":G worktree remove ", desc = "remove", nowait = true, remap = false, silent = false },
 	{ "<space>gwu", ":G worktree unlock ", desc = "Unlock", nowait = true, remap = false, silent = false },
+	{ "<space>l", group = "LSP", nowait = true, remap = false },
+	{ "<space>la", "<cmd>Lspsaga code_action<CR>", desc = "Code actions", nowait = true, remap = false },
+	{
+		"<space>lf",
+		"<cmd>Lspsaga finder def+ref+imp<CR>",
+		desc = "Show the definition, reference, implementation...",
+		nowait = true,
+		remap = false,
+	},
+	{
+		"<space>lr",
+		function()
+			vim.lsp.stop_client(vim.lsp.get_clients())
+			vim.cmd("e")
+		end,
+		desc = "Restart LSP",
+		nowait = true,
+		remap = false,
+	},
+	{
+		"<space>ls",
+		":lua vim.lsp.stop_client(vim.lsp.get_clients())<CR>",
+		desc = "Stop LSP",
+		nowait = true,
+		remap = false,
+	},
 	{ "<space>s", group = "Session", nowait = true, remap = false },
 	{
 		"<space>sd",
@@ -1301,6 +1303,7 @@ require("which-key").add({
 			osaka_options.transparent = vim.g.is_transparent
 			local catppuccin = require("catppuccin")
 			catppuccin.options.transparent_background = vim.g.is_transparent
+			catppuccin.options.float.transparent = vim.g.is_transparent
 			local nightfox = require("nightfox.config")
 			nightfox.options.transparent = vim.g.is_transparent
 			catppuccin.compile()

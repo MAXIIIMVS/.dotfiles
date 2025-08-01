@@ -105,6 +105,7 @@ return require("lazy").setup({
 			},
 			compile_path = vim.fn.stdpath("cache") .. "/catppuccin",
 			transparent_background = vim.g.is_transparent,
+			float = { transparent = vim.g.is_transparent },
 			term_colors = true,
 			dim_inactive = {
 				enabled = false,
@@ -272,6 +273,7 @@ return require("lazy").setup({
 			quickfile = { enabled = true },
 			picker = {
 				enabled = true,
+				exclude = { ".git", "node_modules", "build", "vendor" },
 				layout = {
 					preset = function()
 						return vim.o.columns <= 130 and "vertical" or "telescope"
