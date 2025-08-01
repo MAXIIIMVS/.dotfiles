@@ -389,7 +389,9 @@ MEMENTO VIVERE]],
 						{ icon = "󰈆 ", key = "q", desc = "Quit", action = ":qa" },
 						{
 							align = "center",
-							text = "󰆥 " .. "If you love what you are doing, you will be successful." .. " 󰆥",
+							text = "󰆥 "
+								.. "A man’s got to have a code, a creed to live by, no matter his job"
+								.. " 󰆥",
 						},
 					},
 				},
@@ -824,6 +826,7 @@ MEMENTO VIVERE]],
 		end,
 	},
 	-- ────────────────────────────────── M ──────────────────────────────────
+	{ "MagicDuck/grug-far.nvim", opts = {}, cmd = { "GrugFar", "GrugFarWithin" } },
 	{
 		"maskudo/devdocs.nvim",
 		dependencies = "folke/snacks.nvim",
@@ -1345,7 +1348,7 @@ MEMENTO VIVERE]],
 				icon_only = true,
 				-- icon = { align = "left" },
 				cond = function()
-					return conditions.is_not_terminal() and conditions.hide_in_width()
+					return conditions.is_not_terminal() -- and conditions.hide_in_width()
 				end,
 			})
 
@@ -1497,7 +1500,7 @@ MEMENTO VIVERE]],
 			ins_right({
 				"progress",
 				color = { fg = colors.cyan },
-				cond = conditions.hide_in_width,
+				-- cond = conditions.hide_in_width,
 			})
 
 			ins_right({ "location", color = { fg = colors.cyan, gui = "bold" } })

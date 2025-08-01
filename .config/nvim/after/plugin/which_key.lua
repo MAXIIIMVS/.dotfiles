@@ -588,7 +588,7 @@ require("which-key").add({
 		remap = false,
 	},
 	{ "<space>bP", "<cmd>BufferLineTogglePin<CR>", desc = "Pin buffer", nowait = true, remap = false },
-	{ "<space>ba", "<cmd>bufdo bd<CR>", desc = "Close all buffers", nowait = true, remap = false },
+	{ "<space>ba", "<cmd>lua Snacks.bufdelete.all()<CR>", desc = "Close all buffers", nowait = true, remap = false },
 	{ "<space>bd", "<cmd>silent bd<CR>", desc = "Close this buffer", nowait = true, remap = false },
 	{
 		"<space>be",
