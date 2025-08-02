@@ -391,9 +391,7 @@ MEMENTO VIVERE]],
 						{ icon = "󰈆 ", key = "q", desc = "Quit", action = ":qa" },
 						{
 							align = "center",
-							text = "󰆥 "
-								.. "A man’s got to have a code, a creed to live by, no matter his job"
-								.. " 󰆥",
+							text = "󰆥 " .. "がんばれ" .. " 󰆥", -- 頑張れ
 						},
 					},
 				},
