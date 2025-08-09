@@ -137,7 +137,7 @@ require("which-key").add({
 	{
 		";A",
 		function()
-			local url = "https://www.chatgpt.com/"
+			local url = "https://chat.deepseek.com/"
 			local open_command
 			if vim.fn.has("unix") == 1 then
 				open_command = "xdg-open"
@@ -151,7 +151,7 @@ require("which-key").add({
 			end
 			vim.fn.system(open_command .. " " .. vim.fn.shellescape(url))
 		end,
-		desc = "Ask ChatGPT",
+		desc = "Ask AI",
 		nowait = true,
 		remap = false,
 	},
@@ -264,7 +264,7 @@ require("which-key").add({
 	{
 		";M",
 		function()
-			vim.cmd('1TermExec cmd="make"')
+			vim.cmd('100TermExec cmd="make"')
 			vim.defer_fn(function()
 				vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<C-\\><C-n>", true, false, true), "n", true)
 			end, 50)
@@ -1123,7 +1123,7 @@ require("which-key").add({
 			if reg == "" then
 				return
 			end
-			vim.cmd('1TermExec cmd="' .. vim.fn.getreg(reg) .. '"')
+			vim.cmd('101TermExec cmd="' .. vim.fn.getreg(reg) .. '"')
 			vim.defer_fn(function()
 				vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<C-\\><C-n>", true, false, true), "n", true)
 			end, 50)
@@ -1512,6 +1512,7 @@ require("which-key").add({
 		{ "<M-j>", "<CMD>silent NavigatorDown<CR>", desc = "Go to the down window", nowait = true, remap = false },
 		{ "<M-k>", "<CMD>silent NavigatorUp<CR>", desc = "Go to the up window", nowait = true, remap = false },
 		{ "<M-l>", "<CMD>silent NavigatorRight<CR>", desc = "Go to the right window", nowait = true, remap = false },
+		{ "<M-n>", "<CMD>ToggleTermSetName<CR>", desc = "Set terminal name", nowait = true, remap = false },
 	},
 	{
 		mode = { "n", "v" },
@@ -1747,7 +1748,7 @@ require("which-key").add({
 		{
 			"<C-F5>",
 			function()
-				vim.cmd('1TermExec cmd="' .. vim.fn.getreg("r") .. '"')
+				vim.cmd('102TermExec cmd="' .. vim.fn.getreg("r") .. '"')
 			end,
 			desc = "Start without debugging",
 			nowait = true,
@@ -1756,7 +1757,7 @@ require("which-key").add({
 		{
 			"<F29>",
 			function()
-				vim.cmd('1TermExec cmd="' .. vim.fn.getreg("r") .. '"')
+				vim.cmd('103TermExec cmd="' .. vim.fn.getreg("r") .. '"')
 			end,
 			desc = "Start without debugging",
 			nowait = true,

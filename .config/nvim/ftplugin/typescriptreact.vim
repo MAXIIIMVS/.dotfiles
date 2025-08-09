@@ -1,5 +1,5 @@
 let @b='npm build'
-let @r='npm run dev'
 let @i='npm i'
 let @s='npm start'
 let @t='npm test'
+let @x='npm run dev'

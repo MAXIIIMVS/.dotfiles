@@ -94,6 +94,15 @@ return require("lazy").setup({
 	-- ────────────────────────────────── B ──────────────────────────────────
 	-- ────────────────────────────────── C ──────────────────────────────────
 	{
+		"catgoose/nvim-colorizer.lua",
+		event = "BufReadPre",
+		config = function()
+			require("colorizer").setup({
+				filetypes = { "*", "!toggleterm", "!vimwiki" },
+			})
+		end,
+	},
+	{
 		"catppuccin/nvim",
 		name = "catppuccin",
 		lazy = true,
@@ -1688,25 +1697,6 @@ MEMENTO VIVERE]],
 			"NavigatorUp",
 			"NavigatorDown",
 			"NavigatorPrevious",
-		},
-	},
-	{
-		"NvChad/nvim-colorizer.lua",
-		ft = { "css", "html", "htmx", "scss", "javascriptreact", "typescriptreact" },
-		cmd = "ColorizerToggle",
-		opts = {
-			filetypes = { "*", "!toggleterm", "!vimwiki" },
-			user_default_options = {
-				AARRGGBB = true,
-				RRGGBBAA = true,
-				css = true,
-				css_fn = true,
-				rgb_fn = true,
-				hsl_fn = true,
-				mode = "background",
-				tailwind = true,
-				sass = { enable = true, parsers = { "css" } },
-			},
 		},
 	},
 	-- ────────────────────────────────── O ──────────────────────────────────
