@@ -859,12 +859,12 @@ export PATH=$PATH:/usr/bin/nvim
 export PATH=$PATH:/snap/bin
 export PATH=$PATH:$HOME/bin/gf
 export PATH=$PATH:$HOME/bin/premake
-export PATH="$HOME/tools/xpack-gcc-14.2.0-2/bin:$PATH"
+# export PATH="$HOME/tools/xpack-gcc-14.2.0-2/bin:$PATH"
 export PATH="$HOME/.local/share/nvim/mason/bin:$PATH"
 export PATH=$PATH:$HOME/dotnet
-export PATH="$HOME/tools/llvm-20.1.8/bin:$PATH"
-export LD_LIBRARY_PATH="$HOME/tools/llvm-20.1.8/lib:$LD_LIBRARY_PATH"
-export CMAKE_PREFIX_PATH="$HOME/tools/llvm-20.1.8:$CMAKE_PREFIX_PATH"
+# export PATH="$HOME/tools/llvm-20.1.8/bin:$PATH"
+# export LD_LIBRARY_PATH="$HOME/tools/llvm-20.1.8/lib:$LD_LIBRARY_PATH"
+# export CMAKE_PREFIX_PATH="$HOME/tools/llvm-20.1.8:$CMAKE_PREFIX_PATH"
 
 # # start tmux automatically
 # if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then

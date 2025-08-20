@@ -1402,7 +1402,7 @@ require("which-key").add({
 	},
 	{
 		mode = { "i" },
-		{ "<C-k>", "<C-o>C", desc = "Delete to the end of the line", nowait = false, remap = false },
+		-- { "<C-k>", "<C-o>C", desc = "Delete to the end of the line", nowait = false, remap = false },
 		{
 			"<c-k><c-k>",
 			"<cmd>lua Snacks.picker.icons()<cr>",
