@@ -391,6 +391,12 @@ xmap <C-_> gc
 smap <C-_> <ESC><ESC>gcc
 imap <C-_> <ESC>gcc
 
+nmap <C-/> gcc
+xmap <C-/> gc
+smap <C-/> <ESC><ESC>gcc
+imap <C-/> <ESC>gcc
+
+
 nnoremap <silent> <leader>a ggVG:Tabularize /;<CR>=G:%s/^\ssection/section<CR>
 
 autocmd FileType vimwiki nnoremap <silent> <buffer> <CR> :silent! VimwikiFollowLink<CR>
@@ -662,7 +668,7 @@ vim.o.errorbells = false
 vim.o.belloff = "all"
 vim.o.confirm = true
 if vim.fn.has("gui_running") == 1 then
-	vim.o.guifont = "FiraCode Nerd Font SemiBold:h9"
+	vim.o.guifont = "FiraCode Nerd Font Medium:h9"
 end
 vim.g.scrollopt = "ver,hor,jump"
 vim.schedule(function()
