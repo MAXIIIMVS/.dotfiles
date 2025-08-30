@@ -650,7 +650,8 @@ we() {
 	ls "$dir" | entr -c "$cmd"
 }
 
-run-mx450() {
+# execute with nvidia
+x-nvidia() {
 	__NV_PRIME_RENDER_OFFLOAD=1 __GLX_VENDOR_LIBRARY_NAME=nvidia "$@"
 }
 

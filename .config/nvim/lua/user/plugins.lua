@@ -190,47 +190,6 @@ return require("lazy").setup({
 	-- ────────────────────────────────── D ──────────────────────────────────
 	-- ────────────────────────────────── E ──────────────────────────────────
 	{
-		"echasnovski/mini.jump2d",
-		version = false,
-		opts = {
-			mappings = { start_jumping = ";j" },
-			view = {
-				dim = true,
-				n_steps_ahead = 2,
-			},
-			silent = true,
-		},
-		keys = { ";j", { ";j", mode = "v" } },
-	},
-	{
-		"echasnovski/mini.move",
-		version = false,
-		opts = {
-			mappings = {
-				left = "<C-h>",
-				right = "<c-l>",
-				down = "<C-j>",
-				up = "<C-k>",
-				line_left = "<C-h>",
-				line_right = "<c-l>",
-				line_down = "<C-j>",
-				line_up = "<C-k>",
-			},
-		},
-		keys = {
-			{ "<C-h>", mode = { "n", "v" } },
-			{ "<C-j>", mode = { "n", "v" } },
-			{ "<C-k>", mode = { "n", "v" } },
-			{ "<C-l>", mode = { "n", "v" } },
-		},
-	},
-	{
-		"echasnovski/mini.splitjoin",
-		version = false,
-		opts = { mappings = { toggle = "gJ", split = "", join = "" } },
-		keys = { "gJ", mode = { "n", "v" } },
-	},
-	{
 		"EdenEast/nightfox.nvim",
 		lazy = true,
 		config = function()
@@ -1165,6 +1124,47 @@ MEMENTO VIVERE]],
 				["Add Cursor Up"] = "<M-p>",
 			}
 		end,
+	},
+	{
+		"nvim-mini/mini.jump2d",
+		version = false,
+		opts = {
+			mappings = { start_jumping = ";j" },
+			view = {
+				dim = true,
+				n_steps_ahead = 2,
+			},
+			silent = true,
+		},
+		keys = { ";j", { ";j", mode = "v" } },
+	},
+	{
+		"nvim-mini/mini.move",
+		version = false,
+		opts = {
+			mappings = {
+				left = "<C-h>",
+				right = "<c-l>",
+				down = "<C-j>",
+				up = "<C-k>",
+				line_left = "<C-h>",
+				line_right = "<c-l>",
+				line_down = "<C-j>",
+				line_up = "<C-k>",
+			},
+		},
+		keys = {
+			{ "<C-h>", mode = { "n", "v" } },
+			{ "<C-j>", mode = { "n", "v" } },
+			{ "<C-k>", mode = { "n", "v" } },
+			{ "<C-l>", mode = { "n", "v" } },
+		},
+	},
+	{
+		"nvim-mini/mini.splitjoin",
+		version = false,
+		opts = { mappings = { toggle = "gJ", split = "", join = "" } },
+		keys = { "gJ", mode = { "n", "v" } },
 	},
 	-- ────────────────────────────────── N ──────────────────────────────────
 	{

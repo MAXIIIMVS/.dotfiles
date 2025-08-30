@@ -1119,6 +1119,7 @@ require("which-key").add({
 	{
 		"<space>r",
 		function()
+			require("toggleterm")
 			local reg = get_char("Enter the register name: ")
 			if reg == "" then
 				return
