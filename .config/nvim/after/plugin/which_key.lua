@@ -283,8 +283,8 @@ require("which-key").add({
 	},
 	{ ";O", "<cmd>silent !xdg-open %:p:h<CR>", desc = "Open the current directory", nowait = true, remap = false },
 	{ ";o", "<cmd>silent !xdg-open %<CR>", desc = "Open the current file", nowait = true, remap = false },
-	{ ";P", "<cmd>silent lua Snacks.picker.zoxide()<CR>", desc = "Projects (zoxide)", nowait = true, remap = false },
-	{ ";p", "<cmd>silent lua Snacks.picker.projects()<CR>", desc = "Projects", nowait = true, remap = false },
+	{ ";P", "<cmd>silent lua Snacks.picker.projects()<CR>", desc = "Projects", nowait = true, remap = false },
+	{ ";p", "<cmd>silent lua Snacks.picker.zoxide()<CR>", desc = "Projects (zoxide)", nowait = true, remap = false },
 	{ ";Q", vim.cmd.qall, desc = "Close all windows", nowait = true, remap = false },
 	{ ";q", vim.cmd.q, desc = "Close current window", nowait = true, remap = false },
 	{
