@@ -345,6 +345,13 @@ require("which-key").add({
 	},
 	{ "K", "<cmd>Lspsaga hover_doc<CR>", desc = "Hover info", nowait = true, remap = false },
 	{
+		"M",
+		":silent Man <c-r><c-w><CR>",
+		desc = "Show man pages for the word under the cursor",
+		nowait = true,
+		remap = false,
+	},
+	{
 		"]E",
 		function()
 			require("lspsaga.diagnostic"):goto_next({ severity = vim.diagnostic.severity.ERROR })
