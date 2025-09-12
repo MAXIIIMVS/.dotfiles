@@ -199,6 +199,15 @@ function M.setup(on_attach, capabilities)
 				"templ",
 			},
 		},
+		gdscript = {
+			name = "Godot",
+			cmd = vim.lsp.rpc.connect("127.0.0.1", os.getenv("GDSCRIPT_PORT") or 6005),
+			filetypes = { "gd", "gdscript", "gdscript3" },
+			-- NOTE: add these to Editor > Editor Settings > Text Editor > External
+			-- Exec Path: /usr/local/bin/nvim
+			-- Exec Flags: --server /tmp/godot.pipe --remote-send "<esc>:n {file}<CR>:call cursor({line},{col})<CR>"
+			-- Use external editor: on
+		},
 		intelephense = {
 			cmd = { "intelephense", "--stdio" },
 			filetypes = { "php" },
