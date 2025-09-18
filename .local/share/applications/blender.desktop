@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=Blender
+Exec=/usr/local/bin/blender
+Icon=/opt/blender/blender.svg
+Type=Application
+Categories=Graphics;3DGraphics
+Terminal=false

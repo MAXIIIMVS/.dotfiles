@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Godot 4
+Exec=/usr/local/bin/godot
+# Icon=godot
+Icon=/home/mustafa/.local/share/icons/hicolor/256x256/apps/godot.png
+Type=Application
+Categories=Development;IDE;
+Terminal=false
