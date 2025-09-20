@@ -781,6 +781,7 @@ MEMENTO VIVERE]],
 		},
 		event = "BufReadPost",
 	},
+	-- { "Lommix/godot.nvim", ft = "gdscript", config = true },
 	{ "LudoPinelli/comment-box.nvim", lazy = true, cmd = "CB" },
 	{
 		-- NOTE: install universal-ctags using apt (the snap version wasn't
@@ -940,6 +941,24 @@ MEMENTO VIVERE]],
 			}
 			require("dap").configurations.c = require("dap").configurations.cpp
 			require("dap").configurations.rust = require("dap").configurations.cpp
+
+			-- NOTE: go to Godot > script tab > Debug > and set debug with external editor
+			-- NOTE: https://codeberg.org/mfussenegger/nvim-dap/wiki/Debug-Adapter-installation#godot-gdscript
+			require("dap").adapters.godot = {
+				type = "server",
+				host = "127.0.0.1",
+				port = 6006,
+			}
+
+			require("dap").configurations.gdscript = {
+				{
+					type = "godot",
+					request = "launch",
+					name = "Launch scene",
+					project = "${workspaceFolder}",
+					launch_scene = true,
+				},
+			}
 
 			-- Load nvim-dap configuration for Go
 			require("dap").adapters.go = {
