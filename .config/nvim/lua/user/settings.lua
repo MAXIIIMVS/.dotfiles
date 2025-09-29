@@ -109,6 +109,28 @@ vim.api.nvim_create_autocmd("VimLeavePre", {
 	end,
 })
 
+function toggle_breakpoint_in_sign_col()
+	local mouse = vim.fn.getmousepos()
+	local col = mouse.column
+	local line = mouse.line
+
+	-- Only trigger if click is in the sign column
+	if col == 1 then
+		-- Move cursor to clicked line
+		vim.api.nvim_win_set_cursor(0, { line, 0 })
+
+		if vim.g.termdebug_running then
+			vim.cmd("silent Break")
+		else
+			require("dap")
+			vim.cmd.DapToggleBreakpoint()
+		end
+
+		-- Ensure we are in normal mode
+		vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), "n", false)
+	end
+end
+
 function open_todo_window()
 	if vim.g.is_todo_open then
 		vim.cmd("q")

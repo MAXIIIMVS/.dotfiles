@@ -1,5 +1,6 @@
 require("which-key").add({
 	-- { "<MouseMove>", "<cmd>Lspsaga hover_doc<CR>", desc = "Hover info" }, -- vim.o.mousemoveevent = true
+	{ "<LeftMouse>", toggle_breakpoint_in_sign_col, desc = "Toggle breakpoint" },
 	{ "<RightMouse>", "<LeftMouse><cmd>Lspsaga hover_doc<CR>", desc = "Hover info" },
 	{ "<Nop>", "<Plug>VimwikiRemoveHeaderLevel", desc = "disabled", nowait = true, remap = false },
 	{ ",", group = "Miscellaneous", nowait = true, remap = false },
