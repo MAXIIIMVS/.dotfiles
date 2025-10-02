@@ -1966,4 +1966,7 @@ MEMENTO VIVERE]],
 		border = "rounded",
 		backdrop = 100,
 	},
+	rocks = {
+		enabled = false,
+	},
 })
