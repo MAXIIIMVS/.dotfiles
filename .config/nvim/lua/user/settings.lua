@@ -114,7 +114,7 @@ function toggle_breakpoint_in_sign_col()
 	local col = mouse.column
 	local line = mouse.line
 
-	-- Only trigger if click is in the sign column
+	-- Only trigger breakpoint logic if click is in the sign column
 	if col == 1 then
 		-- Move cursor to clicked line
 		vim.api.nvim_win_set_cursor(0, { line, 0 })
@@ -128,6 +128,9 @@ function toggle_breakpoint_in_sign_col()
 
 		-- Ensure we are in normal mode
 		vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), "n", false)
+	else
+		-- For regular clicks, execute the normal left mouse behavior
+		vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<LeftMouse>", true, false, true), "n", false)
 	end
 end
 

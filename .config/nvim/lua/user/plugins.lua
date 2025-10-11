@@ -14,6 +14,17 @@ vim.opt.rtp:prepend(lazypath)
 
 return require("lazy").setup({
 	-- ────────────────────────────────── A ──────────────────────────────────
+	-- {
+	-- 	"A7Lavinraj/fyler.nvim",
+	-- 	dependencies = { "nvim-tree/nvim-web-devicons" },
+	-- 	opts = {
+	-- 		icon_provider = "nvim_web_devicons",
+	-- 		win = {
+	-- 			kind = "split_left_most",
+	-- 		}
+	-- 	},
+	-- 	cmd = { "Fyler" },
+	-- },
 	{
 		"airblade/vim-rooter",
 		init = function()
