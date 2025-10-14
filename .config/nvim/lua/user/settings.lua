@@ -236,7 +236,8 @@ function toggle_todo()
 end
 
 function term_debug()
-	local filepath = vim.fn.expand("%:p:h") -- the directory
+	-- local filepath = vim.fn.expand("%:p:h") -- the directory
+	local filepath = vim.fn["FindRootDirectory"]() -- NOTE: depends on vim-rooter
 	-- specific to my system
 	-- local gdbfake_file = os.getenv("HOME") .. "/.gdbfake"
 	-- local gdbinit_file = os.getenv("HOME") .. "/.gdbinit"

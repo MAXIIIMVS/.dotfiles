@@ -1,0 +1,5 @@
+let @b='dotnet build'
+let @c='dotnet clean'
+let @f='dotnet format'
+let @l='dotnet list package'
+let @x='dotnet run'

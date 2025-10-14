@@ -506,6 +506,13 @@ require("which-key").add({
 	{ "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>", desc = "Go to declaration", nowait = true, remap = false },
 	{ "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", desc = "Go to definition", nowait = true, remap = false },
 	{ "gF", "<c-w>vgf", desc = "Edit the file in a vertical split", nowait = true, remap = false },
+	{
+		"gh",
+		"<cmd>Lspsaga finder def+ref+imp<CR>",
+		desc = "Show the definition, reference, implementation...",
+		nowait = true,
+		remap = false,
+	},
 	{ "gn", "<cmd>Lspsaga rename<CR>", desc = "Rename the symbol", nowait = true, remap = false },
 	{ "gP", "<cmd>Lspsaga peek_type_definition<CR>", desc = "Peek type definition", nowait = true, remap = false },
 	{ "gp", "<cmd>Lspsaga peek_definition<CR>", desc = "Show the definition", nowait = true, remap = false },

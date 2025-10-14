@@ -963,6 +963,23 @@ MEMENTO VIVERE]],
 			require("dap").configurations.c = require("dap").configurations.cpp
 			require("dap").configurations.rust = require("dap").configurations.cpp
 
+			require("dap").adapters.coreclr = {
+				type = "executable",
+				command = os.getenv("HOME") .. "/.local/share/nvim/mason/bin/netcoredbg",
+				args = { "--interpreter=vscode" },
+			}
+
+			require("dap").configurations.cs = {
+				{
+					type = "coreclr",
+					name = "launch - netcoredbg",
+					request = "launch",
+					program = function()
+						return vim.fn.input("Path to dll", vim.fn.getcwd() .. "/bin/Debug/", "file")
+					end,
+				},
+			}
+
 			-- NOTE: go to Godot > script tab > Debug > and set debug with external editor
 			-- NOTE: https://codeberg.org/mfussenegger/nvim-dap/wiki/Debug-Adapter-installation#godot-gdscript
 			require("dap").adapters.godot = {
