@@ -57,11 +57,13 @@ vim.api.nvim_create_autocmd("ColorScheme", {
 		local transparent = vim.g.is_transparent
 
 		if transparent then
-			-- Transparent mode: kill backgrounds
 			vim.api.nvim_set_hl(0, "SignColumn", { bg = transparent and "NONE" or "#1c1c1c" })
 			vim.api.nvim_set_hl(0, "Normal", { bg = "NONE" })
 			vim.api.nvim_set_hl(0, "NormalFloat", { bg = "NONE" })
 			vim.api.nvim_set_hl(0, "FloatBorder", { fg = "#5f5f5f", bg = "NONE" })
+			vim.api.nvim_set_hl(0, "TabLineFill", { bg = "NONE", fg = "NONE" }) -- for bufferline
+			vim.api.nvim_set_hl(0, "VertSplit", { bg = "NONE", fg = "NONE" })
+			vim.api.nvim_set_hl(0, "CursorLineNr", { bg = "NONE", fg = "NONE" })
 
 			vim.api.nvim_set_hl(0, "SnacksInputNormal", { bg = "NONE", fg = "#d0d0d0" })
 			vim.api.nvim_set_hl(0, "SnacksInputBorder", { bg = "NONE", fg = "#5f5f5f" })
@@ -70,20 +72,16 @@ vim.api.nvim_create_autocmd("ColorScheme", {
 			vim.api.nvim_set_hl(0, "SnacksListSelection", { bg = "#444444", fg = "#ffffff" })
 		else
 			if bg == "dark" then
-				-- Dark backgrounds
 				vim.api.nvim_set_hl(0, "NormalFloat", { bg = "#1c1c1c" })
 				vim.api.nvim_set_hl(0, "FloatBorder", { fg = "#5f5f5f", bg = "#1c1c1c" })
-
 				vim.api.nvim_set_hl(0, "SnacksInputNormal", { bg = "#1c1c1c", fg = "#d0d0d0" })
 				vim.api.nvim_set_hl(0, "SnacksInputBorder", { bg = "#1c1c1c", fg = "#5f5f5f" })
 				vim.api.nvim_set_hl(0, "SnacksListNormal", { bg = "#1c1c1c", fg = "#d0d0d0" })
 				vim.api.nvim_set_hl(0, "SnacksListBorder", { bg = "#1c1c1c", fg = "#5f5f5f" })
 				vim.api.nvim_set_hl(0, "SnacksListSelection", { bg = "#444444", fg = "#ffffff" })
 			else
-				-- Light backgrounds
 				vim.api.nvim_set_hl(0, "NormalFloat", { bg = "#f0f0f0" })
 				vim.api.nvim_set_hl(0, "FloatBorder", { fg = "#a0a0a0", bg = "#f0f0f0" })
-
 				vim.api.nvim_set_hl(0, "SnacksInputNormal", { bg = "#f0f0f0", fg = "#202020" })
 				vim.api.nvim_set_hl(0, "SnacksInputBorder", { bg = "#f0f0f0", fg = "#a0a0a0" })
 				vim.api.nvim_set_hl(0, "SnacksListNormal", { bg = "#f0f0f0", fg = "#202020" })

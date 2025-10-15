@@ -207,6 +207,9 @@ function M.setup(on_attach, capabilities)
 			-- Exec Path: /usr/local/bin/nvim
 			-- Exec Flags: --server /tmp/godot.pipe --remote-send "<esc>:n {file}<CR>:call cursor({line},{col})<CR>"
 			-- Use external editor: on
+			-- NOTE: for C# try this (if the above doesn't work)
+			-- Exec Flags: --server 127.0.0.1:55432 --remote-send "<C-\><C-N>:n {file}<CR>:call cursor({line},{col})<CR>"
+			-- then run "nvim --listen 127.0.0.1:55432"
 		},
 		intelephense = {
 			cmd = { "intelephense", "--stdio" },

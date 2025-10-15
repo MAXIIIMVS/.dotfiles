@@ -80,7 +80,7 @@ return require("lazy").setup({
 					},
 				},
 				sort_by = "insert_at_end",
-				numbers = "none",
+				numbers = "ordinal",
 				separator_style = "thin",
 				diagnostics = "nvim_lsp",
 			},
@@ -1698,6 +1698,9 @@ MEMENTO VIVERE]],
 					require("null-ls").builtins.formatting.djhtml,
 					require("null-ls").builtins.formatting.shfmt,
 					require("null-ls").builtins.formatting.csharpier,
+					-- require("null-ls").builtins.formatting.clang_format.with({
+					-- 	filetypes = { "cs" },
+					-- }),
 					-- require("null-ls").builtins.formatting.djlint,
 					-- require("null-ls").builtins.formatting.gofmt,
 					require("null-ls").builtins.formatting.prettierd.with({
