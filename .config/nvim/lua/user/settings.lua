@@ -62,7 +62,7 @@ vim.api.nvim_create_autocmd("ColorScheme", {
 			vim.api.nvim_set_hl(0, "NormalFloat", { bg = "NONE" })
 			vim.api.nvim_set_hl(0, "FloatBorder", { fg = "#5f5f5f", bg = "NONE" })
 			vim.api.nvim_set_hl(0, "TabLineFill", { bg = "NONE", fg = "NONE" }) -- for bufferline
-			vim.api.nvim_set_hl(0, "VertSplit", { bg = "NONE", fg = "NONE" })
+			vim.api.nvim_set_hl(0, "VertSplit", { bg = "NONE", fg = "#5f5f5f" })
 			vim.api.nvim_set_hl(0, "CursorLineNr", { bg = "NONE", fg = "NONE" })
 
 			vim.api.nvim_set_hl(0, "SnacksInputNormal", { bg = "NONE", fg = "#d0d0d0" })
