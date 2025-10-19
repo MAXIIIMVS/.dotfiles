@@ -27,7 +27,15 @@ require("which-key").add({
 		function()
 			local word = vim.fn.expand("<cword>")
 			-- vim.cmd("terminal dict " .. word)
-			vim.cmd("!dict " .. word)
+			-- vim.cmd("!dict " .. word)
+			local direction = "horizontal"
+			if vim.fn.winwidth(0) > 96 then
+				direction = "vertical"
+				local size = vim.o.columns / 2
+				vim.cmd('TermExec cmd="dict ' .. word .. '" direction=' .. direction .. " size=" .. size)
+			else
+				vim.cmd('TermExec cmd="dict ' .. word .. '"')
+			end
 		end,
 		desc = "Dictionary",
 		nowait = true,
@@ -1201,6 +1209,13 @@ require("which-key").add({
 		remap = false,
 	},
 	{
+		"<space>tL",
+		"<cmd>Lazy<CR>",
+		desc = "Lazy",
+		nowait = true,
+		remap = false,
+	},
+	{
 		"<space>tl",
 		function()
 			vim.g.show_cursorline = not vim.g.show_cursorline
@@ -1211,6 +1226,13 @@ require("which-key").add({
 			end
 		end,
 		desc = "Cursor line",
+		nowait = true,
+		remap = false,
+	},
+	{
+		"<space>tm",
+		"<cmd>Mason<CR>",
+		desc = "Mason",
 		nowait = true,
 		remap = false,
 	},

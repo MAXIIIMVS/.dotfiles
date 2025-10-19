@@ -440,7 +440,10 @@ MEMENTO VIVERE]],
 		lazy = true,
 		opts = {
 			preset = "classic",
-			win = { border = "rounded" },
+			win = {
+				no_overlap = false,
+				border = "rounded",
+			},
 		},
 	},
 	-- ────────────────────────────────── G ──────────────────────────────────
@@ -972,10 +975,41 @@ MEMENTO VIVERE]],
 			require("dap").configurations.cs = {
 				{
 					type = "coreclr",
-					name = "launch - netcoredbg",
+					name = "Launch - netcoredbg",
 					request = "launch",
 					program = function()
-						return vim.fn.input("Path to dll", vim.fn.getcwd() .. "/bin/Debug/", "file")
+						return vim.fn.input("Path to dll: ", vim.fn.getcwd() .. "/bin/Debug/", "file")
+					end,
+				},
+				{
+					type = "coreclr",
+					request = "attach",
+					name = "Attach to Process",
+					processId = require("dap.utils").pick_process,
+				},
+				{
+					type = "coreclr",
+					request = "attach",
+					name = "Attach to dotnet run",
+					processId = function()
+						-- Helper to find dotnet processes
+						local handle = io.popen("pgrep -f 'dotnet run'")
+						local result = handle:read("*a")
+						handle:close()
+
+						local pids = {}
+						for pid in result:gmatch("%d+") do
+							table.insert(pids, pid)
+						end
+
+						if #pids == 0 then
+							vim.notify("No 'dotnet run' processes found", vim.log.levels.WARN)
+							return nil
+						elseif #pids == 1 then
+							return tonumber(pids[1])
+						else
+							return require("dap.utils").pick_process({ filter = "dotnet" })
+						end
 					end,
 				},
 			}
@@ -1697,12 +1731,12 @@ MEMENTO VIVERE]],
 					require("null-ls").builtins.formatting.gdformat,
 					require("null-ls").builtins.formatting.djhtml,
 					require("null-ls").builtins.formatting.shfmt,
-					require("null-ls").builtins.formatting.csharpier,
-					-- require("null-ls").builtins.formatting.clang_format.with({
-					-- 	filetypes = { "cs" },
-					-- }),
 					-- require("null-ls").builtins.formatting.djlint,
 					-- require("null-ls").builtins.formatting.gofmt,
+					-- require("null-ls").builtins.formatting.csharpier,
+					require("null-ls").builtins.formatting.clang_format.with({
+						filetypes = { "cs" },
+					}),
 					require("null-ls").builtins.formatting.prettierd.with({
 						filetypes = {
 							"javascript",
@@ -1850,6 +1884,12 @@ MEMENTO VIVERE]],
 				["<C-v>"] = "actions.select_vsplit",
 			},
 			view_options = { show_hidden = true },
+			float = {
+				border = "rounded",
+			},
+			confirmation = {
+				border = "rounded",
+			},
 		},
 	},
 	{

@@ -508,6 +508,11 @@ toggle_transparent_background() {
 	# echo "use-transparent-background toggled to $new_value"
 }
 
+dict() {
+	word=$1
+	command dict "$word" | bat
+}
+
 change_extension() {
 	source_ext=$1
 	dest_ext=$2
