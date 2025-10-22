@@ -432,23 +432,25 @@ function git_previous()
 	end
 end
 
-local DiagnosticsConfig = vim.diagnostic.config()
-local DiagnosticsEnabled = true
+local diagnostics_config = vim.diagnostic.config()
+local diagnostics_enabled = true
+
 function ToggleDiagnostics()
-	if not DiagnosticsEnabled then
-		vim.diagnostic.config(DiagnosticsConfig)
-		DiagnosticsEnabled = true
+	if not diagnostics_enabled then
+		vim.diagnostic.config(diagnostics_config)
+		diagnostics_enabled = true
 	else
-		DiagnosticsConfig = vim.diagnostic.config()
+		diagnostics_config = vim.diagnostic.config()
 		vim.diagnostic.config({
 			virtual_text = false,
+			virtual_lines = false,
 			sign = true,
 			float = false,
 			update_in_insert = false,
 			severity_sort = false,
 			underline = true,
 		})
-		DiagnosticsEnabled = false
+		diagnostics_enabled = false
 	end
 end
 

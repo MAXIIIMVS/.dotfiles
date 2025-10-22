@@ -396,7 +396,6 @@ require("which-key").add({
 		"]F",
 		function()
 			vim.cmd.colorscheme(flavors[#flavors])
-			vim.notify(flavors[#flavors])
 		end,
 		desc = "Last flavor",
 		nowait = true,
@@ -416,7 +415,6 @@ require("which-key").add({
 				index = 1
 			end
 			vim.cmd.colorscheme(flavors[index])
-			vim.notify(flavors[index])
 		end,
 		desc = "Next flavor",
 		nowait = true,
@@ -426,7 +424,6 @@ require("which-key").add({
 		"[F",
 		function()
 			vim.cmd.colorscheme(flavors[1])
-			vim.notify(flavors[1])
 		end,
 		desc = "First flavor",
 		nowait = true,
@@ -446,7 +443,6 @@ require("which-key").add({
 				index = #flavors
 			end
 			vim.cmd.colorscheme(flavors[index])
-			vim.notify(flavors[index])
 		end,
 		desc = "Previous flavor",
 		nowait = true,
@@ -1189,6 +1185,8 @@ require("which-key").add({
 		remap = false,
 	},
 	{ "<space>td", "<cmd>silent DBUIToggle<CR>", desc = "DB UI", nowait = true, remap = false },
+	{ "<space>tG", "<cmd>silent GrugFarWithin<CR>", desc = "GrugFar Within", nowait = true, remap = false },
+	{ "<space>tg", "<cmd>GrugFar<CR>", desc = "GrugFar", nowait = true, remap = false },
 	{ "<space>tH", "<cmd>TSToggle highlight<CR>", desc = "Treesitter highlight", nowait = true, remap = false },
 	{
 		"<space>th",
