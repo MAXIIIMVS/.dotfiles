@@ -230,15 +230,15 @@ require("which-key").add({
 		nowait = true,
 		remap = false,
 	},
-	{ ";f", "<cmd>lua Snacks.picker.files()<CR>", desc = "Find files", nowait = true, remap = false },
+	{ ";f", "<cmd>lua Snacks.picker.files({hidden=true})<CR>", desc = "Find files", nowait = true, remap = false },
 	{
 		";G",
-		"<cmd>lua Snacks.picker.grep_word()<CR>",
+		"<cmd>lua Snacks.picker.grep_word({hidden=true})<CR>",
 		desc = "Grep string under the cursor",
 		nowait = true,
 		remap = false,
 	},
-	{ ";g", "<cmd>lua Snacks.picker.grep()<CR>", desc = "Live grep", nowait = true, remap = false },
+	{ ";g", "<cmd>lua Snacks.picker.grep({hidden=true})<CR>", desc = "Live grep", nowait = true, remap = false },
 	{ ";H", ":Man ", desc = "Show man pages", nowait = true, remap = false, silent = false },
 	{
 		";h",
