@@ -1,7 +1,8 @@
 [Desktop Entry]
 Name=Kitty
 Comment=GPU based terminal emulator
-Exec=/home/mustafa/.local/bin/kitty
+# Exec=/home/mustafa/.local/bin/kitty
+Exec=env GLFW_IM_MODULE=ibus /home/mustafa/.local/bin/kitty
 Icon=/home/mustafa/code/others/kitty/logo/kitty-128.png
 Terminal=false
 Type=Application

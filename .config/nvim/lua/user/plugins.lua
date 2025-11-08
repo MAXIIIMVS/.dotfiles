@@ -1,4 +1,4 @@
--- ムスタファ・ハヤティ
+-- ハヤティ・ムスタファ
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
 	vim.fn.system({
@@ -381,7 +381,8 @@ MEMENTO VIVERE]],
 						{ icon = "󰈆 ", key = "q", desc = "Quit", action = ":qa" },
 						{
 							align = "center",
-							text = "󰆥 " .. "がんばれ" .. " 󰆥", -- 頑張れ
+							-- text = "󰆥 " .. "がんばれ" .. " 󰆥", -- 頑張れ
+							text = "󰆥 " .. "1% Better Every Day!" .. " 󰆥",
 						},
 					},
 				},
@@ -1217,47 +1218,6 @@ MEMENTO VIVERE]],
 			}
 		end,
 	},
-	{
-		"nvim-mini/mini.jump2d",
-		version = false,
-		opts = {
-			mappings = { start_jumping = ";j" },
-			view = {
-				dim = true,
-				n_steps_ahead = 2,
-			},
-			silent = true,
-		},
-		keys = { ";j", { ";j", mode = "v" } },
-	},
-	{
-		"nvim-mini/mini.move",
-		version = false,
-		opts = {
-			mappings = {
-				left = "<C-h>",
-				right = "<c-l>",
-				down = "<C-j>",
-				up = "<C-k>",
-				line_left = "<C-h>",
-				line_right = "<c-l>",
-				line_down = "<C-j>",
-				line_up = "<C-k>",
-			},
-		},
-		keys = {
-			{ "<C-h>", mode = { "n", "v" } },
-			{ "<C-j>", mode = { "n", "v" } },
-			{ "<C-k>", mode = { "n", "v" } },
-			{ "<C-l>", mode = { "n", "v" } },
-		},
-	},
-	{
-		"nvim-mini/mini.splitjoin",
-		version = false,
-		opts = { mappings = { toggle = "gJ", split = "", join = "" } },
-		keys = { "gJ", mode = { "n", "v" } },
-	},
 	-- ────────────────────────────────── N ──────────────────────────────────
 	{
 		"nvimdev/lspsaga.nvim",
@@ -1929,6 +1889,15 @@ MEMENTO VIVERE]],
 				border = "rounded",
 			},
 			confirmation = {
+				border = "rounded",
+			},
+			progress = {
+				border = "rounded",
+			},
+			ssh = {
+				border = "rounded",
+			},
+			keymaps_help = {
 				border = "rounded",
 			},
 		},

@@ -583,7 +583,14 @@ require("which-key").add({
 		remap = false,
 	},
 	{ "<space>bP", "<cmd>BufferLineTogglePin<CR>", desc = "Pin buffer", nowait = true, remap = false },
-	{ "<space>ba", "<cmd>lua Snacks.bufdelete.all()<CR>", desc = "Close all buffers", nowait = true, remap = false },
+	{
+		"<space>bA",
+		"<cmd>lua Snacks.bufdelete.all()<CR>",
+		desc = "Close all buffers (Keep windows)",
+		nowait = true,
+		remap = false,
+	},
+	{ "<space>ba", "<cmd>bufdo bd<CR>", desc = "Close all buffers", nowait = true, remap = false },
 	{ "<space>bd", "<cmd>silent bd<CR>", desc = "Close this buffer", nowait = true, remap = false },
 	{
 		"<space>be",
@@ -1207,13 +1214,6 @@ require("which-key").add({
 		remap = false,
 	},
 	{
-		"<space>tL",
-		"<cmd>Lazy<CR>",
-		desc = "Lazy",
-		nowait = true,
-		remap = false,
-	},
-	{
 		"<space>tl",
 		function()
 			vim.g.show_cursorline = not vim.g.show_cursorline
@@ -1352,6 +1352,13 @@ require("which-key").add({
 	},
 	{ "<space>tv", "<cmd>silent lua ToggleDiagnostics()<CR>", desc = "Virtual Text", nowait = true, remap = false },
 	{ "<space>tw", "<cmd>silent e ~/notes/wiki/index.md<CR>", desc = "Wiki", nowait = true, remap = false },
+	{
+		"<space>tx",
+		"<cmd>Lazy<CR>",
+		desc = "Extensions",
+		nowait = true,
+		remap = false,
+	},
 	{
 		"<space>w",
 		function()
@@ -1673,6 +1680,19 @@ require("which-key").add({
 				end
 			end,
 			desc = "Continue/Start DAP",
+			nowait = true,
+			remap = false,
+		},
+		{
+			"<C-F8>",
+			function()
+				if vim.g.termdebug_running then
+					vim.cmd("silent Until")
+				else
+					require("dap").run_to_cursor()
+				end
+			end,
+			desc = "Run to cursor",
 			nowait = true,
 			remap = false,
 		},
