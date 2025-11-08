@@ -669,19 +669,6 @@ require("which-key").add({
 		remap = false,
 	},
 	{
-		"<space>dB",
-		function()
-			if vim.g.termdebug_running then
-				vim.cmd("silent call TermDebugSendCommand('delete')")
-			else
-				require("dap").clear_breakpoints()
-			end
-		end,
-		desc = "Delete all breakpoints",
-		nowait = true,
-		remap = false,
-	},
-	{
 		"<space>dC",
 		function()
 			if vim.g.termdebug_running then
@@ -709,6 +696,35 @@ require("which-key").add({
 	},
 	{ "<space>dR", vim.cmd.DapToggleRepl, desc = "Toggle repl", nowait = true, remap = false },
 	{ "<space>da", "<cmd>silent Asm<CR>", desc = "GDB: Disassembly", nowait = true, remap = false },
+	-- {
+	-- 	"<space>dB",
+	-- 	function()
+	-- 		if vim.g.termdebug_running then
+	-- 			vim.cmd("silent call TermDebugSendCommand('delete')")
+	-- 		else
+	-- 			require("dap").clear_breakpoints()
+	-- 		end
+	-- 	end,
+	-- 	desc = "Delete all breakpoints",
+	-- 	nowait = true,
+	-- 	remap = false,
+	-- },
+	{
+		"<space>dB",
+		function()
+			local condition = vim.fn.input("Breakpoint condition (optional): ")
+			local hit_condition = vim.fn.input("Hit count (optional): ")
+
+			-- Convert empty strings to nil
+			condition = condition ~= "" and condition or nil
+			hit_condition = hit_condition ~= "" and hit_condition or nil
+
+			require("dap").toggle_breakpoint(condition, hit_condition)
+		end,
+		desc = "Conditional Breakpoint",
+		nowait = true,
+		remap = false,
+	},
 	{
 		"<space>db",
 		function()

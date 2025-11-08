@@ -978,6 +978,7 @@ MEMENTO VIVERE]],
 					type = "coreclr",
 					name = "Launch - netcoredbg",
 					request = "launch",
+					justMyCode = false,
 					program = function()
 						return vim.fn.input("Path to dll: ", vim.fn.getcwd() .. "/bin/Debug/", "file")
 					end,
