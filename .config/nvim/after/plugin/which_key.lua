@@ -323,6 +323,7 @@ require("which-key").add({
 	{ ";t", "<cmd>lua Snacks.picker.todo_comments()<CR>", desc = "See notes/todos...", nowait = true, remap = false },
 	{ ";U", "<cmd>e!<CR>", desc = "Undo all changes to the file", nowait = true, remap = false },
 	{ ";u", vim.cmd.UndotreeToggle, desc = "Toggle Undotree", nowait = true, remap = false },
+	{ ";w", "<cmd>lua require('nvim-window').pick()<cr>", desc = "Pick a window", nowait = true, remap = false },
 	{
 		";x",
 		"<cmd>silent ToggleTermSendCurrentLine<CR>",
