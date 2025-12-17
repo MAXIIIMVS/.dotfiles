@@ -1980,6 +1980,13 @@ MEMENTO VIVERE]],
 	{ "tpope/vim-sleuth", event = { "BufNewFile", "BufReadPre", "BufFilePre" } },
 	{ "tpope/vim-speeddating", keys = { { "<c-a>", mode = { "n", "v" } }, { "<c-x>", mode = { "n", "v" } } } },
 	-- ────────────────────────────────── U ──────────────────────────────────
+	{
+		"uhs-robert/oasis.nvim",
+		lazy = true,
+		opts = {
+			transparent = vim.g.is_transparent,
+		},
+	},
 	-- ────────────────────────────────── V ──────────────────────────────────
 	{
 		"vimwiki/vimwiki",
@@ -2045,7 +2052,7 @@ MEMENTO VIVERE]],
 	},
 	-- ────────────────────────────────── X ──────────────────────────────────
 	-- ────────────────────────────────── Y ──────────────────────────────────
-	{ "yorickpeterse/nvim-window", lazy = true, config = true },
+	{ "yorickpeterse/nvim-window", lazy = true, opts = { border = "rounded" } },
 	-- ────────────────────────────────── Z ──────────────────────────────────
 	-- {
 	-- 	"zongben/capsoff.nvim",

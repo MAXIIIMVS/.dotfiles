@@ -24,6 +24,8 @@ vim.diagnostic.config({ virtual_lines = { current_line = true } })
 
 flavors = {
 	"catppuccin-mocha",
+	"oasis-night",
+	"oasis-lagoon",
 	"duskfox",
 	"solarized-osaka",
 	"retrobox",
