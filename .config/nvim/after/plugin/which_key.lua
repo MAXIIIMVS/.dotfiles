@@ -1361,6 +1361,8 @@ require("which-key").add({
 			nightfox.options.transparent = vim.g.is_transparent
 			catppuccin.compile()
 			vim.cmd("NightfoxCompile")
+			local oasis = require("oasis.config").get()
+			oasis.transparent = vim.g.is_transparent
 			vim.cmd.colorscheme(vim.g.colors_name)
 		end,
 		desc = "Transparency",
