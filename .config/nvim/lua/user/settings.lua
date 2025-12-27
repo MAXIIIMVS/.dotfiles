@@ -561,18 +561,31 @@ autocmd BufEnter * call SyncTmuxOnColorSchemeChange()
 autocmd BufWinLeave * if &laststatus != 3 | set laststatus=3 | endif
 
 function! OpenLazyGit()
+  " Save the buffer we came from
+  let g:lazygit_source_buf = bufnr('%')
+
   " set notermguicolors " uncomment this if you're not using a theme for lazygit
 	terminal lazygit
 	" terminal lazygit --use-config-file="$HOME/.config/lazygit/config.yml,$HOME/.config/lazygit/themes/catppuccin/themes-mergable/mocha/peach.yml"
   tnoremap <buffer> <ESC> <ESC>
   startinsert
   redraw!
+
   augroup LazyGit
     autocmd! * <buffer>
     autocmd WinResized <buffer> redraw
-    autocmd TermClose <buffer> :lua Snacks.bufdelete()
+    autocmd TermClose <buffer> call s:OnLazyGitClose()
     " autocmd TermClose * set termguicolors " uncomment this if you're not using a theme for lazygit
   augroup END
+endfunction
+
+function! s:OnLazyGitClose()
+  lua Snacks.bufdelete()
+
+  if exists('g:lazygit_source_buf') && bufexists(g:lazygit_source_buf)
+    execute 'buffer' g:lazygit_source_buf
+    silent! Gitsigns refresh
+  endif
 endfunction
 
 function! OpenHtop()
