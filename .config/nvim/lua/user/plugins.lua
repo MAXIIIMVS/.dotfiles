@@ -1626,9 +1626,8 @@ MEMENTO VIVERE]],
 		"nvim-treesitter/nvim-treesitter",
 		build = ":TSUpdate",
 		event = { "BufReadPost", "BufNewFile" },
-		branch = "master",
 		config = function()
-			require("nvim-treesitter.configs").setup({
+			require("nvim-treesitter").setup({
 				auto_install = true,
 				incremental_selection = { enable = true },
 				textobjects = { enable = true },
