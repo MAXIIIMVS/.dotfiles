@@ -1983,9 +1983,7 @@ MEMENTO VIVERE]],
 	{
 		"uhs-robert/oasis.nvim",
 		lazy = true,
-		opts = {
-			transparent = vim.g.is_transparent,
-		},
+		opts = {},
 	},
 	-- ────────────────────────────────── V ──────────────────────────────────
 	{

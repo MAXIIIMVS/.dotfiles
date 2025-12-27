@@ -13,7 +13,7 @@ function M.setup(on_attach, capabilities)
 		"codelldb",
 		"cpptools",
 		"csharp-language-server",
-		"csharpier",
+		-- "csharpier", -- NOTE: use clang-format instead
 		"css-lsp",
 		"delve",
 		-- "deno",
@@ -401,8 +401,9 @@ function M.setup(on_attach, capabilities)
 
 	for server, config in pairs(servers) do
 		config.on_attach = function(client, bufnr)
-			if server == "awk_ls" or server == "bashls" or server == "ts_ls" then
+			if server == "awk_ls" or server == "bashls" or server == "ts_ls" or server == "csharp_ls" then
 				client.server_capabilities.documentFormattingProvider = false
+				client.server_capabilities.documentRangeFormattingProvider = false
 			end
 			on_attach(client, bufnr)
 		end
