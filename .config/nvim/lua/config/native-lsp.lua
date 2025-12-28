@@ -13,7 +13,7 @@ function M.setup(on_attach, capabilities)
 		"codelldb",
 		"cpptools",
 		"csharp-language-server",
-		-- "csharpier", -- NOTE: use clang-format instead
+		"csharpier",
 		"css-lsp",
 		"delve",
 		-- "deno",

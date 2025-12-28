@@ -1735,10 +1735,10 @@ MEMENTO VIVERE]],
 					require("null-ls").builtins.formatting.shfmt,
 					-- require("null-ls").builtins.formatting.djlint,
 					-- require("null-ls").builtins.formatting.gofmt,
-					-- require("null-ls").builtins.formatting.csharpier,
-					require("null-ls").builtins.formatting.clang_format.with({
-						filetypes = { "cs" },
-					}),
+					require("null-ls").builtins.formatting.csharpier,
+					-- require("null-ls").builtins.formatting.clang_format.with({
+					-- 	filetypes = { "cs" },
+					-- }),
 					require("null-ls").builtins.formatting.prettierd.with({
 						filetypes = {
 							"javascript",
