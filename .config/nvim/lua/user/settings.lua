@@ -697,7 +697,7 @@ ab :br: ♖
 -- }}}
 
 -- Fundamental {{{
--- vim.o.winborder = "rounded" -- this messes up telescope and other plugins
+vim.o.winborder = "rounded"
 vim.o.completeopt = "menu,menuone,noinsert,noselect"
 vim.o.cursorline = true
 vim.o.cursorlineopt = "number"

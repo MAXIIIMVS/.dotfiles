@@ -355,13 +355,6 @@ require("which-key").add({
 	},
 	{ "K", "<cmd>Lspsaga hover_doc<CR>", desc = "Hover info", nowait = true, remap = false },
 	{
-		"M",
-		":silent Man <c-r><c-w><CR>",
-		desc = "Show man pages for the word under the cursor",
-		nowait = true,
-		remap = false,
-	},
-	{
 		"]E",
 		function()
 			require("lspsaga.diagnostic"):goto_next({ severity = vim.diagnostic.severity.ERROR })
@@ -1211,7 +1204,6 @@ require("which-key").add({
 	{ "<space>td", "<cmd>silent DBUIToggle<CR>", desc = "DB UI", nowait = true, remap = false },
 	{ "<space>tG", "<cmd>silent GrugFarWithin<CR>", desc = "GrugFar Within", nowait = true, remap = false },
 	{ "<space>tg", "<cmd>GrugFar<CR>", desc = "GrugFar", nowait = true, remap = false },
-	{ "<space>tH", "<cmd>TSToggle highlight<CR>", desc = "Treesitter highlight", nowait = true, remap = false },
 	{
 		"<space>th",
 		function()
