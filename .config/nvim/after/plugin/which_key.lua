@@ -487,6 +487,7 @@ require("which-key").add({
 		remap = false,
 	},
 	{ "g?", "<cmd>WhichKey<CR>", desc = "WhichKey", nowait = true, remap = false },
+	{ "ga", "<cmd>lua vim.lsp.buf.code_action()<CR>", desc = "Code action", nowait = true, remap = false },
 	{ "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>", desc = "Go to declaration", nowait = true, remap = false },
 	{ "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", desc = "Go to definition", nowait = true, remap = false },
 	{ "gF", "<c-w>vgf", desc = "Edit the file in a vertical split", nowait = true, remap = false },

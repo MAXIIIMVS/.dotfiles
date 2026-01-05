@@ -239,7 +239,7 @@ return require("lazy").setup({
 	},
 	{
 		"folke/snacks.nvim",
-		priority = 1000,
+		priority = 2000,
 		lazy = false,
 		opts = {
 			bigfile = { size = 1 * 1024 * 1024 },
