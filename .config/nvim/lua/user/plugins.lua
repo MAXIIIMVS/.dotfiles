@@ -831,6 +831,10 @@ MEMENTO VIVERE]],
 		},
 		config = function()
 			require("mason").setup({
+				registries = {
+					"github:mason-org/mason-registry",
+					"github:Crashdummyy/mason-registry",
+				},
 				ui = {
 					border = "rounded",
 					check_outdated_packages_on_open = true,

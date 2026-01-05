@@ -204,13 +204,15 @@ function M.setup(on_attach, capabilities)
 			name = "Godot",
 			cmd = vim.lsp.rpc.connect("127.0.0.1", os.getenv("GDSCRIPT_PORT") or 6005),
 			filetypes = { "gd", "gdscript", "gdscript3" },
-			-- NOTE: add these to Editor > Editor Settings > Text Editor > External
+			-- NOTE: for gdscript: add these to Editor > Editor Settings > Text Editor > External
 			-- Exec Path: /usr/local/bin/nvim
 			-- Exec Flags: --server /tmp/godot.pipe --remote-send "<esc>:n {file}<CR>:call cursor({line},{col})<CR>"
 			-- Use external editor: on
-			-- NOTE: for C# try this (if the above doesn't work)
-			-- Exec Flags: --server 127.0.0.1:55432 --remote-send "<C-\><C-N>:n {file}<CR>:call cursor({line},{col})<CR>"
-			-- then run "nvim --listen 127.0.0.1:55432"
+
+			-- NOTE: for C#: Editor > Editor Setting > Dotnet > Editor
+			-- External Editor: Custom
+			-- Custom Exec Path: /usr/local/bin/nvim
+			-- Cusom Exec Path Args: --server /tmp/godot.pipe --remote-send "<esc>:n {file}<CR>:call cursor({line},{col})<CR>"
 		},
 		intelephense = {
 			cmd = { "intelephense", "--stdio" },
