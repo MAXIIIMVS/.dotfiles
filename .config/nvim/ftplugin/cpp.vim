@@ -1,6 +1,11 @@
 " =========================
 " Project detection
 " =========================
+if exists("b:did_ftplugin")
+  finish
+endif
+let b:did_ftplugin = 1
+
 let s:dir = expand('%:p:h')
 
 function! s:is_cmake()
@@ -36,11 +41,11 @@ function! s:setup_build_registers()
     let @r = 'make RELEASE=1'
     let @t = 'make test'
     let @v = 'valgrind ./main'
-    let @x = './main'
+    let @x = 'make run'
 
   else
     " Single-file fallback
-    let @b = 'g++ -ggdb3 -Wall -Werror -Wpedantic -Wextra -Wsign-conversion -std=c++23 -o %:r.out %'
+    let @b = 'g++-14 -ggdb3 -Wall -Werror -Wpedantic -Wextra -Wsign-conversion -std=c++23 -o %:r.out %'
     let @c = ''
     let @f = ''
     let @d = ''
@@ -61,7 +66,7 @@ if s:is_cmake()
 elseif s:is_make()
   setlocal makeprg=make
 else
-  setlocal makeprg=g++\ -ggdb3\ -Wall\ -Werror\ -Wpedantic\ -Wextra\ -Wsign-conversion\ -std=c++23\ -o\ %:r.out\ %
+  setlocal makeprg=g++-14\ -ggdb3\ -Wall\ -Werror\ -Wpedantic\ -Wextra\ -Wsign-conversion\ -std=c++23\ -o\ %:r.out\ %
 endif
 
 setlocal errorformat=%f:%l:%c:\ %m,%f:%l:\ %m

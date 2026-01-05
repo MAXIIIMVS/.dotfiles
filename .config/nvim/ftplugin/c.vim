@@ -36,11 +36,11 @@ function! s:setup_build_registers()
     let @r = 'make RELEASE=1'
     let @t = 'make test'
     let @v = 'valgrind ./main'
-    let @x = './main'
+    let @x = 'make run'
 
   else
     " Single-file fallback
-    let @b = 'gcc -ggdb3 -Wall -Werror -Wpedantic -Wextra -Wsign-conversion -std=c23 -o %:r.out %'
+    let @b = 'gcc -ggdb3 -Wall -Werror -Wpedantic -Wextra -Wsign-conversion -o %:r.out %'
     let @c = ''
     let @f = ''
     let @d = ''
@@ -61,7 +61,7 @@ if s:is_cmake()
 elseif s:is_make()
   setlocal makeprg=make
 else
-  setlocal makeprg=gcc\ -ggdb3\ -Wall\ -Werror\ -Wpedantic\ -Wextra\ -Wsign-conversion\ -std=c23\ -o\ %:r.out\ %
+  setlocal makeprg=gcc\ -ggdb3\ -Wall\ -Werror\ -Wpedantic\ -Wextra\ -Wsign-conversion\ -o\ %:r.out\ %
 endif
 
 setlocal errorformat=%f:%l:%c:\ %m,%f:%l:\ %m

@@ -1,7 +1,6 @@
 require("which-key").add({
-	-- { "<MouseMove>", "<cmd>Lspsaga hover_doc<CR>", desc = "Hover info" }, -- vim.o.mousemoveevent = true
 	{ "<LeftMouse>", toggle_breakpoint_in_sign_col, desc = "Toggle breakpoint" },
-	{ "<RightMouse>", "<LeftMouse><cmd>Lspsaga hover_doc<CR>", desc = "Hover info" },
+	{ "<RightMouse>", "<LeftMouse><cmd>normal K<CR>", desc = "Hover info" },
 	{ "<Nop>", "<Plug>VimwikiRemoveHeaderLevel", desc = "disabled", nowait = true, remap = false },
 	{ ",", group = "Miscellaneous", nowait = true, remap = false },
 	{
@@ -87,9 +86,17 @@ require("which-key").add({
 	},
 	-- { ",t", ":tabfind ", desc = "tab find", remap = false, silent = false, nowait = true },
 	{
+		",T",
+		toggle_global_todo_window,
+		desc = "Global Todos",
+		nowait = true,
+		remap = false,
+		silent = false,
+	},
+	{
 		",t",
-		open_todo_window,
-		desc = "Todos",
+		toggle_local_todo_window,
+		desc = "Project Todos",
 		nowait = true,
 		remap = false,
 		silent = false,
@@ -214,7 +221,6 @@ require("which-key").add({
 		nowait = true,
 		remap = false,
 	},
-	{ ";D", "<cmd>Lspsaga show_line_diagnostics<CR>", desc = "Show line diagnostics", nowait = true, remap = false },
 	{
 		";d",
 		"<cmd>silent lua Snacks.picker.diagnostics()<CR>",
@@ -353,36 +359,17 @@ require("which-key").add({
 		nowait = true,
 		remap = false,
 	},
-	{ "K", "<cmd>Lspsaga hover_doc<CR>", desc = "Hover info", nowait = true, remap = false },
 	{
-		"]E",
+		"K",
 		function()
-			require("lspsaga.diagnostic"):goto_next({ severity = vim.diagnostic.severity.ERROR })
+			vim.lsp.buf.hover({
+				max_height = 25,
+				max_width = 120,
+				-- max_height = 0.9, -- Or use a percentage of screen height
+				-- max_width = 0.9,  -- Or use a percentage of screen width
+			})
 		end,
-		desc = "Jump to the next error",
-		nowait = true,
-		remap = false,
-	},
-	{
-		"]e",
-		"<cmd>Lspsaga diagnostic_jump_next<CR>",
-		desc = "Jump to the next diagnostic",
-		nowait = true,
-		remap = false,
-	},
-	{
-		"[E",
-		function()
-			require("lspsaga.diagnostic"):goto_prev({ severity = vim.diagnostic.severity.ERROR })
-		end,
-		desc = "Jump to the previous error",
-		nowait = true,
-		remap = false,
-	},
-	{
-		"[e",
-		"<cmd>Lspsaga diagnostic_jump_prev<CR>",
-		desc = "Jump to the previous diagnostic",
+		desc = "LSP hover",
 		nowait = true,
 		remap = false,
 	},
@@ -500,20 +487,9 @@ require("which-key").add({
 		remap = false,
 	},
 	{ "g?", "<cmd>WhichKey<CR>", desc = "WhichKey", nowait = true, remap = false },
-	{ "ga", "<cmd>Lspsaga code_action<CR>", desc = "Code actions", nowait = true, remap = false },
 	{ "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>", desc = "Go to declaration", nowait = true, remap = false },
 	{ "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", desc = "Go to definition", nowait = true, remap = false },
 	{ "gF", "<c-w>vgf", desc = "Edit the file in a vertical split", nowait = true, remap = false },
-	{
-		"gh",
-		"<cmd>Lspsaga finder def+ref+imp<CR>",
-		desc = "Show the definition, reference, implementation...",
-		nowait = true,
-		remap = false,
-	},
-	{ "gn", "<cmd>Lspsaga rename<CR>", desc = "Rename the symbol", nowait = true, remap = false },
-	{ "gP", "<cmd>Lspsaga peek_type_definition<CR>", desc = "Peek type definition", nowait = true, remap = false },
-	{ "gp", "<cmd>Lspsaga peek_definition<CR>", desc = "Show the definition", nowait = true, remap = false },
 	{
 		"gs",
 		function()
@@ -1099,14 +1075,6 @@ require("which-key").add({
 	{ "<space>gwr", ":G worktree remove ", desc = "remove", nowait = true, remap = false, silent = false },
 	{ "<space>gwu", ":G worktree unlock ", desc = "Unlock", nowait = true, remap = false, silent = false },
 	{ "<space>l", group = "LSP", nowait = true, remap = false },
-	{ "<space>la", "<cmd>Lspsaga code_action<CR>", desc = "Code actions", nowait = true, remap = false },
-	{
-		"<space>lf",
-		"<cmd>Lspsaga finder def+ref+imp<CR>",
-		desc = "Show the definition, reference, implementation...",
-		nowait = true,
-		remap = false,
-	},
 	{
 		"<space>lr",
 		function()
@@ -1260,7 +1228,6 @@ require("which-key").add({
 		nowait = true,
 		remap = false,
 	},
-	{ "<space>to", "<cmd>Lspsaga outline<CR>", desc = "Outline", nowait = true, remap = false },
 	{
 		"<space>tq",
 		function()

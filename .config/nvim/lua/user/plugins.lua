@@ -72,12 +72,6 @@ return require("lazy").setup({
 						highlight = "Directory",
 						separator = true,
 					},
-					{
-						filetype = "sagaoutline",
-						text = "Lspsaga Outline",
-						highlight = "Directory",
-						separator = false,
-					},
 				},
 				sort_by = "insert_at_end",
 				numbers = "ordinal",
@@ -167,7 +161,6 @@ return require("lazy").setup({
 				mason = false,
 				nvimtree = true,
 				noice = false,
-				lsp_saga = false,
 				markdown = true,
 				native_lsp = {
 					enabled = true,
@@ -1220,52 +1213,6 @@ MEMENTO VIVERE]],
 		end,
 	},
 	-- ────────────────────────────────── N ──────────────────────────────────
-	{
-		"nvimdev/lspsaga.nvim",
-		lazy = true,
-		event = "LspAttach",
-		dependencies = {
-			"nvim-tree/nvim-web-devicons",
-			"nvim-treesitter/nvim-treesitter",
-		},
-		config = function()
-			require("lspsaga").setup({
-				hover = {
-					max_width = 0.7,
-				},
-				preview = {
-					lines_above = 0,
-					lines_below = 0,
-				},
-				scroll_preview = {
-					scroll_down = "<C-d>",
-					scroll_up = "<C-u>",
-				},
-				ui = {
-					theme = "round",
-					border = "rounded",
-					winblend = 0,
-					colors = require("catppuccin.groups.integrations.lsp_saga").custom_colors(),
-					kind = require("catppuccin.groups.integrations.lsp_saga").custom_kind(),
-				},
-				lightbulb = {
-					enable = false,
-					virtual_text = false,
-				},
-				outline = {
-					win_width = 40,
-				},
-				symbol_in_winbar = {
-					enable = false, -- don't toggle
-					hide_keyword = false,
-					folder_level = 3,
-					color_mode = true,
-					delay = 0,
-				},
-				beacon = { enable = false },
-			})
-		end,
-	},
 	{
 		"nvim-lualine/lualine.nvim",
 		event = { "BufReadPost", "BufNewFile" },

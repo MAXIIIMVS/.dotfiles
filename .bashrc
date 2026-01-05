@@ -72,6 +72,22 @@ toggle_proxy() {
 	fi
 }
 
+download_links() {
+	if [ -z "$1" ]; then
+		echo "Usage: download_links <file_with_urls>"
+		return 1
+	fi
+
+	local file="$1"
+
+	if [ ! -f "$file" ]; then
+		echo "Error: file '$file' does not exist."
+		return 1
+	fi
+
+	aria2c -i "$file" -j 1 -c --auto-file-renaming=false --file-allocation=trunc
+}
+
 pyproxy() {
 	mirrors=(
 		"Default (PyPI) https://pypi.org/simple"

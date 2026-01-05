@@ -137,14 +137,12 @@ function toggle_breakpoint_in_sign_col()
 	end
 end
 
-function open_todo_window()
+function toggle_todo_window(todo_file)
 	if vim.g.is_todo_open then
 		vim.cmd("q")
 		return
 	end
 
-	local root = vim.fn["FindRootDirectory"]() -- NOTE: depends on vim-rooter
-	local todo_file = root .. "/.todo.md"
 	if vim.fn.filereadable(todo_file) == 0 then
 		local default_content = {
 			"# To-do",
@@ -162,7 +160,7 @@ function open_todo_window()
 		}
 		vim.fn.writefile(default_content, todo_file)
 	end
-	local buf = vim.api.nvim_create_buf(false, true) -- Create a scratch buffer
+	local buf = vim.api.nvim_create_buf(false, true)
 	vim.api.nvim_buf_set_option(buf, "filetype", "vimwiki")
 	local content = vim.fn.readfile(todo_file)
 	vim.api.nvim_buf_set_lines(buf, 0, -1, false, content)
@@ -193,15 +191,13 @@ function open_todo_window()
 			local lines = vim.api.nvim_buf_get_lines(buf, 0, -1, false)
 			local is_empty = true
 			for _, line in ipairs(lines) do
-				if line:match("%S") then -- Check if line contains non-whitespace characters
+				if line:match("%S") then
 					is_empty = false
 					break
 				end
 			end
 			if is_empty then
-				vim.ui.input({
-					prompt = "File is empty. Save anyway? (y/n): ",
-				}, function(input)
+				vim.ui.input({ prompt = "File is empty. Save anyway? (y/n): " }, function(input)
 					if input and input:lower() == "y" then
 						vim.fn.writefile(lines, todo_file)
 					end
@@ -213,6 +209,22 @@ function open_todo_window()
 			end
 		end,
 	})
+end
+
+function toggle_local_todo_window()
+	local root = vim.fn["FindRootDirectory"]() -- NOTE: depends on vim-rooter
+	if not root or root == "" then
+		vim.notify("Could not determine project root", vim.log.levels.WARN)
+		return
+	end
+
+	local todo_file = root .. "/.todo.md"
+	toggle_todo_window(todo_file)
+end
+
+function toggle_global_todo_window()
+	local todo_file = vim.fn.expand("~/.todo.md")
+	toggle_todo_window(todo_file)
 end
 
 local function get_normal_bg()
