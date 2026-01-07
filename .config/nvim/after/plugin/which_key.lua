@@ -364,7 +364,7 @@ require("which-key").add({
 		function()
 			vim.lsp.buf.hover({
 				max_height = 25,
-				max_width = 120,
+				max_width = 90,
 				-- max_height = 0.9, -- Or use a percentage of screen height
 				-- max_width = 0.9,  -- Or use a percentage of screen width
 			})

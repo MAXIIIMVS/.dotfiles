@@ -1011,6 +1011,29 @@ MEMENTO VIVERE]],
 						end
 					end,
 				},
+				{
+					type = "coreclr",
+					name = "Godot: Launch with Debugger",
+					request = "launch",
+					-- Change this to the actual path of your Godot Mono/Dotnet executable
+					program = "/usr/local/bin/godot",
+					args = {
+						"--path",
+						"${workspaceFolder}", -- Tells Godot which project to run
+						-- Optional: "--scene", "res://Scenes/Main.tscn" (to launch a specific scene)
+					},
+					cwd = "${workspaceFolder}",
+					stopAtEntry = false,
+					justMyCode = false,
+				},
+				{
+					type = "coreclr",
+					request = "attach",
+					name = "Godot: Attach to Game",
+					processId = function()
+						return require("dap.utils").pick_process({ filter = "godot" })
+					end,
+				},
 			}
 
 			-- NOTE: go to Godot > script tab > Debug > and set debug with external editor
@@ -1593,12 +1616,15 @@ MEMENTO VIVERE]],
 				"diff",
 				"dockerfile",
 				"embedded_template",
+				"gdscript",
+				"gdshader",
 				"git_config",
 				"git_rebase",
 				"gitattributes",
 				"gitcommit",
 				"gitignore",
 				"go",
+				"godot_resource",
 				"gomod",
 				"gosum",
 				"gotmpl",

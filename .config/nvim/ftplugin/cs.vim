@@ -1,3 +1,6 @@
+let s:dir = FindRootDirectory()
+let @g = 'godot --headless --path ' . s:dir . ' --build-solutions'
+
 let @b='dotnet build'
 let @c='dotnet clean'
 let @f='dotnet format'
