@@ -4,4 +4,4 @@ add readme
 
 ## Requirements
 
-- NVIM v0.11.0
+- NVIM v0.11.5

@@ -5,112 +5,11 @@ local signs = {
 	Info = " ",
 }
 
-vim.diagnostic.config({
-	signs = {
-		text = {
-			[vim.diagnostic.severity.ERROR] = signs.Error,
-			[vim.diagnostic.severity.WARN] = signs.Warn,
-			[vim.diagnostic.severity.HINT] = signs.Hint,
-			[vim.diagnostic.severity.INFO] = signs.Info,
-		},
-	},
-})
-
--- enable diagnostics: nvim v.0.0.11
--- vim.diagnostic.config({ virtual_text = true })
--- vim.diagnostic.config({ virtual_text = { current_line = true } })
--- vim.diagnostic.config({ virtual_lines = true })
-vim.diagnostic.config({ virtual_lines = { current_line = true } })
-
-flavors = {
-	"catppuccin-mocha",
-	"oasis-night",
-	"oasis-abyss",
-	"oasis-midnight",
-	"oasis-lagoon",
-	"duskfox",
-	"oasis-twilight",
-	"solarized-osaka",
-	"retrobox",
-	"catppuccin-macchiato",
-	"nightfox",
-	"catppuccin-frappe",
-	"nordfox",
-	"carbonfox",
-	"terafox",
-	-- "solarized-osaka-day",
-	"catppuccin-latte",
-	"dayfox",
-	"dawnfox",
-}
-
-vim.api.nvim_create_autocmd("ColorScheme", {
-	pattern = "*",
-	callback = function()
-		-- NOTE: requires https://github.com/catppuccin/lazygit
-		local base = vim.fn.expand("$HOME/.config/lazygit/")
-		local theme = vim.o.background == "dark" and "themes/catppuccin/themes-mergable/mocha/peach.yml"
-			or "themes/catppuccin/themes-mergable/latte/red.yml"
-		vim.env.LG_CONFIG_FILE = base .. "config.yml," .. base .. theme
-	end,
-})
-
-vim.api.nvim_create_autocmd("ColorScheme", {
-	pattern = "retrobox",
-	callback = function()
-		local bg = vim.o.background
-		local transparent = vim.g.is_transparent
-
-		if transparent then
-			vim.api.nvim_set_hl(0, "SignColumn", { bg = transparent and "NONE" or "#1c1c1c" })
-			vim.api.nvim_set_hl(0, "Normal", { bg = "NONE" })
-			vim.api.nvim_set_hl(0, "NormalFloat", { bg = "NONE" })
-			vim.api.nvim_set_hl(0, "FloatBorder", { fg = "#5f5f5f", bg = "NONE" })
-			vim.api.nvim_set_hl(0, "TabLineFill", { bg = "NONE", fg = "NONE" }) -- for bufferline
-			vim.api.nvim_set_hl(0, "VertSplit", { bg = "NONE", fg = "#5f5f5f" })
-			vim.api.nvim_set_hl(0, "CursorLineNr", { bg = "NONE", fg = "NONE" })
-
-			vim.api.nvim_set_hl(0, "SnacksInputNormal", { bg = "NONE", fg = "#d0d0d0" })
-			vim.api.nvim_set_hl(0, "SnacksInputBorder", { bg = "NONE", fg = "#5f5f5f" })
-			vim.api.nvim_set_hl(0, "SnacksListNormal", { bg = "NONE", fg = "#d0d0d0" })
-			vim.api.nvim_set_hl(0, "SnacksListBorder", { bg = "NONE", fg = "#5f5f5f" })
-			vim.api.nvim_set_hl(0, "SnacksListSelection", { bg = "#444444", fg = "#ffffff" })
-		else
-			if bg == "dark" then
-				vim.api.nvim_set_hl(0, "NormalFloat", { bg = "#1c1c1c" })
-				vim.api.nvim_set_hl(0, "FloatBorder", { fg = "#5f5f5f", bg = "#1c1c1c" })
-				vim.api.nvim_set_hl(0, "SnacksInputNormal", { bg = "#1c1c1c", fg = "#d0d0d0" })
-				vim.api.nvim_set_hl(0, "SnacksInputBorder", { bg = "#1c1c1c", fg = "#5f5f5f" })
-				vim.api.nvim_set_hl(0, "SnacksListNormal", { bg = "#1c1c1c", fg = "#d0d0d0" })
-				vim.api.nvim_set_hl(0, "SnacksListBorder", { bg = "#1c1c1c", fg = "#5f5f5f" })
-				vim.api.nvim_set_hl(0, "SnacksListSelection", { bg = "#444444", fg = "#ffffff" })
-			else
-				vim.api.nvim_set_hl(0, "NormalFloat", { bg = "#f0f0f0" })
-				vim.api.nvim_set_hl(0, "FloatBorder", { fg = "#a0a0a0", bg = "#f0f0f0" })
-				vim.api.nvim_set_hl(0, "SnacksInputNormal", { bg = "#f0f0f0", fg = "#202020" })
-				vim.api.nvim_set_hl(0, "SnacksInputBorder", { bg = "#f0f0f0", fg = "#a0a0a0" })
-				vim.api.nvim_set_hl(0, "SnacksListNormal", { bg = "#f0f0f0", fg = "#202020" })
-				vim.api.nvim_set_hl(0, "SnacksListBorder", { bg = "#f0f0f0", fg = "#a0a0a0" })
-				vim.api.nvim_set_hl(0, "SnacksListSelection", { bg = "#c0c0c0", fg = "#000000" })
-			end
-		end
-
-		-- Diagnostics (always same, doesn’t matter transparent/light/dark)
-		vim.api.nvim_set_hl(0, "DiagnosticError", { fg = "#ff5f5f" })
-		vim.api.nvim_set_hl(0, "DiagnosticWarn", { fg = "#ffaf00" })
-		vim.api.nvim_set_hl(0, "DiagnosticInfo", { fg = "#5fafff" })
-		vim.api.nvim_set_hl(0, "DiagnosticHint", { fg = "#5fffaf" })
-	end,
-})
-
-vim.api.nvim_create_autocmd("VimLeavePre", {
-	callback = function()
-		if vim.bo.filetype ~= "snacks_dashboard" then
-			vim.cmd("ScopeSaveState")
-			require("resession").save(vim.fn.getcwd(), { dir = "dirsession", notify = false })
-		end
-	end,
-})
+local function get_normal_bg()
+	local bg = vim.api.nvim_get_hl_by_name("Normal", true)["background"]
+	-- local bg = vim.api.nvim_get_hl_by_name("Normal", true)["background"]
+	return bg
+end
 
 function toggle_breakpoint_in_sign_col()
 	local mouse = vim.fn.getmousepos()
@@ -135,6 +34,20 @@ function toggle_breakpoint_in_sign_col()
 		-- For regular clicks, execute the normal left mouse behavior
 		vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<LeftMouse>", true, false, true), "n", false)
 	end
+end
+
+function set_transparent_colors()
+	local osaka_options = require("solarized-osaka.config").options
+	osaka_options.styles = {
+		floats = vim.g.is_transparent and "transparent" or "normal",
+		sidebars = vim.g.is_transparent and "transparent" or "normal",
+	}
+	osaka_options.transparent = vim.g.is_transparent
+	local nightfox = require("nightfox.config")
+	nightfox.options.transparent = vim.g.is_transparent
+	vim.cmd("NightfoxCompile")
+	-- local oasis = require("oasis.config").get()
+	-- oasis.transparent = vim.g.is_transparent
 end
 
 function toggle_todo_window(todo_file)
@@ -225,12 +138,6 @@ end
 function toggle_global_todo_window()
 	local todo_file = vim.fn.expand("~/.todo.md")
 	toggle_todo_window(todo_file)
-end
-
-local function get_normal_bg()
-	local bg = vim.api.nvim_get_hl_by_name("Normal", true)["background"]
-	-- local bg = vim.api.nvim_get_hl_by_name("Normal", true)["background"]
-	return bg
 end
 
 function toggle_todo()
@@ -359,12 +266,6 @@ function sync_statusline_with_tmux()
 	vim.api.nvim_set_hl(0, "StatusLine", { bg = current_background == nil and "NONE" or "bg" })
 	set_tmux_status_color(current_background == nil and "default" or current_background)
 	-- vim.o.fillchars = "eob: "
-	vim.g.show_cursorline = current_background == nil
-	if not vim.g.show_cursorline then
-		vim.o.cursorlineopt = "number,line"
-	else
-		vim.o.cursorlineopt = "number"
-	end
 	-- vim.wo.colorcolumn = current_background ~= nil and "80" or ""
 end
 
@@ -471,6 +372,175 @@ function ToggleDiagnostics()
 	end
 end
 
+vim.diagnostic.config({
+	signs = {
+		text = {
+			[vim.diagnostic.severity.ERROR] = signs.Error,
+			[vim.diagnostic.severity.WARN] = signs.Warn,
+			[vim.diagnostic.severity.HINT] = signs.Hint,
+			[vim.diagnostic.severity.INFO] = signs.Info,
+		},
+	},
+})
+
+-- enable diagnostics: nvim v.0.0.11
+-- vim.diagnostic.config({ virtual_text = true })
+-- vim.diagnostic.config({ virtual_text = { current_line = true } })
+-- vim.diagnostic.config({ virtual_lines = true })
+vim.diagnostic.config({ virtual_lines = { current_line = true } })
+
+flavors = {
+	"catppuccin-mocha",
+	-- "oasis-night",
+	-- "oasis-abyss",
+	-- "oasis-midnight",
+	-- "oasis-lagoon",
+	"duskfox",
+	-- "oasis-twilight",
+	"solarized-osaka",
+	"retrobox",
+	"catppuccin-macchiato",
+	"nightfox",
+	"catppuccin-frappe",
+	"nordfox",
+	"carbonfox",
+	"terafox",
+	-- "solarized-osaka-day",
+	"catppuccin-latte",
+	"dayfox",
+	"dawnfox",
+}
+
+vim.api.nvim_create_autocmd("VimEnter", {
+	group = vim.api.nvim_create_augroup("sync_tmux", { clear = true }),
+	callback = function()
+		sync_statusline_with_tmux()
+	end,
+})
+
+vim.api.nvim_create_autocmd("ColorScheme", {
+	group = vim.api.nvim_create_augroup("sync_tmux", { clear = true }),
+	callback = function()
+		vim.schedule(function()
+			sync_statusline_with_tmux()
+		end)
+	end,
+})
+
+vim.api.nvim_create_autocmd("ColorScheme", {
+	pattern = "*",
+	callback = function()
+		-- NOTE: requires https://github.com/catppuccin/lazygit
+		local base = vim.fn.expand("$HOME/.config/lazygit/")
+		local theme = vim.o.background == "dark" and "themes/catppuccin/themes-mergable/mocha/peach.yml"
+			or "themes/catppuccin/themes-mergable/latte/red.yml"
+		vim.env.LG_CONFIG_FILE = base .. "config.yml," .. base .. theme
+	end,
+})
+
+vim.api.nvim_create_autocmd("ColorScheme", {
+	pattern = "catppuccin",
+	once = true,
+	callback = function()
+		local bg = get_normal_bg()
+		vim.g.is_transparent = bg == nil
+		vim.g.show_cursorline = not vim.g.is_transparent
+		if vim.g.is_transparent then
+			set_transparent_colors()
+		end
+	end,
+})
+
+vim.api.nvim_create_autocmd("ColorScheme", {
+	pattern = "*",
+	callback = function()
+		vim.g.show_cursorline = not vim.g.is_transparent
+		for _, win in ipairs(vim.api.nvim_list_wins()) do
+			local buf = vim.api.nvim_win_get_buf(win)
+			local ft = vim.api.nvim_buf_get_option(buf, "filetype")
+			if ft ~= "snacks_dashboard" then
+				vim.api.nvim_win_set_option(win, "cursorline", vim.g.show_cursorline)
+			end
+		end
+	end,
+})
+
+vim.api.nvim_create_autocmd("ColorScheme", {
+	pattern = "retrobox",
+	callback = function()
+		local bg = vim.o.background
+		local transparent = vim.g.is_transparent
+
+		vim.api.nvim_set_hl(0, "Visual", { bg = "#45475b", fg = "NONE" })
+		vim.api.nvim_set_hl(0, "VisualNOS", { bg = "#45475b", fg = "NONE" })
+
+		if transparent then
+			vim.api.nvim_set_hl(0, "SignColumn", { bg = transparent and "NONE" or "#1c1c1c" })
+			vim.api.nvim_set_hl(0, "Normal", { bg = "NONE" })
+			vim.api.nvim_set_hl(0, "NormalFloat", { bg = "NONE" })
+			vim.api.nvim_set_hl(0, "FloatBorder", { fg = "#5f5f5f", bg = "NONE" })
+			vim.api.nvim_set_hl(0, "TabLineFill", { bg = "NONE", fg = "NONE" })
+			vim.api.nvim_set_hl(0, "VertSplit", { bg = "NONE", fg = "#5f5f5f" })
+			vim.api.nvim_set_hl(0, "CursorLineNr", { bg = "NONE", fg = "NONE" })
+			vim.api.nvim_set_hl(0, "StatusLine", { bg = "NONE", fg = "NONE" })
+			vim.api.nvim_set_hl(0, "StatusLineNC", { bg = "NONE", fg = "NONE" })
+			vim.api.nvim_set_hl(0, "StatusLineTerm", { bg = "NONE", fg = "NONE" })
+			vim.api.nvim_set_hl(0, "StatusLineTermNC", { bg = "NONE", fg = "NONE" })
+
+			local transparent_theme = {}
+			for _, mode in ipairs({ "normal", "insert", "visual", "replace", "command", "inactive" }) do
+				transparent_theme[mode] = {}
+				for _, section in ipairs({ "a", "b", "c" }) do
+					transparent_theme[mode][section] = { bg = "NONE", gui = "bold" }
+				end
+			end
+			require("lualine").setup({
+				options = {
+					theme = transparent_theme,
+				},
+			})
+
+			vim.api.nvim_set_hl(0, "SnacksInputNormal", { bg = "NONE", fg = "#d0d0d0" })
+			vim.api.nvim_set_hl(0, "SnacksInputBorder", { bg = "NONE", fg = "#5f5f5f" })
+			vim.api.nvim_set_hl(0, "SnacksListNormal", { bg = "NONE", fg = "#d0d0d0" })
+			vim.api.nvim_set_hl(0, "SnacksListBorder", { bg = "NONE", fg = "#5f5f5f" })
+			vim.api.nvim_set_hl(0, "SnacksListSelection", { bg = "#444444", fg = "#ffffff" })
+		else
+			if bg == "dark" then
+				vim.api.nvim_set_hl(0, "NormalFloat", { bg = "#1c1c1c" })
+				vim.api.nvim_set_hl(0, "FloatBorder", { fg = "#5f5f5f", bg = "#1c1c1c" })
+				vim.api.nvim_set_hl(0, "SnacksInputNormal", { bg = "#1c1c1c", fg = "#d0d0d0" })
+				vim.api.nvim_set_hl(0, "SnacksInputBorder", { bg = "#1c1c1c", fg = "#5f5f5f" })
+				vim.api.nvim_set_hl(0, "SnacksListNormal", { bg = "#1c1c1c", fg = "#d0d0d0" })
+				vim.api.nvim_set_hl(0, "SnacksListBorder", { bg = "#1c1c1c", fg = "#5f5f5f" })
+				vim.api.nvim_set_hl(0, "SnacksListSelection", { bg = "#444444", fg = "#ffffff" })
+			else
+				vim.api.nvim_set_hl(0, "NormalFloat", { bg = "#f0f0f0" })
+				vim.api.nvim_set_hl(0, "FloatBorder", { fg = "#a0a0a0", bg = "#f0f0f0" })
+				vim.api.nvim_set_hl(0, "SnacksInputNormal", { bg = "#f0f0f0", fg = "#202020" })
+				vim.api.nvim_set_hl(0, "SnacksInputBorder", { bg = "#f0f0f0", fg = "#a0a0a0" })
+				vim.api.nvim_set_hl(0, "SnacksListNormal", { bg = "#f0f0f0", fg = "#202020" })
+				vim.api.nvim_set_hl(0, "SnacksListBorder", { bg = "#f0f0f0", fg = "#a0a0a0" })
+				vim.api.nvim_set_hl(0, "SnacksListSelection", { bg = "#c0c0c0", fg = "#000000" })
+			end
+		end
+
+		vim.api.nvim_set_hl(0, "DiagnosticError", { fg = "#ff5f5f" })
+		vim.api.nvim_set_hl(0, "DiagnosticWarn", { fg = "#ffaf00" })
+		vim.api.nvim_set_hl(0, "DiagnosticInfo", { fg = "#5fafff" })
+		vim.api.nvim_set_hl(0, "DiagnosticHint", { fg = "#5fffaf" })
+	end,
+})
+
+vim.api.nvim_create_autocmd("VimLeavePre", {
+	callback = function()
+		if vim.bo.filetype ~= "snacks_dashboard" then
+			vim.cmd("ScopeSaveState")
+			require("resession").save(vim.fn.getcwd(), { dir = "dirsession", notify = false })
+		end
+	end,
+})
+
 -- Auto commands and functions {{{
 vim.cmd([[
 " filetype plugin on
@@ -495,9 +565,6 @@ nmap <C-/> gcc
 xmap <C-/> gc
 smap <C-/> <ESC><ESC>gcc
 imap <C-/> <ESC>gcc
-
-
-nnoremap <silent> <leader>a ggVG:Tabularize /;<CR>=G:%s/^\ssection/section<CR>
 
 autocmd FileType vimwiki nnoremap <silent> <buffer> <CR> :silent! VimwikiFollowLink<CR>
 
@@ -546,29 +613,6 @@ endif
 " autocmd VimEnter,VimLeave * silent !tmux set status
 " autocmd VimLeave * silent !tmux set -g status-style bg=default
 
-augroup sync_tmux
-    autocmd!
-    autocmd VimEnter * lua sync_statusline_with_tmux()
-augroup END
-
-function! Dir()
-  return expand('%:p:h')
-endfunction
-
-let g:first_color_scheme_change = 1
-
-function! SyncTmuxOnColorSchemeChange()
-    if g:first_color_scheme_change
-        let g:first_color_scheme_change = 0
-    else
-        augroup sync_all
-          autocmd!
-          autocmd ColorScheme * lua sync_statusline_with_tmux()
-        augroup END
-    endif
-endfunction
-
-autocmd BufEnter * call SyncTmuxOnColorSchemeChange()
 
 autocmd BufWinLeave * if &laststatus != 3 | set laststatus=3 | endif
 
@@ -711,8 +755,7 @@ ab :br: ♖
 -- Fundamental {{{
 vim.o.winborder = "rounded"
 vim.o.completeopt = "menu,menuone,noinsert,noselect"
-vim.o.cursorline = true
-vim.o.cursorlineopt = "number"
+vim.o.cursorlineopt = "number,line"
 vim.o.list = true
 vim.o.listchars = "trail:,nbsp:.,precedes:❮,extends:❯,tab:  "
 -- vim.g.sessionoptions = "buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,globals" -- removed blank
@@ -763,7 +806,7 @@ vim.o.termbidi = true
 -- Syntax theme "{{{
 -----------------------------------------------------------------------
 if vim.fn.exists("&termguicolors") == 1 and vim.fn.exists("&winblend") then
-	vim.cmd("syntax enable")
+	-- vim.cmd("syntax enable")
 	vim.o.termguicolors = true
 	vim.o.wildoptions = "pum"
 	vim.wo.winblend = 0

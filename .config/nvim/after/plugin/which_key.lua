@@ -51,7 +51,8 @@ require("which-key").add({
 		nowait = true,
 	},
 	{ ",h", "<cmd>silent lua Snacks.picker.keymaps()<CR>", desc = "Keymaps", nowait = true, remap = false },
-	{ ",m", "<cmd>messages<CR>", desc = "Messages", nowait = true, remap = false },
+	{ ",M", "<cmd>messages<CR>", desc = "Messages", nowait = true, remap = false },
+	{ ",m", "<cmd>lua Snacks.picker.notifications()<CR>", desc = "Notifications", nowait = true, remap = false },
 	{ ",q", "<cmd>tabclose<CR>", desc = "Close tab", nowait = true, remap = false },
 	{
 		",r",
@@ -75,14 +76,6 @@ require("which-key").add({
 		nowait = true,
 		remap = false,
 		silent = false,
-	},
-	{
-		",T",
-		"<cmd>call OpenHtop()<CR>",
-		desc = "HTOP",
-		remap = false,
-		silent = true,
-		nowait = true,
 	},
 	-- { ",t", ":tabfind ", desc = "tab find", remap = false, silent = false, nowait = true },
 	{
@@ -329,6 +322,13 @@ require("which-key").add({
 	{ ";t", "<cmd>lua Snacks.picker.todo_comments()<CR>", desc = "See notes/todos...", nowait = true, remap = false },
 	{ ";U", "<cmd>e!<CR>", desc = "Undo all changes to the file", nowait = true, remap = false },
 	{ ";u", vim.cmd.UndotreeToggle, desc = "Toggle Undotree", nowait = true, remap = false },
+	{
+		";v",
+		"<cmd>lua Snacks.picker.files({ cwd = '~/.config/nvim' })<CR>",
+		desc = "Find Neovim config files",
+		nowait = true,
+		remap = false,
+	},
 	{ ";w", "<cmd>lua require('nvim-window').pick()<cr>", desc = "Pick a window", nowait = true, remap = false },
 	{
 		";x",
@@ -1195,10 +1195,12 @@ require("which-key").add({
 		"<space>tl",
 		function()
 			vim.g.show_cursorline = not vim.g.show_cursorline
-			if not vim.g.show_cursorline then
-				vim.o.cursorlineopt = "number,line"
-			else
-				vim.o.cursorlineopt = "number"
+			for _, win in ipairs(vim.api.nvim_list_wins()) do
+				local buf = vim.api.nvim_win_get_buf(win)
+				local ft = vim.api.nvim_buf_get_option(buf, "filetype") -- safer than name
+				if ft ~= "snacks_dashboard" then
+					vim.api.nvim_win_set_option(win, "cursorline", vim.g.show_cursorline)
+				end
 			end
 		end,
 		desc = "Cursor line",
@@ -1308,21 +1310,11 @@ require("which-key").add({
 				return
 			end
 			vim.g.is_transparent = not vim.g.is_transparent
-			local osaka_options = require("solarized-osaka.config").options
-			osaka_options.styles = {
-				floats = vim.g.is_transparent and "transparent" or "normal",
-				sidebars = vim.g.is_transparent and "transparent" or "normal",
-			}
-			osaka_options.transparent = vim.g.is_transparent
 			local catppuccin = require("catppuccin")
 			catppuccin.options.transparent_background = vim.g.is_transparent
 			catppuccin.options.float.transparent = vim.g.is_transparent
-			local nightfox = require("nightfox.config")
-			nightfox.options.transparent = vim.g.is_transparent
 			catppuccin.compile()
-			vim.cmd("NightfoxCompile")
-			local oasis = require("oasis.config").get()
-			oasis.transparent = vim.g.is_transparent
+			set_transparent_colors()
 			vim.cmd.colorscheme(vim.g.colors_name)
 		end,
 		desc = "Transparency",

@@ -45,6 +45,10 @@ source /usr/share/doc/fzf/examples/key-bindings.bash 2>/dev/null
 
 eval "$(zoxide init bash)"
 
+function vf() {
+	nvim "$(fzf)"
+}
+
 function y() {
 	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")"
 	yazi "$@" --cwd-file="$tmp"
@@ -837,7 +841,6 @@ export PATH=$PATH:$HOME/bin/scriptcs
 # alias em="emacsclient -c -a 'emacs'"
 alias vb="nvim ~/.bashrc"
 alias vt="nvim ~/.tmux.conf"
-alias vs="v -S Session.vim"
 alias gdvim="nvim --listen /tmp/godot.pipe"
 alias t="tldr"
 alias f="fzf"
