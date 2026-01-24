@@ -464,6 +464,13 @@ vim.api.nvim_create_autocmd("ColorScheme", {
 				DiffChange = { bg = "#3a2e36", fg = "NONE" },
 				DiffDelete = { bg = "#3e2d2e", fg = "NONE" },
 				DiffText = { bg = "#575268", fg = "NONE" },
+				PmenuSel = { bg = "#444444", fg = "#ffffff" },
+				Pmenu = { bg = "NONE", fg = "#d0d0d0" },
+				CmpItemAbbr = { fg = "#a0a0b0" },
+				CmpItemAbbrMatch = { fg = "#ffaf00", bold = true },
+				CmpItemAbbrMatchFuzzy = { fg = "#ffaf00" },
+				CmpItemKind = { fg = "#7fafff", bg = "#181826" },
+				CmpItemMenu = { fg = "#8f8f99", bg = "#181826", italic = true },
 			}
 			for group, opts in pairs(t) do
 				vim.api.nvim_set_hl(0, group, opts)
@@ -498,6 +505,13 @@ vim.api.nvim_create_autocmd("ColorScheme", {
 				DiffChange = { bg = "#3a2e36", fg = "NONE" },
 				DiffDelete = { bg = "#3e2d2e", fg = "NONE" },
 				DiffText = { bg = "#575268", fg = "NONE" },
+				PmenuSel = { bg = "#444444", fg = "#ffffff" },
+				Pmenu = { bg = "#181826", fg = "#CDD6F5" },
+				CmpItemAbbr = { fg = "#a0a0b0" },
+				CmpItemAbbrMatch = { fg = "#ffaf00", bold = true },
+				CmpItemAbbrMatchFuzzy = { fg = "#ffaf00" },
+				CmpItemKind = { fg = "#7fafff", bg = "#181826" },
+				CmpItemMenu = { fg = "#8f8f99", bg = "#181826", italic = true },
 			}
 
 			local light = {
@@ -519,7 +533,13 @@ vim.api.nvim_create_autocmd("ColorScheme", {
 				DiffChange = { bg = "#fff5c2", fg = "NONE" },
 				DiffDelete = { bg = "#f5d0d0", fg = "NONE" },
 				DiffText = { bg = "#e3d8f0", fg = "NONE" },
-				TabLineSel = { fg = "#3c3836", bg = "#f2e5bc" },
+				PmenuSel = { bg = "#e6d6a8", fg = "#282828" },
+				Pmenu = { bg = "#f2e5bc", fg = "#3c3836" },
+				CmpItemAbbr = { fg = "#3c3836" },
+				CmpItemAbbrMatch = { fg = "#af8700", bold = true },
+				CmpItemAbbrMatchFuzzy = { fg = "#af8700" },
+				CmpItemKind = { fg = "#5f5fff", bg = "#f2e5bc" },
+				CmpItemMenu = { fg = "#928374", bg = "#f2e5bc", italic = true },
 			}
 
 			local hl_set = bg == "dark" and dark or light
