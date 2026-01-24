@@ -473,6 +473,8 @@ vim.api.nvim_create_autocmd("ColorScheme", {
 
 		vim.api.nvim_set_hl(0, "Visual", { bg = "#45475b", fg = "NONE" })
 		vim.api.nvim_set_hl(0, "VisualNOS", { bg = "#45475b", fg = "NONE" })
+		vim.api.nvim_set_hl(0, "NonText", { fg = "#9ca0b1" })
+		vim.api.nvim_set_hl(0, "Whitespace", { fg = "#504945" })
 
 		if transparent then
 			vim.api.nvim_set_hl(0, "SignColumn", { bg = transparent and "NONE" or "#1c1c1c" })
@@ -507,7 +509,10 @@ vim.api.nvim_create_autocmd("ColorScheme", {
 			vim.api.nvim_set_hl(0, "SnacksListSelection", { bg = "#444444", fg = "#ffffff" })
 		else
 			if bg == "dark" then
-				vim.api.nvim_set_hl(0, "NormalFloat", { bg = "#1c1c1c" })
+				-- vim.api.nvim_set_hl(0, "NormalFloat", { bg = "#1c1c1c" })
+				vim.api.nvim_set_hl(0, "Normal", { fg = "#d5c4a1", bg = "#161819" })
+				vim.api.nvim_set_hl(0, "NormalFloat", { fg = "#d5c4a1", bg = "#1c1c1c" })
+				vim.api.nvim_set_hl(0, "SignColumn", { fg = "#d5c4a1", bg = "#161819" })
 				vim.api.nvim_set_hl(0, "FloatBorder", { fg = "#5f5f5f", bg = "#1c1c1c" })
 				vim.api.nvim_set_hl(0, "SnacksInputNormal", { bg = "#1c1c1c", fg = "#d0d0d0" })
 				vim.api.nvim_set_hl(0, "SnacksInputBorder", { bg = "#1c1c1c", fg = "#5f5f5f" })
@@ -515,13 +520,19 @@ vim.api.nvim_create_autocmd("ColorScheme", {
 				vim.api.nvim_set_hl(0, "SnacksListBorder", { bg = "#1c1c1c", fg = "#5f5f5f" })
 				vim.api.nvim_set_hl(0, "SnacksListSelection", { bg = "#444444", fg = "#ffffff" })
 			else
-				vim.api.nvim_set_hl(0, "NormalFloat", { bg = "#f0f0f0" })
-				vim.api.nvim_set_hl(0, "FloatBorder", { fg = "#a0a0a0", bg = "#f0f0f0" })
-				vim.api.nvim_set_hl(0, "SnacksInputNormal", { bg = "#f0f0f0", fg = "#202020" })
-				vim.api.nvim_set_hl(0, "SnacksInputBorder", { bg = "#f0f0f0", fg = "#a0a0a0" })
-				vim.api.nvim_set_hl(0, "SnacksListNormal", { bg = "#f0f0f0", fg = "#202020" })
-				vim.api.nvim_set_hl(0, "SnacksListBorder", { bg = "#f0f0f0", fg = "#a0a0a0" })
-				vim.api.nvim_set_hl(0, "SnacksListSelection", { bg = "#c0c0c0", fg = "#000000" })
+				vim.api.nvim_set_hl(0, "Normal", { fg = "#3c3836", bg = "#fbf1c7" })
+				vim.api.nvim_set_hl(0, "NormalFloat", { fg = "#3c3836", bg = "#f2e5bc" })
+				vim.api.nvim_set_hl(0, "SignColumn", { fg = "#3c3836", bg = "#fbf1c7" })
+				vim.api.nvim_set_hl(0, "FloatBorder", { fg = "#928374", bg = "#f2e5bc" })
+				vim.api.nvim_set_hl(0, "SnacksInputNormal", { fg = "#3c3836", bg = "#f2e5bc" })
+				vim.api.nvim_set_hl(0, "SnacksInputBorder", { fg = "#928374", bg = "#f2e5bc" })
+				vim.api.nvim_set_hl(0, "SnacksListNormal", { fg = "#3c3836", bg = "#f2e5bc" })
+				vim.api.nvim_set_hl(0, "SnacksListBorder", { fg = "#928374", bg = "#f2e5bc" })
+				vim.api.nvim_set_hl(0, "SnacksListSelection", { fg = "#282828", bg = "#e6d6a8" })
+				vim.api.nvim_set_hl(0, "Visual", { bg = "#d5c4a1", fg = "NONE" })
+				vim.api.nvim_set_hl(0, "VisualNOS", { bg = "#d5c4a1", fg = "NONE" })
+				vim.api.nvim_set_hl(0, "NonText", { fg = "#a89984" })
+				vim.api.nvim_set_hl(0, "Whitespace", { fg = "#bdae93" })
 			end
 		end
 
