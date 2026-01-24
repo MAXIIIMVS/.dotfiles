@@ -12,4 +12,4 @@ end
 require("user")
 
 vim.o.secure = true
-vim.cmd.colorscheme("catppuccin")
+vim.cmd.colorscheme("retrobox")

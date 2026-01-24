@@ -373,62 +373,6 @@ require("which-key").add({
 		nowait = true,
 		remap = false,
 	},
-	{
-		"]F",
-		function()
-			vim.cmd.colorscheme(flavors[#flavors])
-		end,
-		desc = "Last flavor",
-		nowait = true,
-		remap = false,
-	},
-	{
-		"]f",
-		function()
-			local index = 1
-			for i, f in ipairs(flavors) do
-				if vim.g.colors_name == f then
-					index = i + 1
-					break
-				end
-			end
-			if index > #flavors then
-				index = 1
-			end
-			vim.cmd.colorscheme(flavors[index])
-		end,
-		desc = "Next flavor",
-		nowait = true,
-		remap = false,
-	},
-	{
-		"[F",
-		function()
-			vim.cmd.colorscheme(flavors[1])
-		end,
-		desc = "First flavor",
-		nowait = true,
-		remap = false,
-	},
-	{
-		"[f",
-		function()
-			local index = #flavors
-			for i = #flavors, 1, -1 do
-				if vim.g.colors_name == flavors[i] then
-					index = i - 1
-					break
-				end
-			end
-			if index < 1 then
-				index = #flavors
-			end
-			vim.cmd.colorscheme(flavors[index])
-		end,
-		desc = "Previous flavor",
-		nowait = true,
-		remap = false,
-	},
 	{ "]h", "<cmd>silent Gitsigns next_hunk<CR>", desc = "Jump to the next hunk", nowait = true, remap = false },
 	{ "[h", "<cmd>silent Gitsigns prev_hunk<CR>", desc = "Jump to the previous hunk", nowait = true, remap = false },
 	{ "]p", "<cmd>pu<CR>", desc = "Paste below current line", nowait = true, remap = false },
@@ -1299,22 +1243,7 @@ require("which-key").add({
 	{
 		"<space>tt",
 		function()
-			local found = false
-			for _, f in ipairs(flavors) do
-				if vim.g.colors_name == f then
-					found = true
-					break
-				end
-			end
-			if not found then
-				return
-			end
 			vim.g.is_transparent = not vim.g.is_transparent
-			local catppuccin = require("catppuccin")
-			catppuccin.options.transparent_background = vim.g.is_transparent
-			catppuccin.options.float.transparent = vim.g.is_transparent
-			catppuccin.compile()
-			set_transparent_colors()
 			vim.cmd.colorscheme(vim.g.colors_name)
 		end,
 		desc = "Transparency",
@@ -1374,7 +1303,6 @@ require("which-key").add({
 		nowait = true,
 		remap = false,
 	},
-	{ "<leader>c", "<cmd>silent CatppuccinCompile<CR>", desc = "Recompile Catppuccin", nowait = true, remap = false },
 	{ "<leader>d", group = "DevDocs", nowait = true, remap = false },
 	{ "<leader>dd", ":DevDocs delete ", desc = "Delete devdocs for ...", nowait = true, remap = false, silent = false },
 	{ "<leader>df", "<cmd>DevDocs fetch<CR>", desc = "Fetch DevDocs", nowait = true, remap = false },

@@ -7,7 +7,6 @@ local signs = {
 
 local function get_normal_bg()
 	local bg = vim.api.nvim_get_hl_by_name("Normal", true)["background"]
-	-- local bg = vim.api.nvim_get_hl_by_name("Normal", true)["background"]
 	return bg
 end
 
@@ -34,20 +33,6 @@ function toggle_breakpoint_in_sign_col()
 		-- For regular clicks, execute the normal left mouse behavior
 		vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<LeftMouse>", true, false, true), "n", false)
 	end
-end
-
-function set_transparent_colors()
-	local osaka_options = require("solarized-osaka.config").options
-	osaka_options.styles = {
-		floats = vim.g.is_transparent and "transparent" or "normal",
-		sidebars = vim.g.is_transparent and "transparent" or "normal",
-	}
-	osaka_options.transparent = vim.g.is_transparent
-	local nightfox = require("nightfox.config")
-	nightfox.options.transparent = vim.g.is_transparent
-	vim.cmd("NightfoxCompile")
-	-- local oasis = require("oasis.config").get()
-	-- oasis.transparent = vim.g.is_transparent
 end
 
 function toggle_todo_window(todo_file)
@@ -389,28 +374,6 @@ vim.diagnostic.config({
 -- vim.diagnostic.config({ virtual_lines = true })
 vim.diagnostic.config({ virtual_lines = { current_line = true } })
 
-flavors = {
-	"catppuccin-mocha",
-	-- "oasis-night",
-	-- "oasis-abyss",
-	-- "oasis-midnight",
-	-- "oasis-lagoon",
-	"duskfox",
-	-- "oasis-twilight",
-	"solarized-osaka",
-	"retrobox",
-	"catppuccin-macchiato",
-	"nightfox",
-	"catppuccin-frappe",
-	"nordfox",
-	"carbonfox",
-	"terafox",
-	-- "solarized-osaka-day",
-	"catppuccin-latte",
-	"dayfox",
-	"dawnfox",
-}
-
 vim.api.nvim_create_autocmd("VimEnter", {
 	group = vim.api.nvim_create_augroup("sync_tmux", { clear = true }),
 	callback = function()
@@ -439,19 +402,6 @@ vim.api.nvim_create_autocmd("ColorScheme", {
 })
 
 vim.api.nvim_create_autocmd("ColorScheme", {
-	pattern = "catppuccin",
-	once = true,
-	callback = function()
-		local bg = get_normal_bg()
-		vim.g.is_transparent = bg == nil
-		vim.g.show_cursorline = not vim.g.is_transparent
-		if vim.g.is_transparent then
-			set_transparent_colors()
-		end
-	end,
-})
-
-vim.api.nvim_create_autocmd("ColorScheme", {
 	pattern = "*",
 	callback = function()
 		vim.g.show_cursorline = not vim.g.is_transparent
@@ -471,23 +421,53 @@ vim.api.nvim_create_autocmd("ColorScheme", {
 		local bg = vim.o.background
 		local transparent = vim.g.is_transparent
 
-		vim.api.nvim_set_hl(0, "Visual", { bg = "#45475b", fg = "NONE" })
-		vim.api.nvim_set_hl(0, "VisualNOS", { bg = "#45475b", fg = "NONE" })
-		vim.api.nvim_set_hl(0, "NonText", { fg = "#9ca0b1" })
-		vim.api.nvim_set_hl(0, "Whitespace", { fg = "#504945" })
+		-- #1A1A2F #1D182E #171421, terminal background: #171421
+		-- mocha = { base = "#191724" },
+		-- mocha = { base = "#1A1527" },
+
+		local common = {
+			Visual = { bg = "#45475b", fg = "NONE" },
+			VisualNOS = { bg = "#45475b", fg = "NONE" },
+			NonText = { fg = "#9ca0b1" },
+			Whitespace = { fg = "#504945" },
+			DiagnosticError = { fg = "#ff5f5f" },
+			DiagnosticWarn = { fg = "#ffaf00" },
+			DiagnosticInfo = { fg = "#5fafff" },
+			DiagnosticHint = { fg = "#5fffaf" },
+		}
+
+		for group, opts in pairs(common) do
+			vim.api.nvim_set_hl(0, group, opts)
+		end
 
 		if transparent then
-			vim.api.nvim_set_hl(0, "SignColumn", { bg = transparent and "NONE" or "#1c1c1c" })
-			vim.api.nvim_set_hl(0, "Normal", { bg = "NONE" })
-			vim.api.nvim_set_hl(0, "NormalFloat", { bg = "NONE" })
-			vim.api.nvim_set_hl(0, "FloatBorder", { fg = "#5f5f5f", bg = "NONE" })
-			vim.api.nvim_set_hl(0, "TabLineFill", { bg = "NONE", fg = "NONE" })
-			vim.api.nvim_set_hl(0, "VertSplit", { bg = "NONE", fg = "#5f5f5f" })
-			vim.api.nvim_set_hl(0, "CursorLineNr", { bg = "NONE", fg = "NONE" })
-			vim.api.nvim_set_hl(0, "StatusLine", { bg = "NONE", fg = "NONE" })
-			vim.api.nvim_set_hl(0, "StatusLineNC", { bg = "NONE", fg = "NONE" })
-			vim.api.nvim_set_hl(0, "StatusLineTerm", { bg = "NONE", fg = "NONE" })
-			vim.api.nvim_set_hl(0, "StatusLineTermNC", { bg = "NONE", fg = "NONE" })
+			local t = {
+				SignColumn = { bg = "NONE" },
+				Normal = { bg = "NONE" },
+				NormalFloat = { bg = "NONE" },
+				debugPC = { bg = "#45475b" },
+				FloatBorder = { fg = "#5f5f5f", bg = "NONE" },
+				TabLineFill = { bg = "NONE", fg = "NONE" },
+				TabLineSel = { fg = "#ffffff", bg = "NONE" },
+				VertSplit = { bg = "NONE", fg = "#5f5f5f" },
+				CursorLineNr = { bg = "NONE", fg = "NONE" },
+				StatusLine = { bg = "NONE", fg = "NONE" },
+				StatusLineNC = { bg = "NONE", fg = "NONE" },
+				StatusLineTerm = { bg = "NONE", fg = "NONE" },
+				StatusLineTermNC = { bg = "NONE", fg = "NONE" },
+				SnacksInputNormal = { bg = "NONE", fg = "#d0d0d0" },
+				SnacksInputBorder = { bg = "NONE", fg = "#5f5f5f" },
+				SnacksListNormal = { bg = "NONE", fg = "#d0d0d0" },
+				SnacksListBorder = { bg = "NONE", fg = "#5f5f5f" },
+				SnacksListSelection = { bg = "#444444", fg = "#ffffff" },
+				DiffAdd = { bg = "#2a332d", fg = "NONE" },
+				DiffChange = { bg = "#3a2e36", fg = "NONE" },
+				DiffDelete = { bg = "#3e2d2e", fg = "NONE" },
+				DiffText = { bg = "#575268", fg = "NONE" },
+			}
+			for group, opts in pairs(t) do
+				vim.api.nvim_set_hl(0, group, opts)
+			end
 
 			local transparent_theme = {}
 			for _, mode in ipairs({ "normal", "insert", "visual", "replace", "command", "inactive" }) do
@@ -496,50 +476,77 @@ vim.api.nvim_create_autocmd("ColorScheme", {
 					transparent_theme[mode][section] = { bg = "NONE", gui = "bold" }
 				end
 			end
-			require("lualine").setup({
-				options = {
-					theme = transparent_theme,
-				},
-			})
-
-			vim.api.nvim_set_hl(0, "SnacksInputNormal", { bg = "NONE", fg = "#d0d0d0" })
-			vim.api.nvim_set_hl(0, "SnacksInputBorder", { bg = "NONE", fg = "#5f5f5f" })
-			vim.api.nvim_set_hl(0, "SnacksListNormal", { bg = "NONE", fg = "#d0d0d0" })
-			vim.api.nvim_set_hl(0, "SnacksListBorder", { bg = "NONE", fg = "#5f5f5f" })
-			vim.api.nvim_set_hl(0, "SnacksListSelection", { bg = "#444444", fg = "#ffffff" })
+			require("lualine").setup({ options = { theme = transparent_theme } })
 		else
-			if bg == "dark" then
-				-- vim.api.nvim_set_hl(0, "NormalFloat", { bg = "#1c1c1c" })
-				vim.api.nvim_set_hl(0, "Normal", { fg = "#d5c4a1", bg = "#161819" })
-				vim.api.nvim_set_hl(0, "NormalFloat", { fg = "#d5c4a1", bg = "#1c1c1c" })
-				vim.api.nvim_set_hl(0, "SignColumn", { fg = "#d5c4a1", bg = "#161819" })
-				vim.api.nvim_set_hl(0, "FloatBorder", { fg = "#5f5f5f", bg = "#1c1c1c" })
-				vim.api.nvim_set_hl(0, "SnacksInputNormal", { bg = "#1c1c1c", fg = "#d0d0d0" })
-				vim.api.nvim_set_hl(0, "SnacksInputBorder", { bg = "#1c1c1c", fg = "#5f5f5f" })
-				vim.api.nvim_set_hl(0, "SnacksListNormal", { bg = "#1c1c1c", fg = "#d0d0d0" })
-				vim.api.nvim_set_hl(0, "SnacksListBorder", { bg = "#1c1c1c", fg = "#5f5f5f" })
-				vim.api.nvim_set_hl(0, "SnacksListSelection", { bg = "#444444", fg = "#ffffff" })
-			else
-				vim.api.nvim_set_hl(0, "Normal", { fg = "#3c3836", bg = "#fbf1c7" })
-				vim.api.nvim_set_hl(0, "NormalFloat", { fg = "#3c3836", bg = "#f2e5bc" })
-				vim.api.nvim_set_hl(0, "SignColumn", { fg = "#3c3836", bg = "#fbf1c7" })
-				vim.api.nvim_set_hl(0, "FloatBorder", { fg = "#928374", bg = "#f2e5bc" })
-				vim.api.nvim_set_hl(0, "SnacksInputNormal", { fg = "#3c3836", bg = "#f2e5bc" })
-				vim.api.nvim_set_hl(0, "SnacksInputBorder", { fg = "#928374", bg = "#f2e5bc" })
-				vim.api.nvim_set_hl(0, "SnacksListNormal", { fg = "#3c3836", bg = "#f2e5bc" })
-				vim.api.nvim_set_hl(0, "SnacksListBorder", { fg = "#928374", bg = "#f2e5bc" })
-				vim.api.nvim_set_hl(0, "SnacksListSelection", { fg = "#282828", bg = "#e6d6a8" })
-				vim.api.nvim_set_hl(0, "Visual", { bg = "#d5c4a1", fg = "NONE" })
-				vim.api.nvim_set_hl(0, "VisualNOS", { bg = "#d5c4a1", fg = "NONE" })
-				vim.api.nvim_set_hl(0, "NonText", { fg = "#a89984" })
-				vim.api.nvim_set_hl(0, "Whitespace", { fg = "#bdae93" })
-			end
-		end
+			local dark = {
+				Normal = { bg = "#1A1528", fg = "#CDD6F5" },
+				NormalFloat = { bg = "#181826", fg = "#CDD6F5" },
+				debugPC = { bg = "#45475b" },
+				ErrorMsg = { bg = "NONE" },
+				WinSeparator = { fg = "#554D80" },
+				SignColumn = { bg = "#1A1528", fg = "#CDD6F5" },
+				CursorLine = { bg = "#29283B" },
+				ColorColumn = { bg = "#313245" },
+				QuickFixLine = { bg = "#38384C", bold = true },
+				TabLineSel = { fg = "#ffffff", bg = "#1A1528" },
+				SnacksInputNormal = { bg = "#1c1c1c", fg = "#d0d0d0" },
+				SnacksInputBorder = { bg = "#1c1c1c", fg = "#5f5f5f" },
+				SnacksListNormal = { bg = "#1c1c1c", fg = "#d0d0d0" },
+				SnacksListBorder = { bg = "#1c1c1c", fg = "#5f5f5f" },
+				SnacksListSelection = { bg = "#444444", fg = "#ffffff" },
+				DiffAdd = { bg = "#2a332d", fg = "NONE" },
+				DiffChange = { bg = "#3a2e36", fg = "NONE" },
+				DiffDelete = { bg = "#3e2d2e", fg = "NONE" },
+				DiffText = { bg = "#575268", fg = "NONE" },
+			}
 
-		vim.api.nvim_set_hl(0, "DiagnosticError", { fg = "#ff5f5f" })
-		vim.api.nvim_set_hl(0, "DiagnosticWarn", { fg = "#ffaf00" })
-		vim.api.nvim_set_hl(0, "DiagnosticInfo", { fg = "#5fafff" })
-		vim.api.nvim_set_hl(0, "DiagnosticHint", { fg = "#5fffaf" })
+			local light = {
+				Normal = { fg = "#3c3836", bg = "#fbf1c7" },
+				NormalFloat = { fg = "#3c3836", bg = "#f2e5bc" },
+				SignColumn = { fg = "#3c3836", bg = "#fbf1c7" },
+				FloatBorder = { fg = "#928374", bg = "#f2e5bc" },
+				QuickFixLine = { bg = "#CBCFD9", bold = true },
+				SnacksInputNormal = { fg = "#3c3836", bg = "#f2e5bc" },
+				SnacksInputBorder = { fg = "#928374", bg = "#f2e5bc" },
+				SnacksListNormal = { fg = "#3c3836", bg = "#f2e5bc" },
+				SnacksListBorder = { fg = "#928374", bg = "#f2e5bc" },
+				SnacksListSelection = { fg = "#282828", bg = "#e6d6a8" },
+				Visual = { bg = "#d5c4a1", fg = "NONE" },
+				VisualNOS = { bg = "#d5c4a1", fg = "NONE" },
+				NonText = { fg = "#a89984" },
+				Whitespace = { fg = "#bdae93" },
+				DiffAdd = { bg = "#d4f5dc", fg = "NONE" },
+				DiffChange = { bg = "#fff5c2", fg = "NONE" },
+				DiffDelete = { bg = "#f5d0d0", fg = "NONE" },
+				DiffText = { bg = "#e3d8f0", fg = "NONE" },
+				TabLineSel = { fg = "#3c3836", bg = "#f2e5bc" },
+			}
+
+			local hl_set = bg == "dark" and dark or light
+			for group, opts in pairs(hl_set) do
+				vim.api.nvim_set_hl(0, group, opts)
+			end
+
+			local dark_theme = {}
+			for _, mode in ipairs({ "normal", "insert", "visual", "replace", "command", "inactive" }) do
+				dark_theme[mode] = {}
+				for _, section in ipairs({ "a", "b", "c" }) do
+					dark_theme[mode][section] = { bg = "#1A1528", fg = "#CDD6F5" }
+				end
+			end
+
+			local light_theme = {}
+			for _, mode in ipairs({ "normal", "insert", "visual", "replace", "command", "inactive" }) do
+				light_theme[mode] = {}
+				for _, section in ipairs({ "a", "b", "c" }) do
+					light_theme[mode][section] = { bg = "#fbf1c7", fg = "#3c3836" }
+				end
+			end
+
+			require("lualine").setup({
+				options = { theme = bg == "dark" and dark_theme or light_theme },
+			})
+		end
 	end,
 })
 

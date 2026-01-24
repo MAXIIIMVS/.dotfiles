@@ -118,105 +118,9 @@ return require("lazy").setup({
 			})
 		end,
 	},
-	{
-		"catppuccin/nvim",
-		name = "catppuccin",
-		lazy = true,
-		opts = {
-			flavour = "mocha",
-			background = {
-				light = "latte",
-				dark = "mocha",
-			},
-			compile_path = vim.fn.stdpath("cache") .. "/catppuccin",
-			transparent_background = vim.g.is_transparent,
-			float = { transparent = vim.g.is_transparent },
-			term_colors = true,
-			dim_inactive = {
-				enabled = false,
-				percentage = 0.01,
-			},
-			color_overrides = {
-				-- #1A1A2F #1D182E #171421, terminal background: #171421
-				-- mocha = { base = "#191724" },
-				mocha = { base = "#1A1527" },
-			},
-			highlight_overrides = {
-				all = function(colors)
-					return {
-						WinSeparator = { fg = "#554D80" },
-						NetrwTreeBar = { fg = colors.peach },
-						FloatBorder = { fg = "#6C70B8" },
-					}
-				end,
-			},
-			integrations = {
-				cmp = true,
-				gitsigns = true,
-				dadbod_ui = false,
-				dap = true,
-				dap_ui = true,
-				which_key = false,
-				treesitter = true,
-				mason = false,
-				nvimtree = true,
-				noice = false,
-				markdown = true,
-				native_lsp = {
-					enabled = true,
-					virtual_text = {
-						errors = { "italic" },
-						hints = { "italic" },
-						warnings = { "italic" },
-						information = { "italic" },
-					},
-					underlines = {
-						errors = { "underline" },
-						hints = { "underline" },
-						warnings = { "underline" },
-						information = { "underline" },
-					},
-					inlay_hints = { background = true },
-				},
-				mini = {
-					enabled = true,
-					indentscope_color = "lavender",
-				},
-				snacks = {
-					enabled = true,
-					indent_scope_color = "lavender",
-				},
-				vimwiki = false,
-			},
-		},
-	},
 	-- { "chentoast/marks.nvim", event = "BufReadPre", opts = {} },
-	{
-		"craftzdog/solarized-osaka.nvim",
-		lazy = true,
-		opts = {
-			transparent = vim.g.is_transparent,
-			styles = {
-				floats = vim.g.is_transparent and "transparent" or "normal",
-				sidebars = vim.g.is_transparent and "transparent" or "normal",
-			},
-		},
-	},
 	-- ────────────────────────────────── D ──────────────────────────────────
 	-- ────────────────────────────────── E ──────────────────────────────────
-	{
-		"EdenEast/nightfox.nvim",
-		lazy = true,
-		config = function()
-			require("nightfox").setup({
-				options = {
-					transparent = vim.g.is_transparent,
-					terminal_colors = false,
-				},
-				groups = { all = { NormalFloat = { fg = "fg1", bg = "NONE" } } },
-			})
-		end,
-	},
 	-- ────────────────────────────────── F ──────────────────────────────────
 	{
 		"folke/noice.nvim",
@@ -1322,7 +1226,7 @@ MEMENTO VIVERE]],
 					-- Disable sections and component separators
 					component_separators = "",
 					section_separators = "",
-					-- theme = "catppuccin",
+					globalstatus = true,
 					-- theme = "auto", -- remove custom_auto
 					theme = custom_auto,
 					-- theme = {
@@ -1957,11 +1861,6 @@ MEMENTO VIVERE]],
 	{ "tpope/vim-sleuth", event = { "BufNewFile", "BufReadPre", "BufFilePre" } },
 	{ "tpope/vim-speeddating", keys = { { "<c-a>", mode = { "n", "v" } }, { "<c-x>", mode = { "n", "v" } } } },
 	-- ────────────────────────────────── U ──────────────────────────────────
-	{
-		"uhs-robert/oasis.nvim",
-		lazy = true,
-		opts = {},
-	},
 	-- ────────────────────────────────── V ──────────────────────────────────
 	{
 		"vimwiki/vimwiki",
@@ -2036,6 +1935,8 @@ MEMENTO VIVERE]],
 	-- 	event = { "InsertLeave" },
 	-- },
 }, {
+
+	install = { colorscheme = { "retrobox" } },
 	ui = {
 		border = "rounded",
 		backdrop = 100,
