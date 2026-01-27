@@ -1732,7 +1732,7 @@ MEMENTO VIVERE]],
 		event = { "BufNewFile", "BufReadPost", "BufFilePost" },
 		dependencies = { "nvim-cmp", "LuaSnip" },
 	},
-	{ "seblyng/roslyn.nvim", opts = {}, ft = "cs" },
+	-- { "seblyng/roslyn.nvim", opts = {}, ft = "cs" },
 	{
 		"stevearc/oil.nvim",
 		dependencies = { "nvim-tree/nvim-web-devicons" },
