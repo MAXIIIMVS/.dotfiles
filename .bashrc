@@ -811,6 +811,7 @@ export PATH=$PATH:$HOME/.local/bin
 stty -ixon
 
 alias tmux='tmux -2'
+alias t='tmux -2'
 export PATH=$PATH:/usr/bin/
 export PATH=$PATH:~/.local/bin/
 export PATH=$PATH:/usr/local/go/bin
@@ -825,6 +826,7 @@ alias cg='clang++ -std=c++2a -ggdb3 -O0 -pg -Wconversion -Wshadow -Wpedantic -Wa
 alias ggr='g++ -std=c++2a -Wconversion -Wshadow -Wpedantic -O2 -DNDEBUG -Wall -Wextra -Wsign-conversion -Werror -pedantic-errors -o a.out'
 # alias lazygit='lazygit --use-config-file="$HOME/.config/lazygit/config.yml,$HOME/.config/lazygit/themes/catppuccin/themes-mergable/mocha/peach.yml"'
 alias lg='lazygit'
+# alias t="tldr"
 alias tp="cd $HOME/.local/share/tldr/tldr/ && git pull && cd ~-"
 # alias uu='upit && upitg && upits && upitf && tp'
 export PATH=$PATH:$HOME/.local/kitty.app/bin/kitty
@@ -842,7 +844,6 @@ export PATH=$PATH:$HOME/bin/scriptcs
 alias vb="nvim ~/.bashrc"
 alias vt="nvim ~/.tmux.conf"
 alias gdvim="nvim --listen /tmp/godot.pipe"
-alias t="tldr"
 alias f="fzf"
 # Sync vimwiki notes with google drive
 alias gds="google-drive-ocamlfuse ~/myGoogleDrive/ && cp ~/notes/wiki/ ~/myGoogleDrive/ -r && echo copied! && fusermount -u ~/myGoogleDrive"

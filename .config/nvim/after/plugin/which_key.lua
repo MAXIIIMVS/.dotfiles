@@ -98,24 +98,23 @@ require("which-key").add({
 	{
 		",z",
 		function()
-			-- NOTE: requires pandoc and zathura
+			-- requires pandoc + zathura
 			if vim.bo.filetype ~= "markdown" then
-				print("Not a Markdown file.")
+				vim.notify("Not a Markdown file.")
 				return
 			end
 			local file_path = vim.fn.expand("%:p")
 			local pdf_path = vim.fn.tempname() .. ".pdf"
-			local ok = vim.fn.system({
+			vim.fn.system({
 				"pandoc",
 				"-V",
 				"geometry:margin=1in",
-				"-i",
 				file_path,
 				"-o",
 				pdf_path,
 			})
 			if vim.v.shell_error ~= 0 then
-				print("Error generating PDF with pandoc.")
+				vim.notify("Error generating PDF with pandoc.", vim.log.levels.ERROR)
 				return
 			end
 			vim.fn.jobstart({ "zathura", pdf_path }, { detach = true })
@@ -1140,11 +1139,7 @@ require("which-key").add({
 		function()
 			vim.g.show_cursorline = not vim.g.show_cursorline
 			for _, win in ipairs(vim.api.nvim_list_wins()) do
-				local buf = vim.api.nvim_win_get_buf(win)
-				local ft = vim.api.nvim_buf_get_option(buf, "filetype") -- safer than name
-				if ft ~= "snacks_dashboard" then
-					vim.api.nvim_win_set_option(win, "cursorline", vim.g.show_cursorline)
-				end
+				apply_cursorline(win)
 			end
 		end,
 		desc = "Cursor line",

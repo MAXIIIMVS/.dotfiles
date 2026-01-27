@@ -12,7 +12,8 @@ function M.setup(on_attach, capabilities)
 		"clangd",
 		"codelldb",
 		"cpptools",
-		"csharp-language-server",
+		-- NOTE: dotnet tool install --global csharp-ls
+		-- "csharp-language-server", -- NOTE: roslyn works well too
 		"csharpier",
 		"css-lsp",
 		"delve",
@@ -40,6 +41,7 @@ function M.setup(on_attach, capabilities)
 		-- "prisma-language-server",
 		"pyright",
 		"rust-analyzer",
+		"roslyn",
 		"shfmt",
 		"stylua",
 		-- "templ",
@@ -67,10 +69,10 @@ function M.setup(on_attach, capabilities)
 			filetypes = { "c", "cpp", "objc", "objcpp", "cuda" },
 			-- root_dir = <disabled by vim-rooter>
 		},
-		csharp_ls = {
-			cmd = { "csharp-ls" },
-			filetypes = { "cs" },
-		},
+		-- csharp_ls = {
+		-- 	cmd = { "csharp-ls" },
+		-- 	filetypes = { "cs" },
+		-- },
 		cssls = {
 			cmd = { "vscode-css-language-server", "--stdio" },
 			filetypes = { "css", "scss", "less" },
@@ -155,19 +157,9 @@ function M.setup(on_attach, capabilities)
 		htmx = {
 			cmd = { "htmx-lsp" },
 			filetypes = {
-				"aspnetcorerazor",
-				"astro",
-				"astro-markdown",
-				"blade",
-				"clojure",
 				"django-html",
 				"htmldjango",
-				"edge",
-				"eelixir",
-				"elixir",
 				"ejs",
-				"erb",
-				"eruby",
 				"gohtml",
 				"gohtmltmpl",
 				"haml",
@@ -176,27 +168,7 @@ function M.setup(on_attach, capabilities)
 				"html",
 				"htmlangular",
 				"html-eex",
-				"heex",
-				"jade",
-				"leaf",
-				"liquid",
-				"markdown",
-				"mdx",
-				"mustache",
-				"njk",
-				"nunjucks",
 				"php",
-				"razor",
-				"slim",
-				"twig",
-				"javascript",
-				"javascriptreact",
-				"reason",
-				"rescript",
-				"typescript",
-				"typescriptreact",
-				"vue",
-				"svelte",
 				"templ",
 			},
 		},
@@ -274,6 +246,19 @@ function M.setup(on_attach, capabilities)
 				},
 			},
 		},
+		-- roslyn_ls = {
+		-- 	cmd = {
+		-- 		"dotnet",
+		-- 		os.getenv("HOME")
+		-- 			.. "/.local/share/nvim/mason/packages/roslyn/libexec/Microsoft.CodeAnalysis.LanguageServer.dll",
+		-- 		"--logLevel",
+		-- 		"Information",
+		-- 		"--extensionLogDirectory",
+		-- 		vim.fn.stdpath("cache") .. "/roslyn_ls/logs",
+		-- 		"--stdio",
+		-- 	},
+		-- 	filetypes = { "cs" },
+		-- },
 		rust_analyzer = {
 			cmd = { "rust-analyzer" },
 			filetypes = { "rust" },
@@ -403,9 +388,19 @@ function M.setup(on_attach, capabilities)
 
 	for server, config in pairs(servers) do
 		config.on_attach = function(client, bufnr)
-			if server == "awk_ls" or server == "bashls" or server == "ts_ls" or server == "csharp_ls" then
+			if
+				server == "awk_ls"
+				or server == "bashls"
+				or server == "ts_ls"
+				or server == "csharp_ls"
+				or server == "roslyn_ls"
+				or server == "roslyn"
+			then
 				client.server_capabilities.documentFormattingProvider = false
 				client.server_capabilities.documentRangeFormattingProvider = false
+			end
+			if server == "gdscript" then
+				client.server_capabilities.signatureHelpProvider = nil
 			end
 			on_attach(client, bufnr)
 		end
@@ -415,7 +410,6 @@ function M.setup(on_attach, capabilities)
 		table.insert(ensure_installed, server)
 	end
 
-	-- Automatically install missing servers with Mason
 	for _, server in ipairs(ensure_installed) do
 		if not mason_registry.is_installed(server) and mason_registry.has_package(server) then
 			mason_registry.get_package(server):install()

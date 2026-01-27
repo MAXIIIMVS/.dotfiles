@@ -5,6 +5,25 @@ local signs = {
 	Info = " ",
 }
 
+function apply_cursorline(win)
+	if not vim.api.nvim_win_is_valid(win) then
+		return
+	end
+
+	local buf = vim.api.nvim_win_get_buf(win)
+	local ft = vim.bo[buf].filetype or ""
+
+	-- skip snacks + non-file buffers
+	if vim.bo[buf].buftype ~= "" then
+		return
+	end
+	if ft:lower():find("snacks", 1, true) then
+		return
+	end
+
+	vim.api.nvim_win_set_option(win, "cursorline", vim.g.show_cursorline)
+end
+
 local function get_normal_bg()
 	local bg = vim.api.nvim_get_hl_by_name("Normal", true)["background"]
 	return bg
@@ -401,16 +420,17 @@ vim.api.nvim_create_autocmd("ColorScheme", {
 	end,
 })
 
+vim.api.nvim_create_autocmd({ "WinEnter", "BufWinEnter" }, {
+	callback = function()
+		apply_cursorline(vim.api.nvim_get_current_win())
+	end,
+})
+
 vim.api.nvim_create_autocmd("ColorScheme", {
-	pattern = "*",
 	callback = function()
 		vim.g.show_cursorline = not vim.g.is_transparent
 		for _, win in ipairs(vim.api.nvim_list_wins()) do
-			local buf = vim.api.nvim_win_get_buf(win)
-			local ft = vim.api.nvim_buf_get_option(buf, "filetype")
-			if ft ~= "snacks_dashboard" then
-				vim.api.nvim_win_set_option(win, "cursorline", vim.g.show_cursorline)
-			end
+			apply_cursorline(win)
 		end
 	end,
 })
@@ -442,35 +462,36 @@ vim.api.nvim_create_autocmd("ColorScheme", {
 
 		if transparent then
 			local t = {
-				SignColumn = { bg = "NONE" },
-				Normal = { bg = "NONE" },
-				NormalFloat = { bg = "NONE" },
-				debugPC = { bg = "#45475b" },
-				FloatBorder = { fg = "#5f5f5f", bg = "NONE" },
-				TabLineFill = { bg = "NONE", fg = "NONE" },
-				TabLineSel = { fg = "#ffffff", bg = "NONE" },
-				VertSplit = { bg = "NONE", fg = "#5f5f5f" },
-				CursorLineNr = { bg = "NONE", fg = "NONE" },
-				StatusLine = { bg = "NONE", fg = "NONE" },
-				StatusLineNC = { bg = "NONE", fg = "NONE" },
-				StatusLineTerm = { bg = "NONE", fg = "NONE" },
-				StatusLineTermNC = { bg = "NONE", fg = "NONE" },
-				SnacksInputNormal = { bg = "NONE", fg = "#d0d0d0" },
-				SnacksInputBorder = { bg = "NONE", fg = "#5f5f5f" },
-				SnacksListNormal = { bg = "NONE", fg = "#d0d0d0" },
-				SnacksListBorder = { bg = "NONE", fg = "#5f5f5f" },
-				SnacksListSelection = { bg = "#444444", fg = "#ffffff" },
-				DiffAdd = { bg = "#2a332d", fg = "NONE" },
-				DiffChange = { bg = "#3a2e36", fg = "NONE" },
-				DiffDelete = { bg = "#3e2d2e", fg = "NONE" },
-				DiffText = { bg = "#575268", fg = "NONE" },
-				PmenuSel = { bg = "#444444", fg = "#ffffff" },
-				Pmenu = { bg = "NONE", fg = "#d0d0d0" },
 				CmpItemAbbr = { fg = "#a0a0b0" },
 				CmpItemAbbrMatch = { fg = "#ffaf00", bold = true },
 				CmpItemAbbrMatchFuzzy = { fg = "#ffaf00" },
 				CmpItemKind = { fg = "#7fafff", bg = "#181826" },
 				CmpItemMenu = { fg = "#8f8f99", bg = "#181826", italic = true },
+				CursorLineNr = { bg = "NONE", fg = "NONE" },
+				DiffAdd = { bg = "#2a332d", fg = "NONE" },
+				DiffChange = { bg = "#3a2e36", fg = "NONE" },
+				DiffDelete = { bg = "#3e2d2e", fg = "NONE" },
+				DiffText = { bg = "#575268", fg = "NONE" },
+				FloatBorder = { fg = "#5f5f5f", bg = "NONE" },
+				Normal = { bg = "NONE" },
+				NormalFloat = { bg = "NONE" },
+				Pmenu = { bg = "NONE", fg = "#d0d0d0" },
+				PmenuSel = { bg = "#444444", fg = "#ffffff" },
+				QuickFixLine = { bg = "#38384C", bold = true },
+				SignColumn = { bg = "NONE" },
+				SnacksInputBorder = { bg = "NONE", fg = "#5f5f5f" },
+				SnacksInputNormal = { bg = "NONE", fg = "#d0d0d0" },
+				SnacksListBorder = { bg = "NONE", fg = "#5f5f5f" },
+				SnacksListNormal = { bg = "NONE", fg = "#d0d0d0" },
+				SnacksListSelection = { bg = "#444444", fg = "#ffffff" },
+				StatusLine = { bg = "NONE", fg = "NONE" },
+				StatusLineNC = { bg = "NONE", fg = "NONE" },
+				StatusLineTerm = { bg = "NONE", fg = "NONE" },
+				StatusLineTermNC = { bg = "NONE", fg = "NONE" },
+				TabLineFill = { bg = "NONE", fg = "NONE" },
+				TabLineSel = { fg = "#ffffff", bg = "NONE" },
+				VertSplit = { bg = "NONE", fg = "#5f5f5f" },
+				debugPC = { bg = "#45475b" },
 			}
 			for group, opts in pairs(t) do
 				vim.api.nvim_set_hl(0, group, opts)
@@ -486,60 +507,61 @@ vim.api.nvim_create_autocmd("ColorScheme", {
 			require("lualine").setup({ options = { theme = transparent_theme } })
 		else
 			local dark = {
-				Normal = { bg = "#1A1528", fg = "#CDD6F5" },
-				NormalFloat = { bg = "#181826", fg = "#CDD6F5" },
-				debugPC = { bg = "#45475b" },
-				ErrorMsg = { bg = "NONE" },
-				WinSeparator = { fg = "#554D80" },
-				SignColumn = { bg = "#1A1528", fg = "#CDD6F5" },
-				CursorLine = { bg = "#29283B" },
-				ColorColumn = { bg = "#313245" },
-				QuickFixLine = { bg = "#38384C", bold = true },
-				TabLineSel = { fg = "#ffffff", bg = "#1A1528" },
-				SnacksInputNormal = { bg = "#1c1c1c", fg = "#d0d0d0" },
-				SnacksInputBorder = { bg = "#1c1c1c", fg = "#5f5f5f" },
-				SnacksListNormal = { bg = "#1c1c1c", fg = "#d0d0d0" },
-				SnacksListBorder = { bg = "#1c1c1c", fg = "#5f5f5f" },
-				SnacksListSelection = { bg = "#444444", fg = "#ffffff" },
-				DiffAdd = { bg = "#2a332d", fg = "NONE" },
-				DiffChange = { bg = "#3a2e36", fg = "NONE" },
-				DiffDelete = { bg = "#3e2d2e", fg = "NONE" },
-				DiffText = { bg = "#575268", fg = "NONE" },
-				PmenuSel = { bg = "#444444", fg = "#ffffff" },
-				Pmenu = { bg = "#181826", fg = "#CDD6F5" },
 				CmpItemAbbr = { fg = "#a0a0b0" },
 				CmpItemAbbrMatch = { fg = "#ffaf00", bold = true },
 				CmpItemAbbrMatchFuzzy = { fg = "#ffaf00" },
 				CmpItemKind = { fg = "#7fafff", bg = "#181826" },
 				CmpItemMenu = { fg = "#8f8f99", bg = "#181826", italic = true },
+				ColorColumn = { bg = "#313245" },
+				CursorLine = { bg = "#29283B" },
+				DiffAdd = { bg = "#2a332d", fg = "NONE" },
+				DiffChange = { bg = "#3a2e36", fg = "NONE" },
+				DiffDelete = { bg = "#3e2d2e", fg = "NONE" },
+				DiffText = { bg = "#575268", fg = "NONE" },
+				ErrorMsg = { bg = "NONE" },
+				Normal = { bg = "#1A1528", fg = "#CDD6F5" },
+				NormalFloat = { bg = "#181826", fg = "#CDD6F5" },
+				Pmenu = { bg = "#181826", fg = "#CDD6F5" },
+				PmenuSel = { bg = "#444444", fg = "#ffffff" },
+				QuickFixLine = { bg = "#38384C", bold = true },
+				SignColumn = { bg = "#1A1528", fg = "#CDD6F5" },
+				SnacksInputBorder = { bg = "#1c1c1c", fg = "#5f5f5f" },
+				SnacksInputNormal = { bg = "#1c1c1c", fg = "#d0d0d0" },
+				SnacksListBorder = { bg = "#1c1c1c", fg = "#5f5f5f" },
+				SnacksListNormal = { bg = "#1c1c1c", fg = "#d0d0d0" },
+				SnacksListSelection = { bg = "#444444", fg = "#ffffff" },
+				TabLineFill = { bg = "#130F1E" },
+				TabLineSel = { fg = "#ffffff", bg = "#1A1528" },
+				WinSeparator = { fg = "#554D80" },
+				debugPC = { bg = "#45475b" },
 			}
 
 			local light = {
-				Normal = { fg = "#3c3836", bg = "#fbf1c7" },
-				NormalFloat = { fg = "#3c3836", bg = "#f2e5bc" },
-				SignColumn = { fg = "#3c3836", bg = "#fbf1c7" },
-				FloatBorder = { fg = "#928374", bg = "#f2e5bc" },
-				QuickFixLine = { bg = "#CBCFD9", bold = true },
-				SnacksInputNormal = { fg = "#3c3836", bg = "#f2e5bc" },
-				SnacksInputBorder = { fg = "#928374", bg = "#f2e5bc" },
-				SnacksListNormal = { fg = "#3c3836", bg = "#f2e5bc" },
-				SnacksListBorder = { fg = "#928374", bg = "#f2e5bc" },
-				SnacksListSelection = { fg = "#282828", bg = "#e6d6a8" },
-				Visual = { bg = "#d5c4a1", fg = "NONE" },
-				VisualNOS = { bg = "#d5c4a1", fg = "NONE" },
-				NonText = { fg = "#a89984" },
-				Whitespace = { fg = "#bdae93" },
-				DiffAdd = { bg = "#d4f5dc", fg = "NONE" },
-				DiffChange = { bg = "#fff5c2", fg = "NONE" },
-				DiffDelete = { bg = "#f5d0d0", fg = "NONE" },
-				DiffText = { bg = "#e3d8f0", fg = "NONE" },
-				PmenuSel = { bg = "#e6d6a8", fg = "#282828" },
-				Pmenu = { bg = "#f2e5bc", fg = "#3c3836" },
 				CmpItemAbbr = { fg = "#3c3836" },
 				CmpItemAbbrMatch = { fg = "#af8700", bold = true },
 				CmpItemAbbrMatchFuzzy = { fg = "#af8700" },
 				CmpItemKind = { fg = "#5f5fff", bg = "#f2e5bc" },
 				CmpItemMenu = { fg = "#928374", bg = "#f2e5bc", italic = true },
+				DiffAdd = { bg = "#d4f5dc", fg = "NONE" },
+				DiffChange = { bg = "#fff5c2", fg = "NONE" },
+				DiffDelete = { bg = "#f5d0d0", fg = "NONE" },
+				DiffText = { bg = "#e3d8f0", fg = "NONE" },
+				FloatBorder = { fg = "#928374", bg = "#f2e5bc" },
+				NonText = { fg = "#a89984" },
+				Normal = { fg = "#3c3836", bg = "#fbf1c7" },
+				NormalFloat = { fg = "#3c3836", bg = "#f2e5bc" },
+				Pmenu = { bg = "#f2e5bc", fg = "#3c3836" },
+				PmenuSel = { bg = "#e6d6a8", fg = "#282828" },
+				QuickFixLine = { bg = "#CBCFD9", bold = true },
+				SignColumn = { fg = "#3c3836", bg = "#fbf1c7" },
+				SnacksInputBorder = { fg = "#928374", bg = "#f2e5bc" },
+				SnacksInputNormal = { fg = "#3c3836", bg = "#f2e5bc" },
+				SnacksListBorder = { fg = "#928374", bg = "#f2e5bc" },
+				SnacksListNormal = { fg = "#3c3836", bg = "#f2e5bc" },
+				SnacksListSelection = { fg = "#282828", bg = "#e6d6a8" },
+				Visual = { bg = "#d5c4a1", fg = "NONE" },
+				VisualNOS = { bg = "#d5c4a1", fg = "NONE" },
+				Whitespace = { fg = "#bdae93" },
 			}
 
 			local hl_set = bg == "dark" and dark or light
@@ -797,7 +819,7 @@ vim.o.cursorlineopt = "number,line"
 vim.o.list = true
 vim.o.listchars = "trail:,nbsp:.,precedes:❮,extends:❯,tab:  "
 -- vim.g.sessionoptions = "buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,globals" -- removed blank
--- vim.wo.spell = true
+vim.wo.spell = true
 vim.o.spellcapcheck = ""
 vim.wo.number = true
 vim.wo.relativenumber = true

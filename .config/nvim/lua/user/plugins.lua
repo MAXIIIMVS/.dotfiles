@@ -1,32 +1,27 @@
 -- ハヤティ・ムスタファ
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-if not vim.loop.fs_stat(lazypath) then
-	vim.fn.system({
-		"git",
-		"clone",
-		"--filter=blob:none",
-		"https://github.com/folke/lazy.nvim.git",
-		"--branch=stable",
-		lazypath,
-	})
+local lazyrepo = "https://github.com/folke/lazy.nvim.git"
+-- local lazyrepo = "git@github.com:folke/lazy.nvim.git"
+if not (vim.uv or vim.loop).fs_stat(lazypath) then
+	local lazyrepo = "https://github.com/folke/lazy.nvim.git"
+	local out = vim.fn.system({ "git", "clone", "--filter=blob:none", "--branch=stable", lazyrepo, lazypath })
+	if vim.v.shell_error ~= 0 then
+		vim.api.nvim_echo({
+			{ "Failed to clone lazy.nvim:\n", "ErrorMsg" },
+			{ out, "WarningMsg" },
+			{ "\nPress any key to exit..." },
+		}, true, {})
+		vim.fn.getchar()
+		os.exit(1)
+	end
 end
 vim.opt.rtp:prepend(lazypath)
 
 return require("lazy").setup({
 	-- ────────────────────────────────── A ──────────────────────────────────
-	-- {
-	-- 	"A7Lavinraj/fyler.nvim",
-	-- 	dependencies = { "nvim-tree/nvim-web-devicons" },
-	-- 	opts = {
-	-- 		icon_provider = "nvim_web_devicons",
-	-- 		win = {
-	-- 			kind = "split_left_most",
-	-- 		}
-	-- 	},
-	-- 	cmd = { "Fyler" },
-	-- },
 	{
 		"airblade/vim-rooter",
+		-- url = "git@github.com:airblade/vim-rooter",
 		init = function()
 			vim.g.rooter_silent_chdir = true
 			vim.g.rooter_resolve_links = true
@@ -118,7 +113,6 @@ return require("lazy").setup({
 			})
 		end,
 	},
-	-- { "chentoast/marks.nvim", event = "BufReadPre", opts = {} },
 	-- ────────────────────────────────── D ──────────────────────────────────
 	-- ────────────────────────────────── E ──────────────────────────────────
 	-- ────────────────────────────────── F ──────────────────────────────────
@@ -302,8 +296,7 @@ MEMENTO VIVERE]],
 						-- bg = "#171421",
 						-- bg = "#1B1725",
 						win = {
-							-- NOTE: you can use TabLineFill instead of BufferlineBackground
-							wo = { winhighlight = "Normal:BufferlineBackground" },
+							wo = { winhighlight = "Normal:TabLineFill" },
 						},
 					},
 				},
@@ -326,7 +319,6 @@ MEMENTO VIVERE]],
 			},
 		},
 	},
-	-- { "folke/trouble.nvim", opts = {}, cmd = "Trouble" },
 	{
 		"folke/ts-comments.nvim",
 		event = "InsertEnter",
@@ -346,7 +338,6 @@ MEMENTO VIVERE]],
 	},
 	-- ────────────────────────────────── G ──────────────────────────────────
 	{ "godlygeek/tabular", cmd = "Tabularize" },
-	-- { "github/copilot.vim" },
 	-- ────────────────────────────────── H ──────────────────────────────────
 	{
 		"hrsh7th/nvim-cmp",
@@ -497,17 +488,6 @@ MEMENTO VIVERE]],
 					["<C-Space>"] = cmp.mapping.complete({}),
 					["<C-c>"] = cmp.mapping.abort(),
 					["<CR>"] = require("cmp").mapping.confirm({ select = true }),
-					-- ["<CR>"] = cmp.mapping({
-					-- 	i = function(fallback)
-					-- 		if cmp.visible() and cmp.get_active_entry() then
-					-- 			cmp.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = false })
-					-- 		else
-					-- 			fallback()
-					-- 		end
-					-- 	end,
-					-- 	s = cmp.mapping.confirm({ select = true }),
-					-- 	c = cmp.mapping.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = true }),
-					-- }),
 					["<Tab>"] = cmp.mapping(function(fallback)
 						if cmp.visible() then
 							if #cmp.get_entries() == 1 then
@@ -572,7 +552,7 @@ MEMENTO VIVERE]],
 		cmd = { "Calendar" },
 		init = function()
 			vim.cmd("source ~/.config/nvim/credentials.vim")
-			-- vim.g.calendar_week_number = true
+			vim.g.calendar_week_number = true
 			-- vim.g.calendar_date_month_name = true
 			-- vim.g.calendar_task = true
 			vim.g.calendar_google_calendar = true
@@ -622,7 +602,6 @@ MEMENTO VIVERE]],
 		},
 		keys = { "<M-v>", "<M-r>", "<M-c>", "<M-w>", mode = { "n", "i", "x" } },
 	},
-	-- { "kevinhwang91/nvim-bqf", ft = "qf", opts = { preview = { winblend = 0 } } },
 	{
 		"kristijanhusak/vim-dadbod-ui",
 		dependencies = {
@@ -682,7 +661,7 @@ MEMENTO VIVERE]],
 			vim.g.vimtex_view_method = "zathura"
 			vim.g.vimtex_view_general_viewer = "okular"
 			vim.g.vimtex_view_general_options = "--unique file:@pdf#src:@line@tex"
-			vim.g.vimtex_compiler_method = "latexmk" -- default compiler
+			vim.g.vimtex_compiler_method = "latexmk"
 			vim.g.vimtex_format_enabled = true
 			vim.g.texflavor = "latex"
 			vim.cmd([[let maplocalleader = "\<space>"]])
@@ -703,7 +682,6 @@ MEMENTO VIVERE]],
 		},
 		event = "BufReadPost",
 	},
-	-- { "Lommix/godot.nvim", ft = "gdscript", config = true },
 	{ "LudoPinelli/comment-box.nvim", lazy = true, cmd = "CB" },
 	{
 		-- NOTE: install universal-ctags using apt (the snap version wasn't
@@ -1223,11 +1201,9 @@ MEMENTO VIVERE]],
 
 			local config = {
 				options = {
-					-- Disable sections and component separators
 					component_separators = "",
 					section_separators = "",
 					globalstatus = true,
-					-- theme = "auto", -- remove custom_auto
 					theme = custom_auto,
 					-- theme = {
 					-- 	normal = { c = { fg = colors.fg, bg = colors.bg } },
@@ -1437,13 +1413,13 @@ MEMENTO VIVERE]],
 				cond = conditions.hide_in_width,
 			})
 
+			ins_right({ "location", color = { fg = colors.cyan, gui = "bold" } })
+
 			ins_right({
 				"progress",
 				color = { fg = colors.cyan },
 				-- cond = conditions.hide_in_width,
 			})
-
-			ins_right({ "location", color = { fg = colors.cyan, gui = "bold" } })
 
 			ins_right({
 				function()
@@ -1756,6 +1732,7 @@ MEMENTO VIVERE]],
 		event = { "BufNewFile", "BufReadPost", "BufFilePost" },
 		dependencies = { "nvim-cmp", "LuaSnip" },
 	},
+	{ "seblyng/roslyn.nvim", opts = {}, ft = "cs" },
 	{
 		"stevearc/oil.nvim",
 		dependencies = { "nvim-tree/nvim-web-devicons" },
@@ -1935,7 +1912,6 @@ MEMENTO VIVERE]],
 	-- 	event = { "InsertLeave" },
 	-- },
 }, {
-
 	install = { colorscheme = { "retrobox" } },
 	ui = {
 		border = "rounded",

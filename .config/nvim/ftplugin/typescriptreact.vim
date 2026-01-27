@@ -1,4 +1,4 @@
-let @b='npm build'
+let @b='npm run build'
 let @i='npm i'
 let @s='npm start'
 let @t='npm test'
