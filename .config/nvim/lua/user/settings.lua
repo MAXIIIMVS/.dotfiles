@@ -25,8 +25,7 @@ function apply_cursorline(win)
 end
 
 local function get_normal_bg()
-	local bg = vim.api.nvim_get_hl_by_name("Normal", true)["background"]
-	return bg
+	return vim.api.nvim_get_hl_by_name("Normal", true)["background"]
 end
 
 function toggle_breakpoint_in_sign_col()
@@ -441,19 +440,15 @@ vim.api.nvim_create_autocmd("ColorScheme", {
 		local bg = vim.o.background
 		local transparent = vim.g.is_transparent
 
-		-- #1A1A2F #1D182E #171421, terminal background: #171421
-		-- mocha = { base = "#191724" },
-		-- mocha = { base = "#1A1527" },
-
 		local common = {
+			DiagnosticError = { fg = "#ff5f5f" },
+			DiagnosticHint = { fg = "#5fffaf" },
+			DiagnosticInfo = { fg = "#5fafff" },
+			DiagnosticWarn = { fg = "#ffaf00" },
+			NonText = { fg = "#9ca0b1" },
 			Visual = { bg = "#45475b", fg = "NONE" },
 			VisualNOS = { bg = "#45475b", fg = "NONE" },
-			NonText = { fg = "#9ca0b1" },
 			Whitespace = { fg = "#504945" },
-			DiagnosticError = { fg = "#ff5f5f" },
-			DiagnosticWarn = { fg = "#ffaf00" },
-			DiagnosticInfo = { fg = "#5fafff" },
-			DiagnosticHint = { fg = "#5fffaf" },
 		}
 
 		for group, opts in pairs(common) do
@@ -479,11 +474,7 @@ vim.api.nvim_create_autocmd("ColorScheme", {
 				PmenuSel = { bg = "#444444", fg = "#ffffff" },
 				QuickFixLine = { bg = "#38384C", bold = true },
 				SignColumn = { bg = "NONE" },
-				SnacksInputBorder = { bg = "NONE", fg = "#5f5f5f" },
-				SnacksInputNormal = { bg = "NONE", fg = "#d0d0d0" },
-				SnacksListBorder = { bg = "NONE", fg = "#5f5f5f" },
-				SnacksListNormal = { bg = "NONE", fg = "#d0d0d0" },
-				SnacksListSelection = { bg = "#444444", fg = "#ffffff" },
+				SnacksIndent = { fg = "#504945" },
 				StatusLine = { bg = "NONE", fg = "NONE" },
 				StatusLineNC = { bg = "NONE", fg = "NONE" },
 				StatusLineTerm = { bg = "NONE", fg = "NONE" },
@@ -497,14 +488,17 @@ vim.api.nvim_create_autocmd("ColorScheme", {
 				vim.api.nvim_set_hl(0, group, opts)
 			end
 
-			local transparent_theme = {}
-			for _, mode in ipairs({ "normal", "insert", "visual", "replace", "command", "inactive" }) do
-				transparent_theme[mode] = {}
-				for _, section in ipairs({ "a", "b", "c" }) do
-					transparent_theme[mode][section] = { bg = "NONE", gui = "bold" }
+			local ok, lualine = pcall(require, "lualine")
+			if ok then
+				local transparent_theme = {}
+				for _, mode in ipairs({ "normal", "insert", "visual", "replace", "command", "inactive" }) do
+					transparent_theme[mode] = {}
+					for _, section in ipairs({ "a", "b", "c" }) do
+						transparent_theme[mode][section] = { bg = "NONE", gui = "bold" }
+					end
 				end
+				lualine.setup({ options = { theme = transparent_theme } })
 			end
-			require("lualine").setup({ options = { theme = transparent_theme } })
 		else
 			local dark = {
 				CmpItemAbbr = { fg = "#a0a0b0" },
@@ -525,11 +519,7 @@ vim.api.nvim_create_autocmd("ColorScheme", {
 				PmenuSel = { bg = "#444444", fg = "#ffffff" },
 				QuickFixLine = { bg = "#38384C", bold = true },
 				SignColumn = { bg = "#1A1528", fg = "#CDD6F5" },
-				SnacksInputBorder = { bg = "#1c1c1c", fg = "#5f5f5f" },
-				SnacksInputNormal = { bg = "#1c1c1c", fg = "#d0d0d0" },
-				SnacksListBorder = { bg = "#1c1c1c", fg = "#5f5f5f" },
-				SnacksListNormal = { bg = "#1c1c1c", fg = "#d0d0d0" },
-				SnacksListSelection = { bg = "#444444", fg = "#ffffff" },
+				SnacksIndent = { fg = "#504945" }, -- same as Whitespace
 				TabLineFill = { bg = "#130F1E" },
 				TabLineSel = { fg = "#ffffff", bg = "#1A1528" },
 				WinSeparator = { fg = "#554D80" },
@@ -554,11 +544,6 @@ vim.api.nvim_create_autocmd("ColorScheme", {
 				PmenuSel = { bg = "#e6d6a8", fg = "#282828" },
 				QuickFixLine = { bg = "#CBCFD9", bold = true },
 				SignColumn = { fg = "#3c3836", bg = "#fbf1c7" },
-				SnacksInputBorder = { fg = "#928374", bg = "#f2e5bc" },
-				SnacksInputNormal = { fg = "#3c3836", bg = "#f2e5bc" },
-				SnacksListBorder = { fg = "#928374", bg = "#f2e5bc" },
-				SnacksListNormal = { fg = "#3c3836", bg = "#f2e5bc" },
-				SnacksListSelection = { fg = "#282828", bg = "#e6d6a8" },
 				Visual = { bg = "#d5c4a1", fg = "NONE" },
 				VisualNOS = { bg = "#d5c4a1", fg = "NONE" },
 				Whitespace = { fg = "#bdae93" },
@@ -569,25 +554,28 @@ vim.api.nvim_create_autocmd("ColorScheme", {
 				vim.api.nvim_set_hl(0, group, opts)
 			end
 
-			local dark_theme = {}
-			for _, mode in ipairs({ "normal", "insert", "visual", "replace", "command", "inactive" }) do
-				dark_theme[mode] = {}
-				for _, section in ipairs({ "a", "b", "c" }) do
-					dark_theme[mode][section] = { bg = "#1A1528", fg = "#CDD6F5" }
+			local ok, lualine = pcall(require, "lualine")
+			if ok then
+				local dark_theme = {}
+				for _, mode in ipairs({ "normal", "insert", "visual", "replace", "command", "inactive" }) do
+					dark_theme[mode] = {}
+					for _, section in ipairs({ "a", "b", "c" }) do
+						dark_theme[mode][section] = { bg = "#1A1528", fg = "#CDD6F5" }
+					end
 				end
-			end
 
-			local light_theme = {}
-			for _, mode in ipairs({ "normal", "insert", "visual", "replace", "command", "inactive" }) do
-				light_theme[mode] = {}
-				for _, section in ipairs({ "a", "b", "c" }) do
-					light_theme[mode][section] = { bg = "#fbf1c7", fg = "#3c3836" }
+				local light_theme = {}
+				for _, mode in ipairs({ "normal", "insert", "visual", "replace", "command", "inactive" }) do
+					light_theme[mode] = {}
+					for _, section in ipairs({ "a", "b", "c" }) do
+						light_theme[mode][section] = { bg = "#fbf1c7", fg = "#3c3836" }
+					end
 				end
-			end
 
-			require("lualine").setup({
-				options = { theme = bg == "dark" and dark_theme or light_theme },
-			})
+				lualine.setup({
+					options = { theme = bg == "dark" and dark_theme or light_theme },
+				})
+			end
 		end
 	end,
 })
