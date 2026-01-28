@@ -434,6 +434,7 @@ require("which-key").add({
 	{ "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>", desc = "Go to declaration", nowait = true, remap = false },
 	{ "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", desc = "Go to definition", nowait = true, remap = false },
 	{ "gF", "<c-w>vgf", desc = "Edit the file in a vertical split", nowait = true, remap = false },
+	{ "gR", "<cmd>lua vim.lsp.buf.references()<CR>", desc = "LSP references", nowait = true, remap = false },
 	{
 		"gs",
 		function()
@@ -1020,6 +1021,15 @@ require("which-key").add({
 	{ "<space>gwu", ":G worktree unlock ", desc = "Unlock", nowait = true, remap = false, silent = false },
 	{ "<space>l", group = "LSP", nowait = true, remap = false },
 	{
+		"<space>lf",
+		function()
+			vim.lsp.buf.format({ async = true })
+		end,
+		desc = "Format",
+		nowait = true,
+		remap = false,
+	},
+	{
 		"<space>lr",
 		function()
 			vim.lsp.stop_client(vim.lsp.get_clients())
@@ -1488,18 +1498,6 @@ require("which-key").add({
 			end,
 			desc = "Comment Box",
 			silent = false,
-			nowait = true,
-			remap = false,
-		},
-	},
-	{
-		mode = { "n", "t", "v", "s" },
-		{
-			"<leader>f",
-			function()
-				vim.lsp.buf.format({ async = true })
-			end,
-			desc = "Format buffer/range",
 			nowait = true,
 			remap = false,
 		},
