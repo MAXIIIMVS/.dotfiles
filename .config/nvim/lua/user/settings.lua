@@ -387,10 +387,10 @@ vim.diagnostic.config({
 })
 
 -- enable diagnostics: nvim v.0.0.11
--- vim.diagnostic.config({ virtual_text = true })
+vim.diagnostic.config({ virtual_text = true, severity_sort = true })
 -- vim.diagnostic.config({ virtual_text = { current_line = true } })
 -- vim.diagnostic.config({ virtual_lines = true })
-vim.diagnostic.config({ virtual_lines = { current_line = true } })
+-- vim.diagnostic.config({ virtual_lines = { current_line = true } })
 
 vim.api.nvim_create_autocmd("VimEnter", {
 	group = vim.api.nvim_create_augroup("sync_tmux", { clear = true }),
@@ -448,7 +448,7 @@ vim.api.nvim_create_autocmd("ColorScheme", {
 			NonText = { fg = "#9ca0b1" },
 			Visual = { bg = "#45475b", fg = "NONE" },
 			VisualNOS = { bg = "#45475b", fg = "NONE" },
-			Whitespace = { fg = "#504945" },
+			Whitespace = { fg = "#444444" },
 		}
 
 		for group, opts in pairs(common) do
@@ -467,6 +467,7 @@ vim.api.nvim_create_autocmd("ColorScheme", {
 				DiffChange = { bg = "#3a2e36", fg = "NONE" },
 				DiffDelete = { bg = "#3e2d2e", fg = "NONE" },
 				DiffText = { bg = "#575268", fg = "NONE" },
+				ErrorMsg = { bg = "NONE" },
 				FloatBorder = { fg = "#5f5f5f", bg = "NONE" },
 				Normal = { bg = "NONE" },
 				NormalFloat = { bg = "NONE" },
@@ -519,13 +520,12 @@ vim.api.nvim_create_autocmd("ColorScheme", {
 				PmenuSel = { bg = "#444444", fg = "#ffffff" },
 				QuickFixLine = { bg = "#38384C", bold = true },
 				SignColumn = { bg = "#1A1528", fg = "#CDD6F5" },
-				SnacksIndent = { fg = "#504945" }, -- same as Whitespace
+				SnacksIndent = { fg = "#444444" }, -- same as Whitespace
 				TabLineFill = { bg = "#130F1E" },
 				TabLineSel = { fg = "#ffffff", bg = "#1A1528" },
 				WinSeparator = { fg = "#554D80" },
 				debugPC = { bg = "#45475b" },
 			}
-
 			local light = {
 				CmpItemAbbr = { fg = "#3c3836" },
 				CmpItemAbbrMatch = { fg = "#af8700", bold = true },
@@ -536,6 +536,7 @@ vim.api.nvim_create_autocmd("ColorScheme", {
 				DiffChange = { bg = "#fff5c2", fg = "NONE" },
 				DiffDelete = { bg = "#f5d0d0", fg = "NONE" },
 				DiffText = { bg = "#e3d8f0", fg = "NONE" },
+				ErrorMsg = { fg = "#cc241d", bold = true },
 				FloatBorder = { fg = "#928374", bg = "#f2e5bc" },
 				NonText = { fg = "#a89984" },
 				Normal = { fg = "#3c3836", bg = "#fbf1c7" },

@@ -372,6 +372,25 @@ require("which-key").add({
 		nowait = true,
 		remap = false,
 	},
+
+	{
+		"]d",
+		function()
+			vim.diagnostic.goto_next({ float = true })
+		end,
+		desc = "Next diagnostic",
+		nowait = true,
+		remap = false,
+	},
+	{
+		"[d",
+		function()
+			vim.diagnostic.goto_prev({ float = true })
+		end,
+		desc = "Prev diagnostic",
+		nowait = true,
+		remap = false,
+	},
 	{ "]h", "<cmd>silent Gitsigns next_hunk<CR>", desc = "Jump to the next hunk", nowait = true, remap = false },
 	{ "[h", "<cmd>silent Gitsigns prev_hunk<CR>", desc = "Jump to the previous hunk", nowait = true, remap = false },
 	{ "]p", "<cmd>pu<CR>", desc = "Paste below current line", nowait = true, remap = false },
