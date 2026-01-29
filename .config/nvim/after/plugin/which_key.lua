@@ -453,7 +453,6 @@ require("which-key").add({
 	{ "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>", desc = "Go to declaration", nowait = true, remap = false },
 	{ "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", desc = "Go to definition", nowait = true, remap = false },
 	{ "gF", "<c-w>vgf", desc = "Edit the file in a vertical split", nowait = true, remap = false },
-	{ "gR", "<cmd>lua vim.lsp.buf.references()<CR>", desc = "LSP references", nowait = true, remap = false },
 	{
 		"gs",
 		function()

@@ -208,7 +208,7 @@ function M.setup(on_attach, capabilities)
 		-- 	filetypes = { "lua" },
 		-- },
 		neocmake = {
-			cmd = { "neocmakelsp", "--stdio" },
+			cmd = { "neocmakelsp", "stdio" },
 			filetypes = { "cmake" },
 			-- root_dir = <disabled by vim-rooter>
 		},
