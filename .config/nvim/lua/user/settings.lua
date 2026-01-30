@@ -387,7 +387,7 @@ vim.diagnostic.config({
 })
 
 -- enable diagnostics: nvim v.0.0.11
-vim.diagnostic.config({ virtual_text = true, severity_sort = true })
+vim.diagnostic.config({ virtual_text = { current_line = true }, severity_sort = true })
 -- vim.diagnostic.config({ virtual_text = { current_line = true } })
 -- vim.diagnostic.config({ virtual_lines = true })
 -- vim.diagnostic.config({ virtual_lines = { current_line = true } })

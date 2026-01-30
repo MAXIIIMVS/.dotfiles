@@ -1,7 +1,7 @@
 # NOTE: bash background: #171421 or #1D182E or #191724
 
 # cursor color is #FF006D
-# NOTE: bash font: patched version of  FiraCode Nerd Font [Mono] (Medium|Retina|SemiBold) 9 (icons in nvim-tree are big, no italics) (use tweaks)
+# NOTE: bash font: patched version of  FiraCode Nerd Font Medium [Mono] (Medium|Retina|SemiBold) 8.5 (icons in nvim-tree are big, no italics) (use tweaks)
 # the old version without patch was FiraMono Nerd Font Medium 10.
 # NOTE: default color: text: #D0CFCC, background: #1D182E
 # NOTE: bold color: #BAC415
