@@ -368,7 +368,7 @@ function ToggleDiagnostics()
 			sign = true,
 			float = false,
 			update_in_insert = false,
-			severity_sort = false,
+			severity_sort = true,
 			underline = true,
 		})
 		diagnostics_enabled = false
@@ -387,10 +387,17 @@ vim.diagnostic.config({
 })
 
 -- enable diagnostics: nvim v.0.0.11
-vim.diagnostic.config({ virtual_text = { current_line = true }, severity_sort = true })
+vim.diagnostic.config({ virtual_text = true, severity_sort = true })
 -- vim.diagnostic.config({ virtual_text = { current_line = true } })
 -- vim.diagnostic.config({ virtual_lines = true })
 -- vim.diagnostic.config({ virtual_lines = { current_line = true } })
+
+vim.api.nvim_create_autocmd("FileType", {
+	pattern = "mysql",
+	callback = function()
+		vim.bo.commentstring = "-- %s"
+	end,
+})
 
 vim.api.nvim_create_autocmd("VimEnter", {
 	group = vim.api.nvim_create_augroup("sync_tmux", { clear = true }),
@@ -460,7 +467,7 @@ vim.api.nvim_create_autocmd("ColorScheme", {
 				CmpItemAbbr = { fg = "#a0a0b0" },
 				CmpItemAbbrMatch = { fg = "#ffaf00", bold = true },
 				CmpItemAbbrMatchFuzzy = { fg = "#ffaf00" },
-				CmpItemKind = { fg = "#7fafff", bg = "#181826" },
+				CmpItemKind = { fg = "#7fafff", bg = "NONE" },
 				CmpItemMenu = { fg = "#8f8f99", bg = "#181826", italic = true },
 				CursorLineNr = { bg = "NONE", fg = "NONE" },
 				DiffAdd = { bg = "#2a332d", fg = "NONE" },
