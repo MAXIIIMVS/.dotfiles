@@ -369,13 +369,15 @@ function ToggleDiagnostics()
 			float = false,
 			update_in_insert = false,
 			severity_sort = true,
-			underline = true,
+			underline = diagnostics_config.underline,
 		})
 		diagnostics_enabled = false
 	end
 end
 
 vim.diagnostic.config({
+	virtual_text = { current_line = true },
+	severity_sort = true,
 	signs = {
 		text = {
 			[vim.diagnostic.severity.ERROR] = signs.Error,
@@ -384,13 +386,10 @@ vim.diagnostic.config({
 			[vim.diagnostic.severity.INFO] = signs.Info,
 		},
 	},
+	underline = {
+		severity = vim.diagnostic.severity.ERROR,
+	},
 })
-
--- enable diagnostics: nvim v.0.0.11
-vim.diagnostic.config({ virtual_text = true, severity_sort = true })
--- vim.diagnostic.config({ virtual_text = { current_line = true } })
--- vim.diagnostic.config({ virtual_lines = true })
--- vim.diagnostic.config({ virtual_lines = { current_line = true } })
 
 vim.api.nvim_create_autocmd("FileType", {
 	pattern = "mysql",

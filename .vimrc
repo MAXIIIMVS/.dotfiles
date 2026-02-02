@@ -1,5 +1,5 @@
 " settings {{{
-colorscheme retrobox " sorbet, habamax, zaibatsu, wildcharm, retrobox, wildcharm, industry
+colorscheme catppuccin " sorbet, habamax, zaibatsu, wildcharm, retrobox, wildcharm, industry
 filetype plugin on
 syntax enable
 set t_Co=256  " Enable 256 colors
