@@ -1,2 +1,12 @@
+# Case-insensitive completion
 set completion-ignore-case on
-# set show-all-if-ambiguous on
+
+# Show matches immediately
+set show-all-if-ambiguous on
+
+# Smarter history search
+"\e[A": history-search-backward
+"\e[B": history-search-forward
+
+# Tab cycles
+# TAB: menu-complete

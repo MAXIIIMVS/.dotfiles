@@ -1522,6 +1522,7 @@ require("which-key").add({
 	},
 	{
 		mode = { "i", "n", "t", "v" },
+		{ "<S-F6>", "<Nop>", desc = "Ignore S-f6", nowait = true, remap = false },
 		{ "<M-S-T>", "<cmd>ToggleTermToggleAll<CR>", desc = "Toggle All terminals", nowait = true, remap = false },
 		{ "<F4>", term_debug, desc = "Start GDB", nowait = true, remap = false },
 		{
