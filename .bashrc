@@ -16,7 +16,7 @@
 HISTCONTROL=ignoreboth
 HISTSIZE=20000
 HISTFILESIZE=20000
-PROMPT_DIRTRIM=3 # Show last 3 directories in path
+PROMPT_DIRTRIM=2 # Show last 2 directories in path
 
 # disables Ctrl-S/Ctrl-Q flow control (common for Vim terminals).
 stty -ixon
@@ -111,6 +111,19 @@ command -v fzf >/dev/null 2>&1 && source /usr/share/doc/fzf/examples/key-binding
 # ╭──────────────────────────────────────────────────────────╮
 # │                        Functions                         │
 # ╰──────────────────────────────────────────────────────────╯
+
+rgb2ansi() {
+	local hex="${1#"#"}" # strip leading #
+	if [[ ! $hex =~ ^[0-9a-fA-F]{6}$ ]]; then
+		echo "Usage: rgb2ansi #RRGGBB or RRGGBB" >&2
+		return 1
+	fi
+	local r=$((16#${hex:0:2}))
+	local g=$((16#${hex:2:2}))
+	local b=$((16#${hex:4:2}))
+	# output PS1-ready ANSI escape WITHOUT extra quotes
+	printf '\\[\e[0;1;38;2;%d;%d;%dm\\]' "$r" "$g" "$b"
+}
 
 toggle_proxy() {
 	if [ "$1" == "on" ]; then
@@ -666,8 +679,20 @@ elif [ -f /usr/share/bash-completion/completions/git ]; then
 	source /usr/share/bash-completion/completions/git
 fi
 
+# FRAME_COLOR='\[\e[0;1;38;2;69;71;91m\]'
+FRAME_COLOR=$(rgb2ansi 5E5C64)
+
 if [ "$color_prompt" = yes ]; then
-	PS1='\n\[\e[0;1;38;5;28m\]┌── \u\[\e[0;38;5;28m\]☠️\h\[\e[0m\]:\[\e[0;38;5;161m\]$(__git_ps1 "%s")\[\e[0m\]: \[\e[0;38;5;32m\]\w\[\e[0;38;5;32m\]/ \[\e[1;7;38;5;82m\]\n\[\e[0;1;38;5;28m\]└─ \[\e[0;38;5;39m\]\[\e[0m\]'
+	PS1='\n'"$FRAME_COLOR"'┌── \
+\[\e[0;1;38;5;28m\]\u\
+\[\e[0;38;5;28m\] ☠️ \h\
+\[\e[0m\]:\
+\[\e[0;38;5;161m\]$(__git_ps1 "%s")\
+\[\e[0m\]: \
+\[\e[0;38;5;32m\]\w\
+\[\e[0;38;5;32m\]/ \
+\[\e[1;7;38;5;82m\]\n'"$FRAME_COLOR"'└─ \
+\[\e[0m\]'
 else
 	PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w '
 fi
