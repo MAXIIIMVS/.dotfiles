@@ -10,6 +10,20 @@
 # transparent background: like 20%ish
 
 # ╭──────────────────────────────────────────────────────────╮
+# │                 Interactive Shell Check                  │
+# ╰──────────────────────────────────────────────────────────╯
+
+case $- in
+*i*)
+	# disables Ctrl-S/Ctrl-Q flow control (common for Vim terminals)
+	if [ -t 0 ]; then
+		stty -ixon
+	fi
+	;;
+*) return ;;
+esac
+
+# ╭──────────────────────────────────────────────────────────╮
 # │             Settings & Environment Variables             │
 # ╰──────────────────────────────────────────────────────────╯
 
@@ -17,9 +31,6 @@ HISTCONTROL=ignoreboth
 HISTSIZE=20000
 HISTFILESIZE=20000
 PROMPT_DIRTRIM=2 # Show last 2 directories in path
-
-# disables Ctrl-S/Ctrl-Q flow control (common for Vim terminals).
-stty -ixon
 
 # export SHELL=/usr/bin/bash
 
@@ -60,15 +71,6 @@ for p in /usr/local/go/bin \
 	[ -d "$p" ] && PATH="$PATH:$p"
 done
 export PATH
-
-# ╭──────────────────────────────────────────────────────────╮
-# │                 Interactive Shell Check                  │
-# ╰──────────────────────────────────────────────────────────╯
-
-case $- in
-*i*) ;;
-*) return ;;
-esac
 
 # ╭──────────────────────────────────────────────────────────╮
 # │                      Shell Options                       │
