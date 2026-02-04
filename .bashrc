@@ -691,8 +691,7 @@ if [ "$color_prompt" = yes ]; then
 \[\e[0m\]: \
 \[\e[0;38;5;32m\]\w\
 \[\e[0;38;5;32m\]/ \
-\[\e[1;7;38;5;82m\]\n'"$FRAME_COLOR"'└─ \
-\[\e[0m\]'
+\[\e[1;7;38;5;82m\]\n'"$FRAME_COLOR"'└─ \[\e[0m\]'
 else
 	PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w '
 fi
