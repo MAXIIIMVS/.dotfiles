@@ -1,4 +1,3 @@
--- vim.g.is_transparent = false -- set in settings
 vim.g.termdebug_running = false
 vim.g.show_cursorline = true
 vim.g.is_diff_on = false
@@ -12,4 +11,5 @@ end
 require("user")
 
 vim.o.secure = true
+vim.g.is_transparent = get_transparency()
 vim.cmd.colorscheme("retrobox")

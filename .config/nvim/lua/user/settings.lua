@@ -1,11 +1,339 @@
+-- ╭─────────────────────────────────────────────────────────╮
+-- │              Local Variables and Settings               │
+-- ╰─────────────────────────────────────────────────────────╯
+
+vim.g.termdebug_wide = true
+vim.g.termdebug_map_K = false
+-- vim.g.termdebug_disasm_window = 15
+
+local transparency_path = vim.fn.expand("$HOME/.cache/nvim/transparency")
 local signs = {
 	Error = " ",
 	Warn = " ",
 	Hint = "󰌶 ",
 	Info = " ",
 }
+local diagnostics_config = vim.diagnostic.config()
+local diagnostics_enabled = true
 
-local transparency_path = vim.fn.expand(os.getenv("HOME") .. "/.cache/nvim/transparency")
+local abbrs = {
+	[":pi:"] = "𝞹",
+	[":micro:"] = "μ",
+	[":deathly:"] = "⏃",
+	[":separator_ltt:"] = "❮",
+	[":separator_rtt:"] = "❯",
+	[":degrees:"] = "°",
+	[":wp:"] = "♟",
+	[":bp:"] = "♙",
+	[":wk:"] = "♚",
+	[":bk:"] = "♔",
+	[":wq:"] = "♛",
+	[":bq:"] = "♕",
+	[":wb:"] = "♝",
+	[":bb:"] = "♗",
+	[":wn:"] = "♞",
+	[":bn:"] = "♘",
+	[":wr:"] = "♜",
+	[":br:"] = "♖",
+}
+-- ╭─────────────────────────────────────────────────────────╮
+-- │                    Core Vim Settings                    │
+-- ╰─────────────────────────────────────────────────────────╯
+
+vim.diagnostic.config({
+	virtual_text = { current_line = true },
+	severity_sort = true,
+	signs = {
+		text = {
+			[vim.diagnostic.severity.ERROR] = signs.Error,
+			[vim.diagnostic.severity.WARN] = signs.Warn,
+			[vim.diagnostic.severity.HINT] = signs.Hint,
+			[vim.diagnostic.severity.INFO] = signs.Info,
+		},
+	},
+	underline = {
+		severity = vim.diagnostic.severity.ERROR,
+	},
+})
+
+-- vim.o.omnifunc = 'syntaxcomplete#Complete'
+vim.wo.winblend = 0
+vim.o.pumblend = 0
+vim.o.errorbells = false
+vim.o.belloff = "all"
+vim.o.confirm = true
+if vim.fn.has("gui_running") == 1 then
+	vim.o.guifont = "FiraCode Nerd Font Medium:h9"
+end
+vim.g.scrollopt = "ver,hor,jump"
+vim.schedule(function()
+	vim.opt.clipboard = vim.env.SSH_TTY and "" or "unnamedplus" -- Sync with system clipboard
+end)
+vim.o.mouse = "a"
+-- vim.o.mousemoveevent = true
+vim.o.autoread = true
+vim.bo.swapfile = false
+vim.opt.swapfile = false
+vim.opt.backup = false
+vim.opt.undodir = os.getenv("HOME") .. "/.config/undodir"
+vim.opt.undofile = true
+vim.o.showmode = false
+vim.bo.textwidth = 80
+-- vim.wo.colorcolumn = "80"
+vim.wo.linebreak = true
+vim.o.autochdir = true
+vim.o.hidden = true
+vim.o.wildmenu = true
+vim.o.wildmode = "longest:full,full"
+-- vim.g.wildoptions = "pum"
+vim.o.splitright = true
+vim.o.splitbelow = true
+vim.o.updatetime = 200
+vim.wo.foldenable = true
+vim.o.foldlevelstart = 99
+-- vim.wo.foldnestmax = 10
+vim.wo.foldmethod = "indent" -- manual, indent, syntax, marker, expr, diff
+vim.wo.conceallevel = 0
+vim.g.python3_host_prog = "/usr/bin/python3"
+
+-- vim.o.smarttab = true
+-- b.smartindent = true
+vim.o.tabstop = 2
+vim.o.shiftwidth = 2
+-- vim.o.softtabstop = 2
+vim.o.autoindent = true
+vim.bo.autoindent = true
+vim.o.breakindent = true
+-- vim.o.expandtab = true
+-- vim.bo.expandtab = true
+vim.o.nrformats = "bin,octal,hex"
+vim.o.fillchars = "eob: "
+
+vim.o.winborder = "rounded"
+vim.o.completeopt = "menu,menuone,noinsert,noselect"
+vim.o.cursorlineopt = "number,line"
+vim.o.list = true
+vim.o.listchars = "trail:,nbsp:.,precedes:❮,extends:❯,tab:  "
+-- vim.g.sessionoptions = "buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,globals" -- removed blank
+vim.wo.spell = false
+vim.o.spellcapcheck = ""
+vim.wo.number = true
+vim.wo.relativenumber = true
+vim.wo.signcolumn = "yes:1"
+vim.o.fileencodings = "utf-8,sjis,euc-jp,latin"
+vim.o.encoding = "utf-8"
+vim.o.title = true
+vim.o.autoindent = true
+vim.o.hlsearch = true
+vim.o.incsearch = true
+vim.o.showcmd = true
+-- vim.o.showtabline = 2 -- show tabline even if only one tab is open
+vim.o.cmdheight = 0
+vim.o.laststatus = 3
+vim.g.laststatus = 3
+vim.go.laststatus = 3
+vim.o.scrolloff = 1
+vim.o.timeoutlen = 300
+vim.o.inccommand = "split"
+vim.o.ruler = false
+vim.o.showmatch = true
+vim.o.matchtime = 2
+vim.o.lazyredraw = false
+vim.o.ignorecase = true -- ignore case when searching
+vim.o.smartcase = true -- if you include mixed case in your search, assumes you want case-sensitive
+vim.o.backspace = "start,eol,indent"
+vim.opt.path:append("**") -- NOTE: this is slow
+vim.opt.wildignore:append({
+	"*/node_modules/*",
+	"tags",
+	"*.o",
+	"*/vendor/*",
+	"*/build/*",
+	"*/external/*",
+	"*.obj",
+	"*.pyc",
+	"*.class",
+	"*/.git/*",
+	"*/.svn/*",
+})
+vim.o.wildignorecase = true
+vim.o.termbidi = true
+
+if vim.fn.exists("&termguicolors") == 1 and vim.fn.exists("&winblend") then
+	-- vim.cmd("syntax enable")
+	vim.o.termguicolors = true
+	vim.o.wildoptions = "pum"
+	vim.wo.winblend = 0
+	vim.o.pumblend = 0
+	vim.o.background = "dark"
+end
+
+-- Prefer rg > ag > ack
+if vim.fn.executable("rg") == 1 then
+	vim.g.ackprg = "rg -S --no-heading --vimgrep"
+	vim.o.grepprg = "rg --vimgrep $*"
+elseif vim.fn.executable("ag") == 1 then
+	vim.g.ackprg = "ag --vimgrep"
+	vim.o.grepprg = "ag --vimgrep $*"
+end
+
+vim.o.grepformat = "%f:%l:%c:%m"
+
+-- ╭─────────────────────────────────────────────────────────╮
+-- │                Vimscript-style Commands                 │
+-- ╰─────────────────────────────────────────────────────────╯
+
+for lhs, rhs in pairs(abbrs) do
+	vim.cmd(string.format("iabbrev %s %s", lhs, rhs))
+end
+
+vim.cmd([[
+nmap <C-_> gcc
+xmap <C-_> gc
+smap <C-_> <ESC><ESC>gcc
+imap <C-_> <ESC>gcc
+nmap <C-/> gcc
+xmap <C-/> gc
+smap <C-/> <ESC><ESC>gcc
+imap <C-/> <ESC>gcc
+
+
+if has('nvim')
+  augroup hide_terminal_numbers
+    autocmd!
+    autocmd TermOpen * setlocal nonumber norelativenumber nospell
+  augroup END
+else
+  augroup hide_terminal_numbers
+    autocmd!
+    autocmd BufEnter term://* setlocal nonumber norelativenumber nospell
+  augroup END
+endif
+
+" Disable while using noice.nvim
+" augroup CmdHeight
+"     autocmd!
+"     autocmd CmdlineEnter * if &cmdheight == 0 | let g:cmdheight_prev = 0 | set cmdheight=1 | endif
+"     autocmd CmdlineLeave * if exists('g:cmdheight_prev') && g:cmdheight_prev == 0 | set cmdheight=0 | unlet! g:cmdheight_prev | endif
+" augroup END
+
+" hide tmux
+" autocmd VimEnter,VimLeave * silent !tmux set status
+" autocmd VimLeave * silent !tmux set -g status-style bg=default
+
+
+function! CloseTabAndBuffers()
+  " Get the list of buffers in the current tab
+  let l:tab_buffers = []
+  for w in range(1, tabpagewinnr(tabpagenr(), '$'))
+    call add(l:tab_buffers, winbufnr(w))
+  endfor
+  " Close the tab
+  tabclose
+  " Close all buffers that were in the tab
+  for buf in l:tab_buffers
+    if bufexists(buf) && buflisted(buf)
+      " Make buffer modifiable if it isn't
+      if !getbufvar(buf, '&modifiable')
+        call setbufvar(buf, '&modifiable', 1)
+      endif
+      " Delete the buffer
+      execute 'bdelete' buf
+    endif
+  endfor
+endfunction
+
+augroup NetrwSettings
+  autocmd!
+  autocmd WinClosed * if &filetype == 'netrw' | let g:NetrwIsOpen = 0 | endif
+augroup END
+
+let g:NetrwIsOpen=0
+
+function! CloseNetrw() abort
+  for bufn in range(1, bufnr('$'))
+    if bufexists(bufn) && getbufvar(bufn, '&filetype') ==# 'netrw'
+      silent! execute 'bwipeout ' . bufn
+      if getline(2) =~# '^" Netrw '
+        silent! bwipeout
+      endif
+      let g:NetrwIsOpen=0
+      return
+    endif
+  endfor
+endfunction
+
+augroup closeOnOpen
+  autocmd!
+  autocmd BufWinEnter * if getbufvar(winbufnr(winnr()), "&filetype") != "netrw"|call CloseNetrw()|endif
+aug END
+
+function! ToggleNetrw()
+    let g:netrw_winsize = -40
+    if g:NetrwIsOpen
+        let i = bufnr("$")
+        while (i >= 1)
+            if (getbufvar(i, "&filetype") == "netrw")
+                silent exe "bwipeout " . i
+            endif
+            let i-=1
+        endwhile
+        let g:NetrwIsOpen=0
+    else
+        let g:NetrwIsOpen=1
+				let @n = expand("%:p:h")
+        silent Lexplore %:p:h
+    endif
+endfunction
+]])
+
+-- ╭─────────────────────────────────────────────────────────╮
+-- │                        Functions                        │
+-- ╰─────────────────────────────────────────────────────────╯
+
+function OpenLazyGit()
+	-- Save the buffer we came from
+	vim.g.lazygit_source_buf = vim.api.nvim_get_current_buf()
+
+	-- set notermguicolors " uncomment this if you're not using a theme for lazygit
+	vim.cmd("terminal lazygit")
+	-- terminal lazygit --use-config-file=\"$HOME/.config/lazygit/config.yml,$HOME/.config/lazygit/themes/catppuccin/themes-mergable/mocha/peach.yml\""
+	vim.api.nvim_buf_set_keymap(0, "t", "<ESC>", "<ESC>", { noremap = true, silent = true })
+	vim.cmd("startinsert")
+	vim.cmd("redraw!")
+
+	local lazygit_group = vim.api.nvim_create_augroup("LazyGit", { clear = true })
+	vim.api.nvim_create_autocmd("WinResized", {
+		group = lazygit_group,
+		buffer = 0,
+		callback = function()
+			vim.cmd("redraw")
+		end,
+	})
+
+	-- Call custom function when lazygit terminal closes
+	vim.api.nvim_create_autocmd("TermClose", {
+		group = lazygit_group,
+		buffer = 0,
+		callback = function()
+			OnLazyGitClose()
+		end,
+	})
+
+	-- autocmd TermClose * set termguicolors " uncomment this if you're not using a theme for lazygit
+end
+
+function OnLazyGitClose()
+	-- Delete the lazygit terminal buffer
+	vim.cmd("lua Snacks.bufdelete()")
+
+	-- If the original buffer still exists, switch back to it
+	if vim.g.lazygit_source_buf and vim.api.nvim_buf_is_valid(vim.g.lazygit_source_buf) then
+		vim.cmd("buffer " .. vim.g.lazygit_source_buf)
+		-- Refresh git signs after returning to original buffer
+		vim.cmd("silent! Gitsigns refresh")
+	end
+end
 
 -- Get the current transparency state from the file
 function get_transparency()
@@ -383,9 +711,6 @@ function git_previous()
 	end
 end
 
-local diagnostics_config = vim.diagnostic.config()
-local diagnostics_enabled = true
-
 function ToggleDiagnostics()
 	if not diagnostics_enabled then
 		vim.diagnostic.config(diagnostics_config)
@@ -405,20 +730,72 @@ function ToggleDiagnostics()
 	end
 end
 
-vim.diagnostic.config({
-	virtual_text = { current_line = true },
-	severity_sort = true,
-	signs = {
-		text = {
-			[vim.diagnostic.severity.ERROR] = signs.Error,
-			[vim.diagnostic.severity.WARN] = signs.Warn,
-			[vim.diagnostic.severity.HINT] = signs.Hint,
-			[vim.diagnostic.severity.INFO] = signs.Info,
-		},
-	},
-	underline = {
-		severity = vim.diagnostic.severity.ERROR,
-	},
+-- ╭─────────────────────────────────────────────────────────╮
+-- │                        Autocmds                         │
+-- ╰─────────────────────────────────────────────────────────╯
+
+vim.api.nvim_create_autocmd("BufWinLeave", {
+	pattern = "*",
+	callback = function()
+		if vim.o.laststatus ~= 3 then
+			vim.o.laststatus = 3
+		end
+	end,
+})
+
+vim.api.nvim_create_autocmd("BufEnter", {
+	pattern = "*",
+	callback = function()
+		if vim.bo.buftype == "terminal" then
+			vim.cmd("startinsert")
+		end
+	end,
+})
+
+vim.api.nvim_create_augroup("auto_open_quickfix", { clear = true })
+
+vim.api.nvim_create_autocmd("QuickFixCmdPost", {
+	group = "auto_open_quickfix",
+	pattern = "[^l]*",
+	callback = function()
+		vim.cmd("cwindow")
+	end,
+})
+
+vim.api.nvim_create_augroup("termdebug_state", { clear = true })
+
+vim.api.nvim_create_autocmd("User", {
+	group = "termdebug_state",
+	pattern = "TermdebugStartPost",
+	callback = function()
+		vim.g.termdebug_running = true
+	end,
+})
+
+vim.api.nvim_create_autocmd("User", {
+	group = "termdebug_state",
+	pattern = "TermdebugStopPost",
+	callback = function()
+		vim.g.termdebug_running = false
+	end,
+})
+
+vim.api.nvim_create_autocmd("TermClose", {
+	group = "termdebug_state",
+	pattern = "*",
+	callback = function()
+		vim.g.termdebug_running = false
+	end,
+})
+
+vim.api.nvim_create_autocmd("FileType", {
+	pattern = "*",
+	command = "setlocal fo-=c fo-=r fo-=o",
+})
+
+vim.api.nvim_create_autocmd("FileType", {
+	pattern = "template",
+	command = "setlocal filetype=html",
 })
 
 vim.api.nvim_create_autocmd("FileType", {
@@ -627,336 +1004,12 @@ vim.api.nvim_create_autocmd("VimLeavePre", {
 	end,
 })
 
--- Auto commands and functions {{{
-vim.cmd([[
-" filetype plugin on
-" set omnifunc=syntaxcomplete#Complete
+-- ╭─────────────────────────────────────────────────────────╮
+-- │                 Plugin-specific configs                 │
+-- ╰─────────────────────────────────────────────────────────╯
 
-" Prefer rg > ag > ack
-if executable('rg')
-    let g:ackprg = 'rg -S --no-heading --vimgrep'
-    set grepprg=rg\ --vimgrep\ $*
-elseif executable('ag')
-    let g:ackprg = 'ag --vimgrep'
-    set grepprg=ag\ --vimgrep\ $*
-endif
-set grepformat=%f:%l:%c:%m
-
-nmap <C-_> gcc
-xmap <C-_> gc
-smap <C-_> <ESC><ESC>gcc
-imap <C-_> <ESC>gcc
-
-nmap <C-/> gcc
-xmap <C-/> gc
-smap <C-/> <ESC><ESC>gcc
-imap <C-/> <ESC>gcc
-
-autocmd FileType vimwiki nnoremap <silent> <buffer> <CR> :silent! VimwikiFollowLink<CR>
-
-autocmd FileType template set filetype=html
-
-" dadbod completion with cmp
-" autocmd FileType sql,mysql,plsql lua require('cmp').setup.buffer({ sources = {{ name = 'vim-dadbod-completion' }} })
-au FileType * set fo-=c fo-=r fo-=o
-
-" Automatically open Quickfix window if there are errors after :make
-augroup auto_open_quickfix
-  autocmd!
-  autocmd QuickFixCmdPost [^l]* cwindow
-augroup END
-
-autocmd User TermdebugStartPost lua vim.g.termdebug_running = true
-autocmd User TermdebugStopPost lua vim.g.termdebug_running = false
-autocmd TermClose * lua vim.g.termdebug_running = false
-
-let g:termdebug_wide=1
-let g:termdebug_map_K = 0
-" let g:termdebug_disasm_window = 15
-
-autocmd BufEnter * if &buftype == 'terminal' | startinsert | endif
-
-if has('nvim')
-  augroup hide_terminal_numbers
-    autocmd!
-    autocmd TermOpen * setlocal nonumber norelativenumber nospell
-  augroup END
-else
-  augroup hide_terminal_numbers
-    autocmd!
-    autocmd BufEnter term://* setlocal nonumber norelativenumber nospell
-  augroup END
-endif
-
-" Disable while using noice.nvim
-" augroup CmdHeight
-"     autocmd!
-"     autocmd CmdlineEnter * if &cmdheight == 0 | let g:cmdheight_prev = 0 | set cmdheight=1 | endif
-"     autocmd CmdlineLeave * if exists('g:cmdheight_prev') && g:cmdheight_prev == 0 | set cmdheight=0 | unlet! g:cmdheight_prev | endif
-" augroup END
-
-" hide tmux
-" autocmd VimEnter,VimLeave * silent !tmux set status
-" autocmd VimLeave * silent !tmux set -g status-style bg=default
-
-
-autocmd BufWinLeave * if &laststatus != 3 | set laststatus=3 | endif
-
-function! OpenLazyGit()
-  " Save the buffer we came from
-  let g:lazygit_source_buf = bufnr('%')
-
-  " set notermguicolors " uncomment this if you're not using a theme for lazygit
-	terminal lazygit
-	" terminal lazygit --use-config-file="$HOME/.config/lazygit/config.yml,$HOME/.config/lazygit/themes/catppuccin/themes-mergable/mocha/peach.yml"
-  tnoremap <buffer> <ESC> <ESC>
-  startinsert
-  redraw!
-
-  augroup LazyGit
-    autocmd! * <buffer>
-    autocmd WinResized <buffer> redraw
-    autocmd TermClose <buffer> call s:OnLazyGitClose()
-    " autocmd TermClose * set termguicolors " uncomment this if you're not using a theme for lazygit
-  augroup END
-endfunction
-
-function! s:OnLazyGitClose()
-  lua Snacks.bufdelete()
-
-  if exists('g:lazygit_source_buf') && bufexists(g:lazygit_source_buf)
-    execute 'buffer' g:lazygit_source_buf
-    silent! Gitsigns refresh
-  endif
-endfunction
-
-function! OpenHtop()
-  set notermguicolors
-  terminal htop
-  redraw!
-  startinsert
-  augroup HTOP
-	  autocmd! * <buffer>
-	  autocmd WinResized <buffer> redraw
-	  autocmd TermClose <buffer> :lua Snacks.bufdelete()
-	  autocmd TermClose * set termguicolors | execute "tnoremap <ESC> \<C-\\>\<C-n>"
-  augroup END
-endfunction
-
-
-function! CloseTabAndBuffers()
-  " Get the list of buffers in the current tab
-  let l:tab_buffers = []
-  for w in range(1, tabpagewinnr(tabpagenr(), '$'))
-    call add(l:tab_buffers, winbufnr(w))
-  endfor
-  " Close the tab
-  tabclose
-  " Close all buffers that were in the tab
-  for buf in l:tab_buffers
-    if bufexists(buf) && buflisted(buf)
-      " Make buffer modifiable if it isn't
-      if !getbufvar(buf, '&modifiable')
-        call setbufvar(buf, '&modifiable', 1)
-      endif
-      " Delete the buffer
-      execute 'bdelete' buf
-    endif
-  endfor
-endfunction
-
-" netrw settings and functions
-" let g:netrw_list_hide= netrw_gitignore#Hide()
-" let s:treedepthstring     = "│ "
-" let g:netrw_hide = 1
-" let g:netrw_altv=1
-
-augroup NetrwSettings
-  autocmd!
-  autocmd WinClosed * if &filetype == 'netrw' | let g:NetrwIsOpen = 0 | endif
-augroup END
-
-let g:NetrwIsOpen=0
-
-function! CloseNetrw() abort
-  for bufn in range(1, bufnr('$'))
-    if bufexists(bufn) && getbufvar(bufn, '&filetype') ==# 'netrw'
-      silent! execute 'bwipeout ' . bufn
-      if getline(2) =~# '^" Netrw '
-        silent! bwipeout
-      endif
-      let g:NetrwIsOpen=0
-      return
-    endif
-  endfor
-endfunction
-
-augroup closeOnOpen
-  autocmd!
-  autocmd BufWinEnter * if getbufvar(winbufnr(winnr()), "&filetype") != "netrw"|call CloseNetrw()|endif
-aug END
-
-function! ToggleNetrw()
-    let g:netrw_winsize = -40
-    if g:NetrwIsOpen
-        let i = bufnr("$")
-        while (i >= 1)
-            if (getbufvar(i, "&filetype") == "netrw")
-                silent exe "bwipeout " . i
-            endif
-            let i-=1
-        endwhile
-        let g:NetrwIsOpen=0
-    else
-        let g:NetrwIsOpen=1
-				let @n = expand("%:p:h")
-        silent Lexplore %:p:h
-    endif
-endfunction
-
-" emojis
-ab :pi: 𝞹
-ab :micro: μ
-ab :dh: ⏃
-ab :bullseye: 🎯
-ab :note: 📝
-ab :separator_ltt: ❮
-ab :separator_rtt: ❯
-ab :degrees: °
-ab :wp: ♟
-ab :bp: ♙
-ab :wk: ♚
-ab :bk: ♔
-ab :wq: ♛
-ab :bq: ♕
-ab :wb: ♝
-ab :bb: ♗
-ab :wk: ♞
-ab :bk: ♘
-ab :wr: ♜
-ab :br: ♖
-]])
--- }}}
-
-vim.g.is_transparent = get_transparency()
--- Fundamental {{{
-vim.o.winborder = "rounded"
-vim.o.completeopt = "menu,menuone,noinsert,noselect"
-vim.o.cursorlineopt = "number,line"
-vim.o.list = true
-vim.o.listchars = "trail:,nbsp:.,precedes:❮,extends:❯,tab:  "
--- vim.g.sessionoptions = "buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,globals" -- removed blank
-vim.wo.spell = false
-vim.o.spellcapcheck = ""
-vim.wo.number = true
-vim.wo.relativenumber = true
-vim.wo.signcolumn = "yes:1"
-vim.o.fileencodings = "utf-8,sjis,euc-jp,latin"
-vim.o.encoding = "utf-8"
-vim.o.title = true
-vim.o.autoindent = true
-vim.o.hlsearch = true
-vim.o.incsearch = true
-vim.o.showcmd = true
--- vim.o.showtabline = 2 -- show tabline even if only one tab is open
-vim.o.cmdheight = 0
-vim.o.laststatus = 3
-vim.g.laststatus = 3
-vim.go.laststatus = 3
-vim.o.scrolloff = 1
-vim.o.timeoutlen = 300
-vim.o.inccommand = "split"
-vim.o.ruler = false
-vim.o.showmatch = true
-vim.o.matchtime = 2
-vim.o.lazyredraw = false
-vim.o.ignorecase = true -- ignore case when searching
-vim.o.smartcase = true -- if you include mixed case in your search, assumes you want case-sensitive
-vim.o.backspace = "start,eol,indent"
-vim.opt.path:append("**") -- NOTE: this is slow
-vim.opt.wildignore:append({
-	"*/node_modules/*",
-	"tags",
-	"*.o",
-	"*/vendor/*",
-	"*/build/*",
-	"*/external/*",
-	"*.obj",
-	"*.pyc",
-	"*.class",
-	"*/.git/*",
-	"*/.svn/*",
-})
-vim.o.wildignorecase = true
-vim.o.termbidi = true
-
--- Syntax theme "{{{
------------------------------------------------------------------------
-if vim.fn.exists("&termguicolors") == 1 and vim.fn.exists("&winblend") then
-	-- vim.cmd("syntax enable")
-	vim.o.termguicolors = true
-	vim.o.wildoptions = "pum"
-	vim.wo.winblend = 0
-	vim.o.pumblend = 0
-	vim.o.background = "dark"
-end
--- }}}
-
--- Settings {{{
--- ---------------------------------------------------------------------
--- vim.o.omnifunc = 'syntaxcomplete#Complete'
-vim.wo.winblend = 0
-vim.o.pumblend = 0
-vim.o.errorbells = false
-vim.o.belloff = "all"
-vim.o.confirm = true
-if vim.fn.has("gui_running") == 1 then
-	vim.o.guifont = "FiraCode Nerd Font Medium:h9"
-end
-vim.g.scrollopt = "ver,hor,jump"
-vim.schedule(function()
-	vim.opt.clipboard = vim.env.SSH_TTY and "" or "unnamedplus" -- Sync with system clipboard
-end)
-vim.o.mouse = "a"
--- vim.o.mousemoveevent = true
-vim.o.autoread = true
-vim.bo.swapfile = false
-vim.opt.swapfile = false
-vim.opt.backup = false
-vim.opt.undodir = os.getenv("HOME") .. "/.config/undodir"
-vim.opt.undofile = true
-vim.o.showmode = false
-vim.bo.textwidth = 80
--- vim.wo.colorcolumn = "80"
-vim.wo.linebreak = true
-vim.o.autochdir = true
-vim.o.hidden = true
-vim.o.wildmenu = true
-vim.o.wildmode = "longest:full,full"
--- vim.g.wildoptions = "pum"
-vim.o.splitright = true
-vim.o.splitbelow = true
-vim.o.updatetime = 200
-vim.wo.foldenable = true
-vim.o.foldlevelstart = 99
--- vim.wo.foldnestmax = 10
-vim.wo.foldmethod = "indent" -- manual, indent, syntax, marker, expr, diff
-vim.wo.conceallevel = 0
-vim.g.python3_host_prog = "/usr/bin/python3"
-
--- vim.o.smarttab = true
--- b.smartindent = true
-vim.o.tabstop = 2
-vim.o.shiftwidth = 2
--- vim.o.softtabstop = 2
-vim.o.autoindent = true
-vim.bo.autoindent = true
-vim.o.breakindent = true
--- vim.o.expandtab = true
--- vim.bo.expandtab = true
-vim.o.nrformats = "bin,octal,hex"
-
-vim.o.fillchars = "eob: "
+-- Vim Visual Multi{{{
+vim.g.VM_set_statusline = false
 -- }}}
 
 -- Netrw {{{
@@ -967,8 +1020,4 @@ vim.g.netrw_browse_split = 4
 vim.g.netrw_fastbrowse = false
 vim.g.netrw_liststyle = 3
 -- vim.g.netrw_hide = true
--- }}}
-
--- Vim Visual Multi{{{
-vim.g.VM_set_statusline = false
 -- }}}
