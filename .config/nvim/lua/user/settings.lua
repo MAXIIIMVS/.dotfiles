@@ -5,6 +5,28 @@ local signs = {
 	Info = " ",
 }
 
+local transparency_path = vim.fn.expand(os.getenv("HOME") .. "/.cache/nvim/transparency")
+
+-- Get the current transparency state from the file
+function get_transparency()
+	local f = io.open(transparency_path, "r")
+	if not f then
+		return false
+	end
+	local value = f:read("*l") == "1"
+	f:close()
+	return value
+end
+
+-- Set the transparency state to the file
+function set_transparency(state)
+	local f = io.open(transparency_path, "w")
+	if f then
+		f:write(state and "1" or "0")
+		f:close()
+	end
+end
+
 function tmux_nv()
 	if vim.env.TMUX then
 		local val = vim.fn.system("tmux show-environment -g NVIM_TRANSPARENT 2>/dev/null")
@@ -406,6 +428,7 @@ vim.api.nvim_create_autocmd("FileType", {
 	end,
 })
 
+-- vim.api.nvim_create_autocmd("FocusGained", {
 vim.api.nvim_create_autocmd("VimEnter", {
 	group = vim.api.nvim_create_augroup("sync_tmux", { clear = true }),
 	callback = function()
@@ -815,7 +838,7 @@ ab :br: ♖
 ]])
 -- }}}
 
-vim.g.is_transparent = tmux_nv()
+vim.g.is_transparent = get_transparency()
 -- Fundamental {{{
 vim.o.winborder = "rounded"
 vim.o.completeopt = "menu,menuone,noinsert,noselect"

@@ -1267,16 +1267,8 @@ require("which-key").add({
 		"<space>tt",
 		function()
 			vim.g.is_transparent = not vim.g.is_transparent
-			if vim.env.TMUX then
-				vim.fn.system({
-					"tmux",
-					"set-environment",
-					"-g",
-					"NVIM_TRANSPARENT",
-					vim.g.is_transparent and "1" or "0",
-				})
-			end
 			vim.cmd.colorscheme(vim.g.colors_name)
+			set_transparency(vim.g.is_transparent)
 		end,
 		desc = "Transparency",
 		nowait = true,
