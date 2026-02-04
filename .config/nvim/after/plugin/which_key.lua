@@ -1453,6 +1453,7 @@ require("which-key").add({
 	},
 	{
 		mode = { "s" },
+		{ "<S-S>", "S", desc = "Insert S", nowait = true, remap = false },
 		{ "f", "f", desc = "f", nowait = true, remap = false },
 		{ "F", "F", desc = "F", nowait = true, remap = false },
 		{ "t", "t", desc = "t", nowait = true, remap = false },

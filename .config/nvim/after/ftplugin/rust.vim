@@ -5,7 +5,7 @@ let @f='cargo fmt'
 let @h='cargo help'
 let @i='cargo install'
 let @p='cargo publish'
-let @x='cargo run'
+let @x='cargo run --quiet'
 let @t='cargo test'
 let @u='cargo update'
 
