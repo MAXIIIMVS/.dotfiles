@@ -5,6 +5,14 @@ local signs = {
 	Info = " ",
 }
 
+function tmux_nv()
+	if vim.env.TMUX then
+		local val = vim.fn.system("tmux show-environment -g NVIM_TRANSPARENT 2>/dev/null")
+		return val:match("NVIM_TRANSPARENT=(%d)") == "1"
+	end
+	return false
+end
+
 function apply_cursorline(win)
 	if not vim.api.nvim_win_is_valid(win) then
 		return
@@ -807,6 +815,7 @@ ab :br: ♖
 ]])
 -- }}}
 
+vim.g.is_transparent = tmux_nv()
 -- Fundamental {{{
 vim.o.winborder = "rounded"
 vim.o.completeopt = "menu,menuone,noinsert,noselect"
