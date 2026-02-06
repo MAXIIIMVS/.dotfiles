@@ -1,6 +1,4 @@
 require("which-key").add({
-	{ "<LeftMouse>", toggle_breakpoint_in_sign_col, desc = "Toggle breakpoint" },
-	{ "<RightMouse>", "<LeftMouse><cmd>normal K<CR>", desc = "Hover info" },
 	{ "<Nop>", "<Plug>VimwikiRemoveHeaderLevel", desc = "disabled", nowait = true, remap = false },
 	{ ",", group = "Miscellaneous", nowait = true, remap = false },
 	{

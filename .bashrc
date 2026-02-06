@@ -302,10 +302,13 @@ goproxy() {
 function rustproxy() {
 	MIRRORS=(
 		"https://rsproxy.cn"
+		"https://rsproxy.cn/crates.io-index"
 		"https://mirrors.cloud.tencent.com/crates.io-index/"
 		"https://europe.mirror.rs"
 		"https://mirrors.ustc.edu.cn/crates.io-index/"
 		"https://mirrors.sjtug.sjtu.edu.cn/crates.io-index/"
+		"https://mirrors.xmcloud.io/crates.io-index"
+		"https://mirrors.nju.edu.cn/crates.io-index"
 	)
 	echo "Select a crates.io mirror:"
 	select MIRROR_URL in "${MIRRORS[@]}"; do
@@ -587,22 +590,18 @@ function pipmir() {
 }
 
 # watch a directory and run arbitrary commands
+# TODO: replace this with watchexec
 watchdir() {
 	if [ $# -lt 2 ]; then
-		echo "Usage: we <directory> <command>"
+		echo "Usage: watchdir <directory> <command...>"
 		return 1
 	fi
 
 	local dir="$1"
-	local cmd="$2"
+	shift
 
-	if [ ! -d "$dir" ]; then
-		echo "Error: Directory '$dir' does not exist."
-		return 1
-	fi
-
-	echo
-	ls "$dir" | entr -c "$cmd"
+	# find "$dir" -type f | entr -c "$@"
+	fd -t f --hidden --follow --color=never --exclude node_modules --exclude dist --exclude build "$dir" | entr -c "$@"
 }
 
 # execute with nvidia

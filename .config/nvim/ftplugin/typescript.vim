@@ -1,6 +1,7 @@
 let @b='npm run build'
 let @i='npm i'
 let @s='npm start'
+let @l='npm run lint'
 let @t='npm test'
 let @x='npm run dev'
 setlocal makeprg=tsc\ %

@@ -115,6 +115,21 @@ return require("lazy").setup({
 	},
 	-- ────────────────────────────────── D ──────────────────────────────────
 	-- ────────────────────────────────── E ──────────────────────────────────
+	-- {
+	-- 	"esmuellert/nvim-eslint",
+	-- 	opts = {},
+	-- 	ft = {
+	-- 		"javascript",
+	-- 		"javascriptreact",
+	-- 		"javascript.jsx",
+	-- 		"typescript",
+	-- 		"typescriptreact",
+	-- 		"typescript.tsx",
+	-- 		"vue",
+	-- 		"svelte",
+	-- 		"astro",
+	-- 	},
+	-- },
 	-- ────────────────────────────────── F ──────────────────────────────────
 	{
 		"folke/noice.nvim",
@@ -151,6 +166,7 @@ return require("lazy").setup({
 				animate = { enabled = false },
 			},
 			notifier = { enabled = true },
+			-- terminal = { enabled = true },
 			quickfile = { enabled = true },
 			picker = {
 				enabled = true,
@@ -287,6 +303,12 @@ MEMENTO VIVERE]],
 				enabled = true,
 				toggles = { dim = false },
 				show = { statusline = true },
+				on_open = function(win)
+					require("toggleterm").setup({ direction = "float" })
+				end,
+				on_close = function(win)
+					require("toggleterm").setup({ direction = "horizontal" })
+				end,
 			},
 			styles = {
 				zen = {
