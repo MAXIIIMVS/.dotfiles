@@ -686,7 +686,7 @@ FRAME_COLOR=$(rgb2ansi 5E5C64)
 if [ "$color_prompt" = yes ]; then
 	PS1='\n'"$FRAME_COLOR"'┌── \
 \[\e[0;1;38;5;28m\]\u\
-\[\e[0;38;5;28m\] ☠️ \h\
+\[\e[0;38;5;28m\]💀\h\
 \[\e[0m\]:\
 \[\e[0;38;5;161m\]$(__git_ps1 "%s")\
 \[\e[0m\]: \

@@ -7,11 +7,11 @@ vim.g.termdebug_map_K = false
 -- vim.g.termdebug_disasm_window = 15
 
 local transparency_path = vim.fn.expand("$HOME/.cache/nvim/transparency")
-local signs = {
+signs = {
 	Error = " ",
 	Warn = " ",
-	Hint = "󰌶 ",
-	Info = " ",
+	Hint = " ",
+	Info = " ",
 }
 local diagnostics_config = vim.diagnostic.config()
 local diagnostics_enabled = true

@@ -1312,29 +1312,29 @@ MEMENTO VIVERE]],
 				path = 4,
 			})
 
+			-- ins_left({
+			-- 	function()
+			-- 		return vim.api.nvim_buf_line_count(0)
+			-- 	end,
+			-- 	color = { fg = colors.cyan, gui = "bold" },
+			-- 	cond = conditions.hide_in_width,
+			-- })
+
+			ins_left({ "location", color = { fg = colors.cyan, gui = "bold" } })
+
 			ins_left({
-				"branch",
-				icon = "",
-				color = { fg = colors.violet, gui = "bold" },
+				"progress",
+				color = { fg = colors.cyan },
 				-- cond = conditions.hide_in_width,
 			})
 
 			ins_left({
-				"diff",
-				symbols = { added = " ", modified = "柳", removed = " " },
-				diff_color = {
-					added = { fg = colors.green },
-					modified = { fg = colors.orange },
-					removed = { fg = colors.red },
-				},
-				-- cond = conditions.hide_in_width,
-			})
-
-			ins_left({
-				function()
-					return vim.fn.ObsessionStatus("▶", "Ⅱ")
+				"filesize",
+				fmt = string.upper,
+				cond = function()
+					return conditions.buffer_not_empty() and conditions.hide_in_width()
 				end,
-				color = { fg = colors.green },
+				color = { fg = colors.cyan },
 			})
 
 			-- Insert mid section. You can make any number of sections in neovim :)
@@ -1381,7 +1381,13 @@ MEMENTO VIVERE]],
 			ins_right({
 				"diagnostics",
 				sources = { "nvim_diagnostic" },
-				symbols = { error = " ", warn = " ", info = " " },
+				-- symbols = { error = " ", warn = " ", info = " " },
+				symbols = {
+					error = signs.Error,
+					warn = signs.Warn,
+					info = signs.Info,
+					hint = signs.Hint,
+				},
 				diagnostics_color = {
 					color_error = { fg = colors.red },
 					color_warn = { fg = colors.yellow },
@@ -1414,47 +1420,40 @@ MEMENTO VIVERE]],
 
 					return msg
 				end,
-				color = { fg = colors.violet },
+				color = { fg = colors.yellow, gui = "bold" },
+				-- cond = conditions.hide_in_width,
+			})
+
+			-- ins_right({
+			-- 	"o:encoding", -- option component same as &encoding in viml
+			-- 	fmt = string.upper, -- I'm not sure why it's upper case either ;)
+			-- 	cond = conditions.hide_in_width,
+			-- 	color = { fg = colors.green },
+			-- })
+
+			-- ins_right({
+			-- 	"fileformat",
+			-- 	fmt = string.upper,
+			-- 	icons_enabled = false,
+			-- 	color = { fg = colors.green, gui = "bold" },
+			-- 	cond = conditions.hide_in_width,
+			-- })
+
+			ins_right({
+				"diff",
+				symbols = { added = " ", modified = " ", removed = " " },
+				diff_color = {
+					added = { fg = colors.green },
+					modified = { fg = colors.orange },
+					removed = { fg = colors.red },
+				},
 				-- cond = conditions.hide_in_width,
 			})
 
 			ins_right({
-				"o:encoding", -- option component same as &encoding in viml
-				fmt = string.upper, -- I'm not sure why it's upper case either ;)
-				cond = conditions.hide_in_width,
-				color = { fg = colors.green },
-			})
-
-			ins_right({
-				"fileformat",
-				fmt = string.upper,
-				icons_enabled = false,
-				color = { fg = colors.green, gui = "bold" },
-				cond = conditions.hide_in_width,
-			})
-
-			ins_right({
-				"filesize",
-				fmt = string.upper,
-				cond = function()
-					return conditions.buffer_not_empty() and conditions.hide_in_width()
-				end,
-				color = { fg = colors.cyan },
-			})
-
-			ins_right({
-				function()
-					return vim.api.nvim_buf_line_count(0)
-				end,
-				color = { fg = colors.cyan, gui = "bold" },
-				cond = conditions.hide_in_width,
-			})
-
-			ins_right({ "location", color = { fg = colors.cyan, gui = "bold" } })
-
-			ins_right({
-				"progress",
-				color = { fg = colors.cyan },
+				"branch",
+				icon = "",
+				color = { fg = colors.violet, gui = "bold" },
 				-- cond = conditions.hide_in_width,
 			})
 
