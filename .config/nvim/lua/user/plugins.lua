@@ -109,7 +109,7 @@ return require("lazy").setup({
 		event = "BufReadPre",
 		config = function()
 			require("colorizer").setup({
-				filetypes = { "*", "!toggleterm", "!vimwiki" },
+				filetypes = { "css", "sass", "html", "!toggleterm", "!vimwiki" },
 			})
 		end,
 	},
@@ -673,6 +673,21 @@ MEMENTO VIVERE]],
 			require("luasnip.loaders.from_vscode").lazy_load()
 			require("luasnip").filetype_extend("vimwiki", { "markdown" })
 			require("luasnip").filetype_extend("scratch", { "markdown" })
+			local filetypes = {
+				"c",
+				"cpp",
+				"java",
+				"javascript",
+				"typescript",
+				"go",
+				"rust",
+				"php",
+				"cs",
+			}
+			local block_comment = require("snippets.block_comment")
+			for _, ft in ipairs(filetypes) do
+				require("luasnip").add_snippets(ft, block_comment)
+			end
 		end,
 	},
 	{ "leoluz/nvim-dap-go", config = true, ft = "go" },

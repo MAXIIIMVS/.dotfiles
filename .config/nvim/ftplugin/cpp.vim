@@ -18,6 +18,18 @@ endfunction
 
 
 " =========================
+" Compiler detection
+" =========================
+if executable('g++-14')
+  let s:cxx = 'g++-14'
+elseif executable('g++')
+  let s:cxx = 'g++'
+else
+  echoerr 'No g++ compiler found in PATH'
+  finish
+endif
+
+" =========================
 " Build registers
 " =========================
 function! s:setup_build_registers()
@@ -45,7 +57,7 @@ function! s:setup_build_registers()
 
   else
     " Single-file fallback
-    let @b = 'g++-14 -ggdb3 -Wall -Werror -Wpedantic -Wextra -Wsign-conversion -std=c++23 -o %:r.out %'
+    let @b = s:cxx . ' -ggdb3 -Wall -Werror -Wpedantic -Wextra -Wsign-conversion -std=c++23 -o %:r.out %'
     let @c = ''
     let @f = ''
     let @d = ''
@@ -66,7 +78,8 @@ if s:is_cmake()
 elseif s:is_make()
   setlocal makeprg=make
 else
-  setlocal makeprg=g++-14\ -ggdb3\ -Wall\ -Werror\ -Wpedantic\ -Wextra\ -Wsign-conversion\ -std=c++23\ -o\ %:r.out\ %
+  let &l:makeprg = s:cxx
+        \ . ' -ggdb3 -Wall -Werror -Wpedantic -Wextra -Wsign-conversion -std=c++23 -o %:r.out %'
 endif
 
 setlocal errorformat=%f:%l:%c:\ %m,%f:%l:\ %m
