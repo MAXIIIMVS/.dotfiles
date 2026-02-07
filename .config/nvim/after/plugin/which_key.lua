@@ -390,8 +390,8 @@ require("which-key").add({
 		nowait = true,
 		remap = false,
 	},
-	{ "]h", "<cmd>silent Gitsigns next_hunk<CR>", desc = "Jump to the next hunk", nowait = true, remap = false },
-	{ "[h", "<cmd>silent Gitsigns prev_hunk<CR>", desc = "Jump to the previous hunk", nowait = true, remap = false },
+	{ "]g", "<cmd>silent Gitsigns next_hunk<CR>", desc = "Next git hunk", nowait = true, remap = false },
+	{ "[g", "<cmd>silent Gitsigns prev_hunk<CR>", desc = "Previous git hunk", nowait = true, remap = false },
 	{ "]p", "<cmd>pu<CR>", desc = "Paste below current line", nowait = true, remap = false },
 	{ "[p", "<cmd>pu!<CR>", desc = "Paste above current line", nowait = true, remap = false },
 	{
@@ -1348,7 +1348,14 @@ require("which-key").add({
 		nowait = true,
 		remap = false,
 	},
-	{ "<leader>s", "<cmd>silent so %<CR>", desc = "Source the file", nowait = true, remap = false },
+	{ "<leader>S", "<cmd>silent so %<CR>", desc = "Source the file", nowait = true, remap = false },
+	{
+		"<leader>s",
+		"<cmd>lua sync_statusline_with_tmux()<CR>",
+		desc = "Sync statusline",
+		nowait = true,
+		remap = false,
+	},
 	{ "<leader>t", "<cmd>tabnew<CR>", desc = "Create a new tab", nowait = true, remap = false },
 	{ "<leader>w", group = "VimWiki", nowait = true, remap = false },
 	{

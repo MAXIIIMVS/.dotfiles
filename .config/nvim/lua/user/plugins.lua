@@ -1322,21 +1322,6 @@ MEMENTO VIVERE]],
 
 			ins_left({ "location", color = { fg = colors.cyan, gui = "bold" } })
 
-			ins_left({
-				"progress",
-				color = { fg = colors.cyan },
-				-- cond = conditions.hide_in_width,
-			})
-
-			ins_left({
-				"filesize",
-				fmt = string.upper,
-				cond = function()
-					return conditions.buffer_not_empty() and conditions.hide_in_width()
-				end,
-				color = { fg = colors.cyan },
-			})
-
 			-- Insert mid section. You can make any number of sections in neovim :)
 			-- for lualine it's any number greater then 2
 			-- ins_left({
@@ -1441,7 +1426,7 @@ MEMENTO VIVERE]],
 
 			ins_right({
 				"diff",
-				symbols = { added = " ", modified = " ", removed = " " },
+				symbols = { added = " ", modified = " ", removed = " " },
 				diff_color = {
 					added = { fg = colors.green },
 					modified = { fg = colors.orange },
@@ -1454,6 +1439,21 @@ MEMENTO VIVERE]],
 				"branch",
 				icon = "",
 				color = { fg = colors.violet, gui = "bold" },
+				-- cond = conditions.hide_in_width,
+			})
+
+			-- ins_right({
+			-- 	"filesize",
+			-- 	fmt = string.upper,
+			-- 	cond = function()
+			-- 		return conditions.buffer_not_empty() and conditions.hide_in_width()
+			-- 	end,
+			-- 	color = { fg = colors.cyan },
+			-- })
+
+			ins_right({
+				"progress",
+				color = { fg = colors.cyan, gui = "bold" },
 				-- cond = conditions.hide_in_width,
 			})
 
