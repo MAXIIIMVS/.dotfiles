@@ -88,7 +88,7 @@ vim.o.wildmode = "longest:full,full"
 -- vim.g.wildoptions = "pum"
 vim.o.splitright = true
 vim.o.splitbelow = true
-vim.o.updatetime = 200
+vim.o.updatetime = 350
 vim.wo.foldenable = true
 vim.o.foldlevelstart = 99
 -- vim.wo.foldnestmax = 10
@@ -311,7 +311,6 @@ function OpenLazyGit()
 		end,
 	})
 
-	-- Call custom function when lazygit terminal closes
 	vim.api.nvim_create_autocmd("TermClose", {
 		group = lazygit_group,
 		buffer = 0,
@@ -324,13 +323,10 @@ function OpenLazyGit()
 end
 
 function OnLazyGitClose()
-	-- Delete the lazygit terminal buffer
 	vim.cmd("lua Snacks.bufdelete()")
 
-	-- If the original buffer still exists, switch back to it
 	if vim.g.lazygit_source_buf and vim.api.nvim_buf_is_valid(vim.g.lazygit_source_buf) then
 		vim.cmd("buffer " .. vim.g.lazygit_source_buf)
-		-- Refresh git signs after returning to original buffer
 		vim.cmd("silent! Gitsigns refresh")
 	end
 end
