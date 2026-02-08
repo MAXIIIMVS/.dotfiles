@@ -11,5 +11,10 @@ end
 require("user")
 
 vim.o.secure = true
+
+vim.cmd.packadd("nohlsearch")
+-- vim.cmd.packadd("matchit")
+-- vim.cmd.packadd("cfilter")
+
 vim.g.is_transparent = get_transparency()
 vim.cmd.colorscheme("retrobox")

@@ -1761,7 +1761,7 @@ MEMENTO VIVERE]],
 			vim.g.clever_f_mark_char_color = 0
 		end,
 	},
-	{ "romainl/vim-cool", event = { "CmdlineEnter" }, keys = { "#", "*", "n", "N" } },
+	-- { "romainl/vim-cool", event = { "CmdlineEnter" }, keys = { "#", "*", "n", "N" } },
 	-- ────────────────────────────────── S ──────────────────────────────────
 	{
 		"saadparwaiz1/cmp_luasnip",
