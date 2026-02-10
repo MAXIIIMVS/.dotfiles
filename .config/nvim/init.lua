@@ -2,7 +2,7 @@ vim.g.termdebug_running = false
 vim.g.show_cursorline = true
 vim.g.is_diff_on = false
 vim.g.is_todo_open = false
-vim.g.big_screen_size = 150
+vim.g.big_screen_size = 120
 
 if vim.loader then
 	vim.loader.enable()
@@ -11,10 +11,5 @@ end
 require("user")
 
 vim.o.secure = true
-
-vim.cmd.packadd("nohlsearch")
--- vim.cmd.packadd("matchit")
--- vim.cmd.packadd("cfilter")
-
 vim.g.is_transparent = get_transparency()
 vim.cmd.colorscheme("retrobox")

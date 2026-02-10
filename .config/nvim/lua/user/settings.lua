@@ -56,6 +56,10 @@ vim.diagnostic.config({
 	},
 })
 
+vim.cmd.packadd("nohlsearch")
+-- vim.cmd.packadd("matchit") -- NOTE: you might want to add this after treesitter
+-- vim.cmd.packadd("cfilter")
+
 -- vim.o.omnifunc = 'syntaxcomplete#Complete'
 vim.wo.winblend = 0
 vim.o.pumblend = 0

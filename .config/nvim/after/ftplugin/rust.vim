@@ -1,4 +1,4 @@
-let @b='cargo build --release'
+let @b='cargo build'
 let @c='cargo check'
 let @d='cargo doc --open'
 let @f='cargo fmt'

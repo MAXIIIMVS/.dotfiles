@@ -260,7 +260,7 @@ MEMENTO VIVERE]],
 							key = "w",
 						},
 						{
-							icon = "󰉉 ",
+							icon = " ",
 							desc = "Restore Session",
 							action = function()
 								require("resession").load(vim.fn.getcwd(), { dir = "dirsession", notify = false })
@@ -268,7 +268,7 @@ MEMENTO VIVERE]],
 							key = "s",
 						},
 						{
-							icon = "󱁤 ",
+							icon = " ",
 							desc = "Manage external editor tooling",
 							action = ":Mason",
 							key = "m",
@@ -280,7 +280,7 @@ MEMENTO VIVERE]],
 							key = "x",
 						},
 						{
-							icon = "󰒓 ",
+							icon = " ",
 							desc = "Neovim Config Files",
 							key = "v",
 							action = ":lua Snacks.picker.files({ cwd = '~/.config/nvim' })",
@@ -688,6 +688,8 @@ MEMENTO VIVERE]],
 			for _, ft in ipairs(filetypes) do
 				require("luasnip").add_snippets(ft, block_comment)
 			end
+
+			require("luasnip").add_snippets("all", require("snippets.todo_snippets"))
 		end,
 	},
 	{ "leoluz/nvim-dap-go", config = true, ft = "go" },
@@ -1301,7 +1303,7 @@ MEMENTO VIVERE]],
 				icon_only = true,
 				-- icon = { align = "left" },
 				cond = function()
-					return conditions.is_not_terminal() -- and conditions.hide_in_width()
+					return conditions.is_not_terminal() and conditions.hide_in_width()
 				end,
 			})
 
@@ -1454,7 +1456,7 @@ MEMENTO VIVERE]],
 			ins_right({
 				"progress",
 				color = { fg = colors.cyan, gui = "bold" },
-				-- cond = conditions.hide_in_width,
+				cond = conditions.hide_in_width,
 			})
 
 			ins_right({

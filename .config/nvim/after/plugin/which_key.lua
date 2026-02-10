@@ -371,9 +371,8 @@ require("which-key").add({
 		nowait = true,
 		remap = false,
 	},
-
 	{
-		"]d",
+		"]e",
 		function()
 			vim.diagnostic.goto_next({ float = true })
 		end,
@@ -382,7 +381,7 @@ require("which-key").add({
 		remap = false,
 	},
 	{
-		"[d",
+		"[e",
 		function()
 			vim.diagnostic.goto_prev({ float = true })
 		end,
@@ -1461,10 +1460,6 @@ require("which-key").add({
 	{
 		mode = { "s" },
 		{ "<S-S>", "S", desc = "Insert S", nowait = true, remap = false },
-		{ "f", "f", desc = "f", nowait = true, remap = false },
-		{ "F", "F", desc = "F", nowait = true, remap = false },
-		{ "t", "t", desc = "t", nowait = true, remap = false },
-		{ "T", "T", desc = "T", nowait = true, remap = false },
 		{ "<C-a>", "<ESC>I", desc = "Go to the beginning of line", nowait = true, remap = false },
 		{ "<C-e>", "<ESC>A", desc = "Go to the end of line", nowait = true, remap = false },
 		{ "<C-d>", "<Delete>i", desc = "delete selection", nowait = true, remap = false },

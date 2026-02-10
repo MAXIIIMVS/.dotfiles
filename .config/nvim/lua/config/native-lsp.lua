@@ -165,7 +165,7 @@ function M.setup(on_attach, capabilities)
 				"haml",
 				"handlebars",
 				"hbs",
-				"html",
+				-- "html",
 				"htmlangular",
 				"html-eex",
 				"php",
