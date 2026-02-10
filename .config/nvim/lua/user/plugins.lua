@@ -339,6 +339,13 @@ MEMENTO VIVERE]],
 				before = "",
 				after = "",
 			},
+			keywords = {
+				REVIEW = { color = "info" },
+				DEBUG = { color = "error", alt = { "DEBUGGING" } },
+				DEPRECATED = { color = "warning" },
+				IMPORTANT = { color = "hint" },
+				IDEA = { color = "hint", alt = { "IDEAS" } },
+			},
 		},
 	},
 	{
