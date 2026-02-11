@@ -1283,6 +1283,13 @@ require("which-key").add({
 	},
 	{ "<space>w", group = "Work", nowait = true, remap = false },
 	{
+		"<space>wc",
+		"<cmd>silent !open https://app.clockify.me/<CR>",
+		desc = "Open Clockify",
+		nowait = true,
+		remap = false,
+	},
+	{
 		"<space>wo",
 		function()
 			vim.fn.jobstart({ "gnome-pomodoro" })

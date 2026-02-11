@@ -114,7 +114,7 @@ command -v fzf >/dev/null 2>&1 && source /usr/share/doc/fzf/examples/key-binding
 # │                        Functions                         │
 # ╰──────────────────────────────────────────────────────────╯
 
-change_project() {
+pp() {
 	# Get projects and store in array
 	mapfile -t projects < <(gnome-pomodoro-tracking --projects)
 
