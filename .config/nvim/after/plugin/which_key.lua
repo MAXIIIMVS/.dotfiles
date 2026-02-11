@@ -1281,40 +1281,66 @@ require("which-key").add({
 		nowait = true,
 		remap = false,
 	},
+	{ "<space>w", group = "Work", nowait = true, remap = false },
 	{
-		"<space>w",
+		"<space>wo",
 		function()
-			-- NOTE: you need to install porsmo using cargo
-			local command = get_char("<command> [(S)topwatch, (T)imer, (P)omodoro]: ")
-			if command ~= "s" and command ~= "t" and command ~= "p" then
-				print("invalid input")
-				return
-			end
-			if command == "s" then
-				vim.cmd('2TermExec name="Stopwatch" cmd="porsmo s"')
-			elseif command == "t" then
-				local time = vim.fn.input("Enter the time: ")
-				vim.cmd('3TermExec name="Timer" cmd="porsmo t ' .. time .. '"')
-			elseif command == "p" then
-				local option = get_char("<duration> [(S)hort, (L)ong, (C)ustom]: ")
-				if option ~= "s" and option ~= "l" and option ~= "c" then
-					print("invalid input")
-					return
-				end
-				if option == "c" then
-					local time = vim.fn.input("Enter the time: ")
-					vim.cmd('4TermExec name="Pomodoro" cmd="porsmo p c ' .. time .. '"')
-				elseif option == "s" then
-					vim.cmd('5TermExec name="Pomodoro" cmd="porsmo p s"')
-				else
-					vim.cmd('6TermExec name="Pomodoro"  cmd="porsmo p l"')
-				end
-			end
+			vim.fn.jobstart({ "gnome-pomodoro" })
 		end,
-		desc = "Work (pomodoro, timer, stopwatch)",
+		desc = "Open the App",
 		nowait = true,
 		remap = false,
-		icon = "󱎫 ",
+		silent = false,
+	},
+	{
+		"<space>wp",
+		function()
+			vim.fn.jobstart({ "gnome-pomodoro", "--no-default-window", "--pause" })
+		end,
+		desc = "Pause ",
+		nowait = true,
+		remap = false,
+		silent = false,
+	},
+	{
+		"<space>wq",
+		function()
+			vim.fn.jobstart({ "gnome-pomodoro", "--no-default-window", "--quit" })
+		end,
+		desc = "Quit ",
+		nowait = true,
+		remap = false,
+		silent = false,
+	},
+	{
+		"<space>wr",
+		function()
+			vim.fn.jobstart({ "gnome-pomodoro", "--no-default-window", "--resume" })
+		end,
+		desc = "Resume ",
+		nowait = true,
+		remap = false,
+		silent = false,
+	},
+	{
+		"<space>ws",
+		function()
+			vim.fn.jobstart({ "gnome-pomodoro", "--no-default-window", "--start" })
+		end,
+		desc = "Start ",
+		nowait = true,
+		remap = false,
+		silent = false,
+	},
+	{
+		"<space>wx",
+		function()
+			vim.fn.jobstart({ "gnome-pomodoro", "--no-default-window", "--stop" })
+		end,
+		desc = "Stop ",
+		nowait = true,
+		remap = false,
+		silent = false,
 	},
 	{
 		"<leader><leader>",
