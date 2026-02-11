@@ -114,6 +114,39 @@ command -v fzf >/dev/null 2>&1 && source /usr/share/doc/fzf/examples/key-binding
 # │                        Functions                         │
 # ╰──────────────────────────────────────────────────────────╯
 
+change_project() {
+	# Get projects and store in array
+	mapfile -t projects < <(gnome-pomodoro-tracking --projects)
+
+	if [ ${#projects[@]} -eq 0 ]; then
+		echo "No projects found."
+		return 1
+	fi
+
+	echo "Select a project:"
+	for i in "${!projects[@]}"; do
+		# Extract the name (all after first space)
+		name=$(echo "${projects[$i]}" | awk '{$1=""; sub(/^ /,""); print}')
+		printf "%d) %s\n" $((i + 1)) "$name"
+	done
+
+	# Read user choice
+	read -rp "Enter number: " choice
+
+	# Validate input
+	if ! [[ "$choice" =~ ^[0-9]+$ ]] || [ "$choice" -lt 1 ] || [ "$choice" -gt "${#projects[@]}" ]; then
+		echo "Invalid selection."
+		return 1
+	fi
+
+	# Get the corresponding ID (first field)
+	project_id=$(echo "${projects[$((choice - 1))]}" | awk '{print $1}')
+
+	# Set the project
+	gnome-pomodoro-tracking --projects --set "$project_id"
+	echo "Project set to $(echo "${projects[$((choice - 1))]}" | awk '{$1=""; sub(/^ /,""); print}')"
+}
+
 rgb2ansi() {
 	local hex="${1#"#"}" # strip leading #
 	if [[ ! $hex =~ ^[0-9a-fA-F]{6}$ ]]; then
