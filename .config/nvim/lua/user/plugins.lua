@@ -418,19 +418,20 @@ MEMENTO VIVERE]],
 					return vim_item -- don't format in cmdline mode
 				end
 				local icon = kind_icons[vim_item.kind] or ""
-				-- local abbr = vim_item.abbr
-				-- local menu = vim_item.menu or ""
-				-- if string.len(abbr) > MAX_ABBR_WIDTH then
-				-- 	abbr = string.sub(abbr, 1, MAX_ABBR_WIDTH - 1) .. "…"
-				-- end
-				-- if string.len(menu) > MAX_MENU_WIDTH then
-				-- 	menu = string.sub(menu, 1, MAX_MENU_WIDTH - 1) .. "…"
-				-- end
-				-- vim_item.abbr = icon .. " " .. abbr .. " "
-				-- vim_item.abbr = icon .. " " .. vim_item.abbr .. " (" .. vim_item.kind .. ")"
-				vim_item.abbr = icon .. " " .. vim_item.abbr .. " "
-				vim_item.kind = ""
-				-- vim_item.menu = menu
+				local kind = vim_item.kind or ""
+				local abbr = vim_item.abbr or ""
+
+				-- optional truncation
+				if #abbr > MAX_ABBR_WIDTH then
+					abbr = abbr:sub(1, MAX_ABBR_WIDTH - 1) .. "…"
+				end
+
+				if #kind > MAX_MENU_WIDTH then
+					kind = kind:sub(1, MAX_MENU_WIDTH - 1) .. "…"
+				end
+
+				vim_item.abbr = icon .. " " .. abbr
+				vim_item.kind = "(" .. kind .. ")"
 				vim_item.menu = ""
 				return vim_item
 			end
@@ -500,7 +501,10 @@ MEMENTO VIVERE]],
 				-- 	autocomplete = false,
 				-- },
 				window = {
-					completion = cmp.config.window.bordered(),
+					completion = cmp.config.window.bordered({
+						col_offset = -2,
+						side_padding = 1,
+					}),
 					documentation = cmp.config.window.bordered({
 						max_width = 60,
 						max_height = 10,
