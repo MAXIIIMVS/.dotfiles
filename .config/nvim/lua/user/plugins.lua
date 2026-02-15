@@ -1228,6 +1228,29 @@ MEMENTO VIVERE]],
 				end
 			end
 
+			local pomodoro_text = ""
+			local timer = vim.loop.new_timer()
+
+			local function update_pomodoro()
+				local handle = io.popen("pomodoro-status.sh 2>/dev/null")
+				if handle then
+					local result = handle:read("*a")
+					handle:close()
+
+					pomodoro_text = result:gsub("\n", "")
+					vim.cmd("redrawstatus")
+				else
+					pomodoro_text = ""
+				end
+			end
+
+			function PomodoroStatus()
+				return pomodoro_text
+			end
+
+			-- Start immediately, then every 1000ms
+			timer:start(0, 1000, vim.schedule_wrap(update_pomodoro))
+
 			local conditions = {
 				buffer_not_empty = function()
 					return vim.fn.empty(vim.fn.expand("%:t")) ~= 1
@@ -1334,6 +1357,11 @@ MEMENTO VIVERE]],
 			-- })
 
 			ins_left({ "location", color = { fg = colors.cyan, gui = "bold" } })
+
+			ins_left({
+				PomodoroStatus, -- NOTE: requires gnome-shell-pomodoro
+				color = { fg = colors.orange },
+			})
 
 			-- Insert mid section. You can make any number of sections in neovim :)
 			-- for lualine it's any number greater then 2
