@@ -1292,7 +1292,7 @@ require("which-key").add({
 	{
 		"<space>wo",
 		function()
-			vim.fn.jobstart({ "gnome-pomodoro" })
+			vim.fn.jobstart({ "gnome-pomodoro" }, { detach = true })
 		end,
 		desc = "Open the App",
 		nowait = true,
@@ -1302,7 +1302,7 @@ require("which-key").add({
 	{
 		"<space>wp",
 		function()
-			vim.fn.jobstart({ "gnome-pomodoro", "--no-default-window", "--pause" })
+			vim.fn.jobstart({ "gnome-pomodoro", "--no-default-window", "--pause" }, { detach = true })
 		end,
 		desc = "Pause ",
 		nowait = true,
@@ -1312,7 +1312,7 @@ require("which-key").add({
 	{
 		"<space>wq",
 		function()
-			vim.fn.jobstart({ "gnome-pomodoro", "--no-default-window", "--quit" })
+			vim.fn.jobstart({ "gnome-pomodoro", "--no-default-window", "--quit" }, { detach = true })
 		end,
 		desc = "Quit ",
 		nowait = true,
@@ -1322,7 +1322,7 @@ require("which-key").add({
 	{
 		"<space>wr",
 		function()
-			vim.fn.jobstart({ "gnome-pomodoro", "--no-default-window", "--resume" })
+			vim.fn.jobstart({ "gnome-pomodoro", "--no-default-window", "--resume" }, { detach = true })
 		end,
 		desc = "Resume ",
 		nowait = true,
@@ -1332,7 +1332,7 @@ require("which-key").add({
 	{
 		"<space>ws",
 		function()
-			vim.fn.jobstart({ "gnome-pomodoro", "--no-default-window", "--start" })
+			vim.fn.jobstart({ "gnome-pomodoro", "--no-default-window", "--start" }, { detach = true })
 		end,
 		desc = "Start ",
 		nowait = true,
@@ -1342,7 +1342,7 @@ require("which-key").add({
 	{
 		"<space>wx",
 		function()
-			vim.fn.jobstart({ "gnome-pomodoro", "--no-default-window", "--stop" })
+			vim.fn.jobstart({ "gnome-pomodoro", "--no-default-window", "--stop" }, { detach = true })
 		end,
 		desc = "Stop ",
 		nowait = true,
