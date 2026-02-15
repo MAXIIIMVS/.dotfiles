@@ -315,6 +315,19 @@ require("which-key").add({
 	{ ";z", "<cmd>lua Snacks.zen()<CR>", desc = "Toggle Zen Mode", nowait = true, remap = false },
 	{ ";Z", "<cmd>lua Snacks.zen.zoom()<CR>", desc = "Maximize the window", nowait = true, remap = false },
 	{ "<C-s>", "<cmd>silent update<CR>", desc = "Save buffer", nowait = true, remap = false },
+	{
+		"<c-w>t",
+		function()
+			local buf = vim.api.nvim_get_current_buf()
+			local full_path = vim.api.nvim_buf_get_name(buf)
+			-- vim.cmd("bdelete") -- NOTE: this doesn't work with bdelete
+			vim.cmd("lua Snacks.bufdelete()")
+			vim.cmd("tabnew " .. full_path) -- or | bfirst | tabprevious
+		end,
+		desc = "Move the current buffer to a new tab",
+		nowait = true,
+		remap = false,
+	},
 	{ "<M-Down>", "<cmd>resize +1<CR>", desc = "Decrease window height", nowait = true, remap = false },
 	{ "<M-Left>", "<cmd>vertical resize -1<CR>", desc = "Increase window width", nowait = true, remap = false },
 	{ "<M-Right>", "<cmd>vertical resize +1<CR>", desc = "Decrease window width", nowait = true, remap = false },
