@@ -542,6 +542,9 @@ function toggle_todo()
 end
 
 function term_debug()
+	if vim.g.zen_mode then
+		vim.cmd("lua Snacks.zen()")
+	end
 	-- local filepath = vim.fn.expand("%:p:h") -- the directory
 	local filepath = vim.fn["FindRootDirectory"]() -- NOTE: depends on vim-rooter
 	-- specific to my system
