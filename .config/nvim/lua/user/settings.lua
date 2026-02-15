@@ -313,6 +313,7 @@ end
 function OpenLazyGit()
 	if vim.g.zen_mode then
 		vim.cmd("lua Snacks.zen()")
+		vim.g.restore_zen_mode = true
 	end
 	-- Save the buffer we came from
 	vim.g.lazygit_source_buf = vim.api.nvim_get_current_buf()
@@ -350,6 +351,10 @@ function OnLazyGitClose()
 	if vim.g.lazygit_source_buf and vim.api.nvim_buf_is_valid(vim.g.lazygit_source_buf) then
 		vim.cmd("buffer " .. vim.g.lazygit_source_buf)
 		vim.cmd("silent! Gitsigns refresh")
+	end
+	if vim.g.restore_zen_mode then
+		vim.g.restore_zen_mode = false
+		vim.cmd("lua Snacks.zen()")
 	end
 end
 
