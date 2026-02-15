@@ -303,10 +303,12 @@ MEMENTO VIVERE]],
 				enabled = true,
 				toggles = { dim = false },
 				show = { statusline = true },
-				on_open = function(win)
+				on_open = function()
+					vim.g.zen_mode = true
 					require("toggleterm").setup({ direction = "float" })
 				end,
-				on_close = function(win)
+				on_close = function()
+					vim.g.zen_mode = false
 					require("toggleterm").setup({ direction = "horizontal" })
 				end,
 			},

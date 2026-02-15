@@ -311,6 +311,9 @@ function openURL(url)
 end
 
 function OpenLazyGit()
+	if vim.g.zen_mode then
+		vim.cmd("lua Snacks.zen()")
+	end
 	-- Save the buffer we came from
 	vim.g.lazygit_source_buf = vim.api.nvim_get_current_buf()
 
