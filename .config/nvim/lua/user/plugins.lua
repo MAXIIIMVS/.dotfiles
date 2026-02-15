@@ -1238,7 +1238,7 @@ MEMENTO VIVERE]],
 					handle:close()
 
 					pomodoro_text = result:gsub("\n", "")
-					vim.cmd("redrawstatus")
+					-- vim.cmd("redrawstatus")
 				else
 					pomodoro_text = ""
 				end
