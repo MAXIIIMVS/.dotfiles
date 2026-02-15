@@ -56,7 +56,7 @@ vim.diagnostic.config({
 	},
 })
 
-vim.cmd.packadd("nohlsearch")
+-- vim.cmd.packadd("nohlsearch") -- NOTE: buggy, causes problems for f and t (celver-f)
 -- vim.cmd.packadd("matchit") -- NOTE: you might want to add this after treesitter
 -- vim.cmd.packadd("cfilter")
 
