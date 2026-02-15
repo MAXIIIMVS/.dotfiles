@@ -295,6 +295,21 @@ endfunction
 -- │                        Functions                        │
 -- ╰─────────────────────────────────────────────────────────╯
 
+function openURL(url)
+	local open_command
+	if vim.fn.has("unix") == 1 then
+		open_command = "xdg-open"
+	elseif vim.fn.has("mac") == 1 then
+		open_command = "open"
+	elseif vim.fn.has("win32") == 1 then
+		open_command = "start"
+	else
+		print("Unsupported OS for opening the browser.")
+		return
+	end
+	vim.fn.system(open_command .. " " .. vim.fn.shellescape(url))
+end
+
 function OpenLazyGit()
 	-- Save the buffer we came from
 	vim.g.lazygit_source_buf = vim.api.nvim_get_current_buf()
@@ -888,6 +903,7 @@ vim.api.nvim_create_autocmd("ColorScheme", {
 				Pmenu = { bg = "NONE", fg = "#d0d0d0" },
 				PmenuSel = { bg = "#444444", fg = "#ffffff" },
 				QuickFixLine = { bg = "#38384C", bold = true },
+				Search = { bg = "#2f4f75", fg = "NONE" },
 				SignColumn = { bg = "NONE" },
 				SnacksIndent = { fg = "#504945" },
 				StatusLine = { bg = "NONE", fg = "NONE" },
@@ -933,6 +949,7 @@ vim.api.nvim_create_autocmd("ColorScheme", {
 				Pmenu = { bg = "#181826", fg = "#CDD6F5" },
 				PmenuSel = { bg = "#444444", fg = "#ffffff" },
 				QuickFixLine = { bg = "#38384C", bold = true },
+				Search = { bg = "#3b5b8a", fg = "NONE" },
 				SignColumn = { bg = "#1A1528", fg = "#CDD6F5" },
 				SnacksIndent = { fg = "#444444" }, -- same as Whitespace
 				TabLineFill = { bg = "#130F1E" },
@@ -958,6 +975,7 @@ vim.api.nvim_create_autocmd("ColorScheme", {
 				Pmenu = { bg = "#f2e5bc", fg = "#3c3836" },
 				PmenuSel = { bg = "#e6d6a8", fg = "#282828" },
 				QuickFixLine = { bg = "#CBCFD9", bold = true },
+				Search = { bg = "#c6dbff", fg = "NONE" },
 				SignColumn = { fg = "#3c3836", bg = "#fbf1c7" },
 				Visual = { bg = "#d5c4a1", fg = "NONE" },
 				VisualNOS = { bg = "#d5c4a1", fg = "NONE" },

@@ -143,19 +143,7 @@ require("which-key").add({
 	{
 		";A",
 		function()
-			local url = "https://chat.deepseek.com/"
-			local open_command
-			if vim.fn.has("unix") == 1 then
-				open_command = "xdg-open"
-			elseif vim.fn.has("mac") == 1 then
-				open_command = "open"
-			elseif vim.fn.has("win32") == 1 then
-				open_command = "start"
-			else
-				print("Unsupported OS for opening the browser.")
-				return
-			end
-			vim.fn.system(open_command .. " " .. vim.fn.shellescape(url))
+			openURL("https://gemini.google.com/app")
 		end,
 		desc = "Ask AI",
 		nowait = true,
@@ -180,18 +168,7 @@ require("which-key").add({
 				:gsub(" ", "+") -- Replace spaces with '+'
 
 			local url = "https://www.google.com/search?q=" .. encoded_query
-			local open_command
-			if vim.fn.has("unix") == 1 then
-				open_command = "xdg-open"
-			elseif vim.fn.has("mac") == 1 then
-				open_command = "open"
-			elseif vim.fn.has("win32") == 1 then
-				open_command = "start"
-			else
-				print("Unsupported OS for opening the browser.")
-				return
-			end
-			vim.fn.system(open_command .. " " .. vim.fn.shellescape(url))
+			openURL(url)
 		end,
 		desc = "Ask Google",
 		nowait = true,
@@ -573,7 +550,9 @@ require("which-key").add({
 	{ "<space>cD", "<cmd>Calendar -view=days<CR>", desc = "View Days", nowait = true, remap = false },
 	{
 		"<space>cO",
-		"<cmd>silent !open https://calendar.google.com/calendar/u/0/r/tasks<CR>",
+		function()
+			openURL("https://calendar.google.com/calendar/u/0/r/tasks")
+		end,
 		desc = "Open Google Tasks",
 		nowait = true,
 		remap = false,
@@ -583,7 +562,9 @@ require("which-key").add({
 	{ "<space>cg", ":Calendar ", desc = "Go to date (mm dd yyyy)", nowait = true, remap = false, silent = false },
 	{
 		"<space>co",
-		"<cmd>silent !open https://calendar.google.com/calendar/u/0/r<CR>",
+		function()
+			openURL("https://calendar.google.com/calendar/u/0/r")
+		end,
 		desc = "Open Google Calendar",
 		nowait = true,
 		remap = false,
@@ -991,7 +972,9 @@ require("which-key").add({
 	{ "<space>gh", get_git_hash, desc = "copy current git hash to g register", nowait = true, remap = false },
 	{
 		"<space>gN",
-		"<cmd>silent !xdg-open https://github.com/new<CR>",
+		function()
+			openURL("https://github.com/new")
+		end,
 		desc = "Create a new Respository",
 		nowait = true,
 		remap = false,
@@ -1005,7 +988,9 @@ require("which-key").add({
 	},
 	{
 		"<space>gO",
-		"<cmd>silent !xdg-open https://github.com/MAXIIIMVS<CR>",
+		function()
+			openURL("https://github.com/MAXIIIMVS")
+		end,
 		desc = "Open my github profile",
 		nowait = true,
 		remap = false,
@@ -1284,7 +1269,9 @@ require("which-key").add({
 	{ "<space>w", group = "Work", nowait = true, remap = false },
 	{
 		"<space>wc",
-		"<cmd>silent !open https://app.clockify.me/<CR>",
+		function()
+			openURL("https://app.clockify.me/")
+		end,
 		desc = "Open Clockify",
 		nowait = true,
 		remap = false,
