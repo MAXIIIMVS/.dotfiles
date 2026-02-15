@@ -1251,6 +1251,16 @@ MEMENTO VIVERE]],
 			-- Start immediately, then every 1000ms
 			timer:start(0, 1000, vim.schedule_wrap(update_pomodoro))
 
+			vim.api.nvim_create_autocmd("VimLeavePre", {
+				callback = function()
+					if timer and not timer:is_closing() then
+						timer:stop()
+						timer:close()
+						timer = nil
+					end
+				end,
+			})
+
 			local conditions = {
 				buffer_not_empty = function()
 					return vim.fn.empty(vim.fn.expand("%:t")) ~= 1
