@@ -1046,7 +1046,6 @@ require("which-key").add({
 	{
 		"<space>lr",
 		function()
-			vim.lsp.stop_client(vim.lsp.get_clients())
 			vim.cmd("e")
 		end,
 		desc = "Restart LSP",
@@ -1055,7 +1054,9 @@ require("which-key").add({
 	},
 	{
 		"<space>ls",
-		":lua vim.lsp.stop_client(vim.lsp.get_clients())<CR>",
+		function()
+			vim.lsp.stop_client(vim.lsp.get_clients({ bufnr = vim.api.nvim_get_current_buf() }))
+		end,
 		desc = "Stop LSP",
 		nowait = true,
 		remap = false,
