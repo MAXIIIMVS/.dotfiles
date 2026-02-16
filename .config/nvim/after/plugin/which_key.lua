@@ -1282,6 +1282,30 @@ require("which-key").add({
 	},
 	{ "<space>w", group = "Work", nowait = true, remap = false },
 	{
+		"<space>wb",
+		desc = "Break",
+		nowait = true,
+		remap = false,
+	},
+	{
+		"<space>wbs",
+		function()
+			pomodoro_break("short-break")
+		end,
+		desc = "Short",
+		nowait = true,
+		remap = false,
+	},
+	{
+		"<space>wbl",
+		function()
+			pomodoro_break("long-break")
+		end,
+		desc = "Long",
+		nowait = true,
+		remap = false,
+	},
+	{
 		"<space>wc",
 		function()
 			openURL("https://app.clockify.me/")

@@ -295,6 +295,29 @@ endfunction
 -- │                        Functions                        │
 -- ╰─────────────────────────────────────────────────────────╯
 
+function pomodoro_break(length)
+	-- NOTE: length can be "short-break" or "long-break"
+	local cmd = {
+		"gdbus",
+		"call",
+		"--session",
+		"--dest",
+		"org.gnome.Pomodoro",
+		"--object-path",
+		"/org/gnome/Pomodoro",
+		"--method",
+		"org.gnome.Pomodoro.SetState",
+		length,
+		"0",
+	}
+
+	vim.system(cmd, { text = true }, function(obj)
+		if obj.code ~= 0 then
+			vim.notify("Pomodoro break failed:\n" .. (obj.stderr or ""), vim.log.levels.ERROR)
+		end
+	end)
+end
+
 function openURL(url)
 	local open_command
 	if vim.fn.has("unix") == 1 then
