@@ -1337,52 +1337,146 @@ MEMENTO VIVERE]],
 			ins_left({
 				"location",
 				color = { fg = colors.cyan, gui = "bold" },
-				cond = conditions.hide_in_width,
+				cond = function()
+					return conditions.is_not_terminal() and conditions.hide_in_width()
+				end,
 			})
 
-			-- Pomodoro status for lualine
-			if vim.fn.executable("gnome-pomodoro") == 1 and vim.fn.executable("pomodoro-status.sh") == 1 then
-				local pomodoro_text = ""
-				local is_updating = false
-				local timer = vim.uv.new_timer()
+			if vim.fn.executable("gnome-pomodoro") == 1 and vim.fn.executable("gdbus") == 1 then
+				local pomodoro_text = ""
+				local state = nil
+				local paused = false
+				local remaining = 0
 
-				local function update_pomodoro()
-					if is_updating then
+				local tick_timer = vim.uv.new_timer()
+
+				local function format_time()
+					local minutes = math.floor(remaining / 60)
+					local seconds = remaining % 60
+
+					local icon
+					if paused then
+						icon = ""
+					elseif state == "pomodoro" then
+						icon = ""
+					elseif state == "short-break" or state == "long-break" then
+						icon = " "
+					else
+						icon = ""
+					end
+
+					pomodoro_text = string.format("%s %02d:%02d", icon, minutes, seconds)
+				end
+
+				local function stop_tick()
+					if tick_timer and not tick_timer:is_closing() then
+						tick_timer:stop()
+					end
+				end
+
+				local function start_tick()
+					stop_tick()
+
+					if paused or not state then
 						return
 					end
 
-					is_updating = true
+					tick_timer:start(
+						1000,
+						1000,
+						vim.schedule_wrap(function()
+							if remaining > 0 then
+								remaining = remaining - 1
+								format_time()
+								vim.cmd("redrawstatus")
+							end
+						end)
+					)
+				end
 
-					vim.system({ "pomodoro-status.sh" }, { text = true }, function(obj)
-						if obj.code == 0 and obj.stdout then
-							pomodoro_text = obj.stdout:gsub("%s+$", "")
-						else
+				local function fetch_state()
+					vim.system({
+						"gdbus",
+						"call",
+						"--session",
+						"--dest",
+						"org.gnome.Pomodoro",
+						"--object-path",
+						"/org/gnome/Pomodoro",
+						"--method",
+						"org.freedesktop.DBus.Properties.GetAll",
+						"org.gnome.Pomodoro",
+					}, { text = true }, function(obj)
+						if obj.code ~= 0 or not obj.stdout then
+							state = nil
 							pomodoro_text = ""
+							stop_tick()
+							vim.schedule(function()
+								vim.cmd("redrawstatus")
+							end)
+							return
 						end
 
-						is_updating = false
+						local output = obj.stdout
 
-						-- MUST use vim.schedule here because we're in a fast event context
+						local elapsed = tonumber(output:match("'Elapsed': <%f[%d](%d+)")) or 0
+						state = output:match("'State': <'([^']+)'")
+						local duration = tonumber(output:match("'StateDuration': <%f[%d](%d+)")) or 0
+						paused = output:match("'IsPaused': <(true|false)") == "true"
+
+						if not state then
+							pomodoro_text = ""
+							stop_tick()
+						else
+							remaining = math.max(duration - elapsed, 0)
+							format_time()
+							start_tick()
+						end
+
 						vim.schedule(function()
 							vim.cmd("redrawstatus")
 						end)
 					end)
 				end
 
-				local function PomodoroStatus()
-					return pomodoro_text
-				end
-
-				timer:start(0, 1000, vim.schedule_wrap(update_pomodoro))
-
-				vim.api.nvim_create_autocmd("VimLeavePre", {
-					callback = function()
-						if timer and not timer:is_closing() then
-							timer:stop()
-							timer:close()
+				-- Subscribe to DBus signals
+				local monitor = vim.system({
+					"gdbus",
+					"monitor",
+					"--session",
+					"--dest",
+					"org.gnome.Pomodoro",
+					"--object-path",
+					"/org/gnome/Pomodoro",
+				}, {
+					stdout = function(_, data)
+						if not data then
+							return
+						end
+						if data:match("PropertiesChanged") then
+							fetch_state()
 						end
 					end,
 				})
+
+				-- Initial fetch
+				fetch_state()
+
+				vim.api.nvim_create_autocmd("VimLeavePre", {
+					callback = function()
+						stop_tick()
+						if tick_timer and not tick_timer:is_closing() then
+							tick_timer:close()
+						end
+						if monitor then
+							monitor:kill()
+						end
+					end,
+				})
+
+				local function PomodoroStatus()
+					return pomodoro_text
+				end
 
 				ins_left({
 					PomodoroStatus,
@@ -1837,6 +1931,10 @@ MEMENTO VIVERE]],
 		dependencies = { "nvim-cmp", "LuaSnip" },
 	},
 	-- { "seblyng/roslyn.nvim", opts = {}, ft = "cs" },
+	-- {
+	-- 	"sphamba/smear-cursor.nvim",
+	-- 	opts = {},
+	-- },
 	{
 		"stevearc/oil.nvim",
 		dependencies = { "nvim-tree/nvim-web-devicons" },
