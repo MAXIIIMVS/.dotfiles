@@ -1344,15 +1344,18 @@ MEMENTO VIVERE]],
 
 			if vim.fn.executable("gnome-pomodoro") == 1 and vim.fn.executable("gdbus") == 1 then
 				local pomodoro_text = ""
+
+				-- Cache state locally
 				local state = nil
+				local duration = 0
+				local elapsed = 0
 				local paused = false
-				local remaining = 0
 
-				local tick_timer = vim.uv.new_timer()
-
-				local function format_time()
+				-- Function to re-calculate and format the display string
+				local function update_display()
+					local remaining = math.max(duration - elapsed, 0)
 					local minutes = math.floor(remaining / 60)
-					local seconds = remaining % 60
+					local seconds = math.floor(remaining % 60)
 
 					local icon
 					if paused then
@@ -1365,81 +1368,66 @@ MEMENTO VIVERE]],
 						icon = ""
 					end
 
-					pomodoro_text = string.format("%s %02d:%02d", icon, minutes, seconds)
-				end
-
-				local function stop_tick()
-					if tick_timer and not tick_timer:is_closing() then
-						tick_timer:stop()
+					-- Only show time if we are in an active state
+					if state then
+						pomodoro_text = string.format("%s %02d:%02d", icon, minutes, seconds)
+					else
+						pomodoro_text = icon
 					end
 				end
 
-				local function start_tick()
-					stop_tick()
-
-					if paused or not state then
-						return
-					end
-
-					tick_timer:start(
-						1000,
-						1000,
-						vim.schedule_wrap(function()
-							if remaining > 0 then
-								remaining = remaining - 1
-								format_time()
-								vim.cmd("redrawstatus")
-							end
-						end)
-					)
-				end
-
-				local function fetch_state()
-					vim.system({
-						"gdbus",
-						"call",
-						"--session",
-						"--dest",
-						"org.gnome.Pomodoro",
-						"--object-path",
-						"/org/gnome/Pomodoro",
-						"--method",
-						"org.freedesktop.DBus.Properties.GetAll",
-						"org.gnome.Pomodoro",
-					}, { text = true }, function(obj)
-						if obj.code ~= 0 or not obj.stdout then
-							state = nil
-							pomodoro_text = ""
-							stop_tick()
-							vim.schedule(function()
-								vim.cmd("redrawstatus")
-							end)
-							return
-						end
-
-						local output = obj.stdout
-
-						local elapsed = tonumber(output:match("'Elapsed': <%f[%d](%d+)")) or 0
-						state = output:match("'State': <'([^']+)'")
-						local duration = tonumber(output:match("'StateDuration': <%f[%d](%d+)")) or 0
-						paused = output:match("'IsPaused': <(true|false)") == "true"
-
-						if not state then
-							pomodoro_text = ""
-							stop_tick()
-						else
-							remaining = math.max(duration - elapsed, 0)
-							format_time()
-							start_tick()
-						end
-
-						vim.schedule(function()
-							vim.cmd("redrawstatus")
-						end)
+				-- Force a redraw of the statusline
+				local function refresh_ui()
+					update_display()
+					vim.schedule(function()
+						vim.cmd("redrawstatus")
 					end)
 				end
 
-				-- Subscribe to DBus signals
+				-- Parse the raw string output from GDBus
+				-- Handles the format: {'Key': <Value>, ...}
+				local function parse_dbus_output(output)
+					if not output then
+						return
+					end
+
+					local changed = false
+
+					-- 1. Parse 'Elapsed': <18.27...>
+					local new_elapsed = output:match("'Elapsed': <([%d%.]+)>")
+					if new_elapsed then
+						elapsed = tonumber(new_elapsed)
+						changed = true
+					end
+
+					-- 2. Parse 'IsPaused': <true/false>
+					local new_paused = output:match("'IsPaused': <(%a+)>")
+					if new_paused then
+						paused = (new_paused == "true")
+						changed = true
+					end
+
+					-- 3. Parse 'State': <'pomodoro'>
+					local new_state = output:match("'State': <'([^']+)'>")
+					if new_state then
+						state = new_state
+						changed = true
+					end
+
+					-- 4. Parse 'StateDuration': <1500.0>
+					local new_duration = output:match("'StateDuration': <([%d%.]+)>")
+					if new_duration then
+						duration = tonumber(new_duration)
+						changed = true
+					end
+
+					if changed then
+						refresh_ui()
+					end
+				end
+
+				-- 1. Start a persistent monitor process
+				-- This receives signals every second when running, and state changes instantly
 				local monitor = vim.system({
 					"gdbus",
 					"monitor",
@@ -1450,30 +1438,42 @@ MEMENTO VIVERE]],
 					"/org/gnome/Pomodoro",
 				}, {
 					stdout = function(_, data)
-						if not data then
-							return
-						end
-						if data:match("PropertiesChanged") then
-							fetch_state()
+						-- Data might contain multiple lines or partial chunks, but gdbus
+						-- typically flushes lines cleanly. We process the whole chunk.
+						if data then
+							parse_dbus_output(data)
 						end
 					end,
 				})
 
-				-- Initial fetch
-				fetch_state()
+				-- 2. Perform one initial fetch to sync state on startup
+				vim.system({
+					"gdbus",
+					"call",
+					"--session",
+					"--dest",
+					"org.gnome.Pomodoro",
+					"--object-path",
+					"/org/gnome/Pomodoro",
+					"--method",
+					"org.freedesktop.DBus.Properties.GetAll",
+					"org.gnome.Pomodoro",
+				}, { text = true }, function(obj)
+					if obj.code == 0 and obj.stdout then
+						parse_dbus_output(obj.stdout)
+					end
+				end)
 
+				-- Cleanup on exit to prevent zombie processes
 				vim.api.nvim_create_autocmd("VimLeavePre", {
 					callback = function()
-						stop_tick()
-						if tick_timer and not tick_timer:is_closing() then
-							tick_timer:close()
-						end
 						if monitor then
 							monitor:kill()
 						end
 					end,
 				})
 
+				-- Component for lualine
 				local function PomodoroStatus()
 					return pomodoro_text
 				end

@@ -1282,6 +1282,16 @@ require("which-key").add({
 	},
 	{ "<space>w", group = "Work", nowait = true, remap = false },
 	{
+		"<space>wa",
+		function()
+			vim.fn.jobstart({ "gnome-pomodoro" }, { detach = true })
+		end,
+		desc = "App (Gnome Pomodoro)",
+		nowait = true,
+		remap = false,
+		silent = false,
+	},
+	{
 		"<space>wb",
 		desc = "Break",
 		nowait = true,
@@ -1306,7 +1316,7 @@ require("which-key").add({
 		remap = false,
 	},
 	{
-		"<space>wc",
+		"<space>wo",
 		function()
 			openURL("https://app.clockify.me/")
 		end,
@@ -1315,21 +1325,11 @@ require("which-key").add({
 		remap = false,
 	},
 	{
-		"<space>wo",
-		function()
-			vim.fn.jobstart({ "gnome-pomodoro" }, { detach = true })
-		end,
-		desc = "Open the App",
-		nowait = true,
-		remap = false,
-		silent = false,
-	},
-	{
 		"<space>wp",
 		function()
-			vim.fn.jobstart({ "gnome-pomodoro", "--no-default-window", "--pause" }, { detach = true })
+			vim.fn.jobstart({ "gnome-pomodoro", "--no-default-window", "--pause-resume" }, { detach = true })
 		end,
-		desc = "Pause ",
+		desc = "Pause/Resume",
 		nowait = true,
 		remap = false,
 		silent = false,
@@ -1339,17 +1339,7 @@ require("which-key").add({
 		function()
 			vim.fn.jobstart({ "gnome-pomodoro", "--no-default-window", "--quit" }, { detach = true })
 		end,
-		desc = "Quit ",
-		nowait = true,
-		remap = false,
-		silent = false,
-	},
-	{
-		"<space>wr",
-		function()
-			vim.fn.jobstart({ "gnome-pomodoro", "--no-default-window", "--resume" }, { detach = true })
-		end,
-		desc = "Resume ",
+		desc = "Quit",
 		nowait = true,
 		remap = false,
 		silent = false,
@@ -1357,19 +1347,9 @@ require("which-key").add({
 	{
 		"<space>ws",
 		function()
-			vim.fn.jobstart({ "gnome-pomodoro", "--no-default-window", "--start" }, { detach = true })
+			vim.fn.jobstart({ "gnome-pomodoro", "--no-default-window", "--start-stop" }, { detach = true })
 		end,
-		desc = "Start ",
-		nowait = true,
-		remap = false,
-		silent = false,
-	},
-	{
-		"<space>wx",
-		function()
-			vim.fn.jobstart({ "gnome-pomodoro", "--no-default-window", "--stop" }, { detach = true })
-		end,
-		desc = "Stop ",
+		desc = "Start/Stop",
 		nowait = true,
 		remap = false,
 		silent = false,
