@@ -1229,39 +1229,6 @@ MEMENTO VIVERE]],
 				end
 			end
 
-			local pomodoro_text = ""
-			local timer = vim.loop.new_timer()
-
-			local function update_pomodoro()
-				local handle = io.popen("pomodoro-status.sh 2>/dev/null")
-				if handle then
-					local result = handle:read("*a")
-					handle:close()
-
-					pomodoro_text = result:gsub("\n", "")
-					-- vim.cmd("redrawstatus")
-				else
-					pomodoro_text = ""
-				end
-			end
-
-			function PomodoroStatus()
-				return pomodoro_text
-			end
-
-			-- Start immediately, then every 1000ms
-			timer:start(0, 1000, vim.schedule_wrap(update_pomodoro))
-
-			vim.api.nvim_create_autocmd("VimLeavePre", {
-				callback = function()
-					if timer and not timer:is_closing() then
-						timer:stop()
-						timer:close()
-						timer = nil
-					end
-				end,
-			})
-
 			local conditions = {
 				buffer_not_empty = function()
 					return vim.fn.empty(vim.fn.expand("%:t")) ~= 1
@@ -1367,12 +1334,61 @@ MEMENTO VIVERE]],
 			-- 	cond = conditions.hide_in_width,
 			-- })
 
-			ins_left({ "location", color = { fg = colors.cyan, gui = "bold" } })
-
 			ins_left({
-				PomodoroStatus, -- NOTE: requires gnome-shell-pomodoro
-				color = { fg = colors.orange },
+				"location",
+				color = { fg = colors.cyan, gui = "bold" },
+				cond = conditions.hide_in_width,
 			})
+
+			-- Pomodoro status for lualine
+			if vim.fn.executable("gnome-pomodoro") == 1 and vim.fn.executable("pomodoro-status.sh") == 1 then
+				local pomodoro_text = ""
+				local is_updating = false
+				local timer = vim.uv.new_timer()
+
+				local function update_pomodoro()
+					if is_updating then
+						return
+					end
+
+					is_updating = true
+
+					vim.system({ "pomodoro-status.sh" }, { text = true }, function(obj)
+						if obj.code == 0 and obj.stdout then
+							pomodoro_text = obj.stdout:gsub("%s+$", "")
+						else
+							pomodoro_text = ""
+						end
+
+						is_updating = false
+
+						-- MUST use vim.schedule here because we're in a fast event context
+						vim.schedule(function()
+							vim.cmd("redrawstatus")
+						end)
+					end)
+				end
+
+				local function PomodoroStatus()
+					return pomodoro_text
+				end
+
+				timer:start(0, 1000, vim.schedule_wrap(update_pomodoro))
+
+				vim.api.nvim_create_autocmd("VimLeavePre", {
+					callback = function()
+						if timer and not timer:is_closing() then
+							timer:stop()
+							timer:close()
+						end
+					end,
+				})
+
+				ins_left({
+					PomodoroStatus,
+					color = { fg = colors.orange },
+				})
+			end
 
 			-- Insert mid section. You can make any number of sections in neovim :)
 			-- for lualine it's any number greater then 2
