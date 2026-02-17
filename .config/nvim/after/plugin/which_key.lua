@@ -1316,6 +1316,16 @@ require("which-key").add({
 		remap = false,
 	},
 	{
+		"<space>we",
+		function()
+			vim.fn.jobstart({ "gnome-pomodoro", "--no-default-window", "--extend" }, { detach = true })
+		end,
+		desc = "Extend current pomodoro or break",
+		nowait = true,
+		remap = false,
+		silent = false,
+	},
+	{
 		"<space>wo",
 		function()
 			openURL("https://app.clockify.me/")
@@ -1323,6 +1333,16 @@ require("which-key").add({
 		desc = "Open Clockify",
 		nowait = true,
 		remap = false,
+	},
+	{
+		"<space>wP",
+		function()
+			vim.fn.jobstart({ "gnome-pomodoro", "--preferences" }, { detach = true })
+		end,
+		desc = "Show Preferences",
+		nowait = true,
+		remap = false,
+		silent = false,
 	},
 	{
 		"<space>wp",
@@ -1340,6 +1360,16 @@ require("which-key").add({
 			vim.fn.jobstart({ "gnome-pomodoro", "--no-default-window", "--quit" }, { detach = true })
 		end,
 		desc = "Quit",
+		nowait = true,
+		remap = false,
+		silent = false,
+	},
+	{
+		"<space>wS",
+		function()
+			vim.fn.jobstart({ "gnome-pomodoro", "--no-default-window", "--skip" }, { detach = true })
+		end,
+		desc = "Skip to a pomodoro or to a break",
 		nowait = true,
 		remap = false,
 		silent = false,
