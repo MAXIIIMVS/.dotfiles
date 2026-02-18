@@ -13,3 +13,5 @@ if filereadable(FindRootDirectory() . '/project.godot')
 else
   setlocal makeprg=dotnet\ build
 endif
+
+setlocal errorformat=%f:%l:%c:\ %m,%f:%l:\ %m

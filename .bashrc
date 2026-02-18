@@ -38,7 +38,7 @@ export ATAC_KEY_BINDINGS=/home/mustafa/.config/atac/vim_key_bindings.toml
 export ATAC_MAIN_DIR=/home/mustafa/code/atac/
 export COLORTERM=gnome-terminal
 export DOTNET_CLI_TELEMETRY_OPTOUT=1
-export DOTNET_ROOT=$HOME/dotnet
+export DOTNET_ROOT=$HOME/.dotnet
 export EDITOR="$(which nvim)"
 export GOPATH=$HOME/go
 export LG_CONFIG_FILE="$HOME/.config/lazygit/config.yml,$HOME/.config/lazygit/themes/catppuccin/themes-mergable/mocha/peach.yml"
@@ -54,6 +54,7 @@ export FZF_ALT_C_COMMAND="fd -t d . $HOME"
 # export LD_LIBRARY_PATH="$HOME/tools/llvm-20.1.8/lib:$LD_LIBRARY_PATH"
 # export CMAKE_PREFIX_PATH="$HOME/tools/llvm-20.1.8:$CMAKE_PREFIX_PATH"
 # export PATH=$PATH:$HOME/.emacs.d/bin
+export PATH=$PATH:$DOTNET_ROOT:$DOTNET_ROOT/tools
 export PATH="$PATH:$GOPATH/bin:$HOME/.local/bin:$HOME/bin"
 
 # [ -d "/usr/local/go/bin" ] && export PATH="$PATH:/usr/local/go/bin"

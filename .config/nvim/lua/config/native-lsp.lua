@@ -41,7 +41,7 @@ function M.setup(on_attach, capabilities)
 		-- "prisma-language-server",
 		"pyright",
 		"rust-analyzer",
-		-- "roslyn",
+		"roslyn",
 		"shfmt",
 		"stylua",
 		-- "templ",
@@ -69,10 +69,10 @@ function M.setup(on_attach, capabilities)
 			filetypes = { "c", "cpp", "objc", "objcpp", "cuda" },
 			-- root_dir = <disabled by vim-rooter>
 		},
-		csharp_ls = {
-			cmd = { "csharp-ls" },
-			filetypes = { "cs" },
-		},
+		-- csharp_ls = {
+		-- 	cmd = { "csharp-ls" },
+		-- 	filetypes = { "cs" },
+		-- },
 		cssls = {
 			cmd = { "vscode-css-language-server", "--stdio" },
 			filetypes = { "css", "scss", "less" },
