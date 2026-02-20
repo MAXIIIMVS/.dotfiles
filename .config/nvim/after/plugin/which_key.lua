@@ -1061,6 +1061,110 @@ require("which-key").add({
 		nowait = true,
 		remap = false,
 	},
+	{ "<space>p", group = "Pomodoro", nowait = true, remap = false },
+	{
+		"<space>pa",
+		function()
+			vim.fn.jobstart({ "gnome-pomodoro" }, { detach = true })
+		end,
+		desc = "App (Gnome Pomodoro)",
+		nowait = true,
+		remap = false,
+		silent = false,
+	},
+	{
+		"<space>pb",
+		desc = "Break",
+		nowait = true,
+		remap = false,
+	},
+	{
+		"<space>pbs",
+		function()
+			pomodoro_break("short-break")
+		end,
+		desc = "Short",
+		nowait = true,
+		remap = false,
+	},
+	{
+		"<space>pbl",
+		function()
+			pomodoro_break("long-break")
+		end,
+		desc = "Long",
+		nowait = true,
+		remap = false,
+	},
+	{
+		"<space>pe",
+		function()
+			vim.fn.jobstart({ "gnome-pomodoro", "--no-default-window", "--extend" }, { detach = true })
+		end,
+		desc = "Extend current pomodoro or break",
+		nowait = true,
+		remap = false,
+		silent = false,
+	},
+	{
+		"<space>po",
+		function()
+			openURL("https://app.clockify.me/")
+		end,
+		desc = "Open Clockify",
+		nowait = true,
+		remap = false,
+	},
+	{
+		"<space>pP",
+		function()
+			vim.fn.jobstart({ "gnome-pomodoro", "--preferences" }, { detach = true })
+		end,
+		desc = "Show Preferences",
+		nowait = true,
+		remap = false,
+		silent = false,
+	},
+	{
+		"<space>pp",
+		function()
+			vim.fn.jobstart({ "gnome-pomodoro", "--no-default-window", "--pause-resume" }, { detach = true })
+		end,
+		desc = "Pause/Resume",
+		nowait = true,
+		remap = false,
+		silent = false,
+	},
+	{
+		"<space>pq",
+		function()
+			vim.fn.jobstart({ "gnome-pomodoro", "--no-default-window", "--quit" }, { detach = true })
+		end,
+		desc = "Quit",
+		nowait = true,
+		remap = false,
+		silent = false,
+	},
+	{
+		"<space>pS",
+		function()
+			vim.fn.jobstart({ "gnome-pomodoro", "--no-default-window", "--skip" }, { detach = true })
+		end,
+		desc = "Skip to a pomodoro or to a break",
+		nowait = true,
+		remap = false,
+		silent = false,
+	},
+	{
+		"<space>ps",
+		function()
+			vim.fn.jobstart({ "gnome-pomodoro", "--no-default-window", "--start-stop" }, { detach = true })
+		end,
+		desc = "Start/Stop",
+		nowait = true,
+		remap = false,
+		silent = false,
+	},
 	{ "<space>s", group = "Session", nowait = true, remap = false },
 	{
 		"<space>sd",
@@ -1279,110 +1383,6 @@ require("which-key").add({
 		desc = "Extensions",
 		nowait = true,
 		remap = false,
-	},
-	{ "<space>w", group = "Work", nowait = true, remap = false },
-	{
-		"<space>wa",
-		function()
-			vim.fn.jobstart({ "gnome-pomodoro" }, { detach = true })
-		end,
-		desc = "App (Gnome Pomodoro)",
-		nowait = true,
-		remap = false,
-		silent = false,
-	},
-	{
-		"<space>wb",
-		desc = "Break",
-		nowait = true,
-		remap = false,
-	},
-	{
-		"<space>wbs",
-		function()
-			pomodoro_break("short-break")
-		end,
-		desc = "Short",
-		nowait = true,
-		remap = false,
-	},
-	{
-		"<space>wbl",
-		function()
-			pomodoro_break("long-break")
-		end,
-		desc = "Long",
-		nowait = true,
-		remap = false,
-	},
-	{
-		"<space>we",
-		function()
-			vim.fn.jobstart({ "gnome-pomodoro", "--no-default-window", "--extend" }, { detach = true })
-		end,
-		desc = "Extend current pomodoro or break",
-		nowait = true,
-		remap = false,
-		silent = false,
-	},
-	{
-		"<space>wo",
-		function()
-			openURL("https://app.clockify.me/")
-		end,
-		desc = "Open Clockify",
-		nowait = true,
-		remap = false,
-	},
-	{
-		"<space>wP",
-		function()
-			vim.fn.jobstart({ "gnome-pomodoro", "--preferences" }, { detach = true })
-		end,
-		desc = "Show Preferences",
-		nowait = true,
-		remap = false,
-		silent = false,
-	},
-	{
-		"<space>wp",
-		function()
-			vim.fn.jobstart({ "gnome-pomodoro", "--no-default-window", "--pause-resume" }, { detach = true })
-		end,
-		desc = "Pause/Resume",
-		nowait = true,
-		remap = false,
-		silent = false,
-	},
-	{
-		"<space>wq",
-		function()
-			vim.fn.jobstart({ "gnome-pomodoro", "--no-default-window", "--quit" }, { detach = true })
-		end,
-		desc = "Quit",
-		nowait = true,
-		remap = false,
-		silent = false,
-	},
-	{
-		"<space>wS",
-		function()
-			vim.fn.jobstart({ "gnome-pomodoro", "--no-default-window", "--skip" }, { detach = true })
-		end,
-		desc = "Skip to a pomodoro or to a break",
-		nowait = true,
-		remap = false,
-		silent = false,
-	},
-	{
-		"<space>ws",
-		function()
-			vim.fn.jobstart({ "gnome-pomodoro", "--no-default-window", "--start-stop" }, { detach = true })
-		end,
-		desc = "Start/Stop",
-		nowait = true,
-		remap = false,
-		silent = false,
 	},
 	{
 		"<leader><leader>",
