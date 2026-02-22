@@ -369,7 +369,6 @@ function OnLazyGitClose()
 	end
 end
 
--- Get the current transparency state from the file
 function get_transparency()
 	local f = io.open(transparency_path, "r")
 	if not f then
@@ -380,7 +379,6 @@ function get_transparency()
 	return value
 end
 
--- Set the transparency state to the file
 function set_transparency(state)
 	local f = io.open(transparency_path, "w")
 	if f then

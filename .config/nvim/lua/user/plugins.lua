@@ -151,7 +151,6 @@ return require("lazy").setup({
 	-- ────────────────────────────────── F ──────────────────────────────────
 	{
 		"folke/flash.nvim",
-		event = "VeryLazy",
 		opts = {
 			modes = {
 				char = {
@@ -182,6 +181,10 @@ return require("lazy").setup({
 				end,
 				desc = "Flash",
 			},
+			"f",
+			"F",
+			"t",
+			"T",
 		},
 	},
 	{
@@ -748,6 +751,7 @@ MEMENTO VIVERE]],
 				"rust",
 				"php",
 				"cs",
+				"css",
 			}
 			local block_comment = require("snippets.block_comment")
 			for _, ft in ipairs(filetypes) do
@@ -1621,7 +1625,7 @@ MEMENTO VIVERE]],
 					return msg
 				end,
 				color = { fg = colors.yellow, gui = "bold" },
-				-- cond = conditions.hide_in_width,
+				cond = conditions.hide_in_width,
 			})
 
 			-- ins_right({
