@@ -304,7 +304,6 @@ require("which-key").add({
 		nowait = true,
 		remap = false,
 	},
-	{ ";w", "<cmd>lua require('nvim-window').pick()<cr>", desc = "Pick a window", nowait = true, remap = false },
 	{
 		";x",
 		"<cmd>silent ToggleTermSendCurrentLine<CR>",

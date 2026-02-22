@@ -150,6 +150,41 @@ return require("lazy").setup({
 	-- },
 	-- ────────────────────────────────── F ──────────────────────────────────
 	{
+		"folke/flash.nvim",
+		event = "VeryLazy",
+		opts = {
+			modes = {
+				char = {
+					enabled = true,
+					jump_labels = true,
+					autohide = true, -- Hide labels when you're not moving
+					search = { wrap = true },
+					multi_line = true,
+					highlight = { backdrop = true },
+					keys = { "f", "F", "t", "T" },
+					char_actions = function()
+						return {
+							-- NOTE: to ensure no weird key hijacking happens here.
+						}
+					end,
+				},
+				-- search = {
+				-- 	enabled = true,
+				-- },
+			},
+		},
+		keys = {
+			{
+				";j",
+				mode = { "n", "x", "o" },
+				function()
+					require("flash").jump()
+				end,
+				desc = "Flash",
+			},
+		},
+	},
+	{
 		"folke/noice.nvim",
 		event = { "CmdlineEnter", "BufReadPost" },
 		cmd = { "Noice", "NoiceEnable", "NoiceDisable" },
@@ -1650,19 +1685,19 @@ MEMENTO VIVERE]],
 		end,
 	},
 	{ "nvim-lua/plenary.nvim", lazy = true },
-	{
-		"nvim-mini/mini.jump2d",
-		version = false,
-		opts = {
-			mappings = { start_jumping = ";j" },
-			view = {
-				dim = true,
-				n_steps_ahead = 2,
-			},
-			silent = true,
-		},
-		keys = { ";j", { ";j", mode = "v" } },
-	},
+	-- {
+	-- 	"nvim-mini/mini.jump2d",
+	-- 	version = false,
+	-- 	opts = {
+	-- 		mappings = { start_jumping = ";j" },
+	-- 		view = {
+	-- 			dim = true,
+	-- 			n_steps_ahead = 2,
+	-- 		},
+	-- 		silent = true,
+	-- 	},
+	-- 	keys = { ";j", { ";j", mode = "v" } },
+	-- },
 	{
 		"nvim-mini/mini.move",
 		version = false,
@@ -1927,20 +1962,20 @@ MEMENTO VIVERE]],
 		},
 		lazy = true,
 	},
-	{
-		"rhysd/clever-f.vim",
-		keys = {
-			{ "f", mode = { "n", "v" } },
-			{ "F", mode = { "n", "v" } },
-			{ "t", mode = { "n", "v" } },
-			{ "T", mode = { "n", "v" } },
-		},
-		init = function()
-			-- vim.g.clever_f_ignore_case = true
-			vim.g.clever_f_smart_case = true
-			vim.g.clever_f_mark_char_color = 0
-		end,
-	},
+	-- {
+	-- 	"rhysd/clever-f.vim",
+	-- 	keys = {
+	-- 		{ "f", mode = { "n", "v" } },
+	-- 		{ "F", mode = { "n", "v" } },
+	-- 		{ "t", mode = { "n", "v" } },
+	-- 		{ "T", mode = { "n", "v" } },
+	-- 	},
+	-- 	init = function()
+	-- 		-- vim.g.clever_f_ignore_case = true
+	-- 		vim.g.clever_f_smart_case = true
+	-- 		vim.g.clever_f_mark_char_color = 0
+	-- 	end,
+	-- },
 	{ "romainl/vim-cool", event = { "CmdlineEnter" }, keys = { "#", "*", "n", "N" } },
 	-- ────────────────────────────────── S ──────────────────────────────────
 	{
@@ -2123,7 +2158,6 @@ MEMENTO VIVERE]],
 	},
 	-- ────────────────────────────────── X ──────────────────────────────────
 	-- ────────────────────────────────── Y ──────────────────────────────────
-	{ "yorickpeterse/nvim-window", lazy = true, opts = { border = "rounded" } },
 	-- ────────────────────────────────── Z ──────────────────────────────────
 	-- {
 	-- 	"zongben/capsoff.nvim",
