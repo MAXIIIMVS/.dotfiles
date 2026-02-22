@@ -112,6 +112,22 @@ return require("lazy").setup({
 		config = function()
 			require("colorizer").setup({
 				filetypes = { "css", "sass", "html", "!toggleterm", "!vimwiki" },
+				user_default_options = {
+					RGB = true,
+					RRGGBB = true,
+					names = true,
+					RRGGBBAA = true,
+					AARRGGBB = true,
+					rgb_fn = true,
+					hsl_fn = true,
+					oklch_fn = true,
+					css = true,
+					css_fn = true,
+					tailwind = true,
+					sass = { enable = true, parsers = { "css" } },
+					mode = "background",
+					always_update = true,
+				},
 			})
 		end,
 	},

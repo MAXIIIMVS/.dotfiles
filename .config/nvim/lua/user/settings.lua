@@ -202,18 +202,6 @@ smap <C-/> <ESC><ESC>gcc
 imap <C-/> <ESC>gcc
 
 
-if has('nvim')
-  augroup hide_terminal_numbers
-    autocmd!
-    autocmd TermOpen * setlocal nonumber norelativenumber nospell
-  augroup END
-else
-  augroup hide_terminal_numbers
-    autocmd!
-    autocmd BufEnter term://* setlocal nonumber norelativenumber nospell
-  augroup END
-endif
-
 " Disable while using noice.nvim
 " augroup CmdHeight
 "     autocmd!
@@ -792,12 +780,10 @@ vim.api.nvim_create_autocmd("BufWinLeave", {
 	end,
 })
 
-vim.api.nvim_create_autocmd("BufEnter", {
-	pattern = "*",
+vim.api.nvim_create_autocmd("TermOpen", {
 	callback = function()
-		if vim.bo.buftype == "terminal" then
-			vim.cmd("startinsert")
-		end
+		vim.cmd("startinsert")
+		-- vim.cmd("set ft=terminal")
 	end,
 })
 
