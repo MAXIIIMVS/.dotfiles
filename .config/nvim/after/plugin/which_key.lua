@@ -439,7 +439,7 @@ require("which-key").add({
 	{ "ga", "<cmd>lua vim.lsp.buf.code_action()<CR>", desc = "Code action", nowait = true, remap = false },
 	{ "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>", desc = "Go to declaration", nowait = true, remap = false },
 	{ "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", desc = "Go to definition", nowait = true, remap = false },
-	{ "gF", "<c-w>vgf", desc = "Edit the file in a vertical split", nowait = true, remap = false },
+	{ "gS", "<c-w>sgf", desc = "Edit the file in a horizontal split", nowait = true, remap = false },
 	{
 		"gs",
 		function()
@@ -449,6 +449,7 @@ require("which-key").add({
 		nowait = true,
 		remap = false,
 	},
+	{ "gV", "<c-w>vgf", desc = "Edit the file in a vertical split", nowait = true, remap = false },
 	{
 		"gy",
 		"<cmd>lua vim.lsp.buf.type_definition()<CR>",
@@ -1060,7 +1061,7 @@ require("which-key").add({
 		nowait = true,
 		remap = false,
 	},
-	{ "<space>p", group = "Pomodoro", nowait = true, remap = false },
+	{ "<space>p", group = "Pomodoro", nowait = true, remap = false, icon = " " },
 	{
 		"<space>pa",
 		function()

@@ -151,7 +151,6 @@ return require("lazy").setup({
 	-- ────────────────────────────────── F ──────────────────────────────────
 	{
 		"folke/flash.nvim",
-		event = "VeryLazy",
 		opts = {
 			modes = {
 				char = {
@@ -182,6 +181,10 @@ return require("lazy").setup({
 				end,
 				desc = "Flash",
 			},
+			"f",
+			"F",
+			"t",
+			"T",
 		},
 	},
 	{
