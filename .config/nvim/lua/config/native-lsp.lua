@@ -1,4 +1,4 @@
--- Checkout: https://github.com/neovim/nvim-lspconfig/blob/master/doc/configs.md
+-- https://github.com/neovim/nvim-lspconfig/blob/master/doc/configs.md
 
 local M = {}
 
@@ -300,6 +300,15 @@ function M.setup(on_attach, capabilities)
 		rust_analyzer = {
 			cmd = { "rust-analyzer" },
 			filetypes = { "rust" },
+			cargo = { loadOutDirsFromCheck = false }, -- skip some extra analysis
+			-- procMacro = { enable = false }, -- disable procedural macros
+			checkOnSave = { command = "clippy" }, -- only run on save, not continuously
+			files = {
+				excludeDirs = { "target", "node_modules" }, -- don’t watch huge dirs
+			},
+			workspace = {
+				didChangeWatchedFiles = { dynamicRegistration = false },
+			},
 			settings = {
 				["rust-analyzer"] = {
 					assist = {

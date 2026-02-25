@@ -160,6 +160,7 @@ return require("lazy").setup({
 					search = { wrap = true },
 					multi_line = true,
 					highlight = { backdrop = true },
+					label = { exclude = "hjkliardcsKxpy" },
 					keys = { "f", "F", "t", "T" },
 					char_actions = function()
 						return {
@@ -220,6 +221,12 @@ return require("lazy").setup({
 			indent = {
 				enabled = true,
 				animate = { enabled = false },
+				filter = function(buf, win)
+					return vim.g.snacks_indent ~= false
+						and vim.b[buf].snacks_indent ~= false
+						and vim.bo[buf].buftype == ""
+						and vim.bo[buf].filetype ~= "dbout"
+				end,
 			},
 			notifier = { enabled = true },
 			-- terminal = { enabled = true },
@@ -711,6 +718,9 @@ MEMENTO VIVERE]],
 		},
 		init = function()
 			vim.g.db_ui_use_nerd_fonts = 1
+			vim.g.db_ui_disable_info_notifications = 1
+			vim.g.db_ui_use_nvim_notify = 1
+			-- vim.g.db_ui_disable_progress_bar = 1
 		end,
 	},
 	{

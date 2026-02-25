@@ -1441,11 +1441,11 @@ require("which-key").add({
 	},
 	{
 		mode = { "i" },
-		-- { "<C-k>", "<C-o>C", desc = "Delete to the end of the line", nowait = false, remap = false },
+		{ "<C-k><c-k>", "<C-o>C", desc = "Delete to the end of the line", nowait = false, remap = false },
 		{
-			"<c-k><c-k>",
+			"<c-k><c-o>",
 			"<cmd>lua Snacks.picker.icons()<cr>",
-			desc = "Icons",
+			desc = "Open Icons Picker",
 			nowait = true,
 			remap = false,
 			silent = true,
