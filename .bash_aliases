@@ -51,3 +51,4 @@ alias pipset="pip config set global.index-url 'https://mirrors.sustech.edu.cn/py
 alias pipunset="pip config unset global.index-url"
 alias diff="diff --color=always"
 alias pomo="gnome-pomodoro"
+alias catlinks="cat << 'EOF' > links.txt"
