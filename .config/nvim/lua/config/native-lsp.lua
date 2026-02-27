@@ -301,7 +301,7 @@ function M.setup(on_attach, capabilities)
 			cmd = { "rust-analyzer" },
 			filetypes = { "rust" },
 			cargo = { loadOutDirsFromCheck = false }, -- skip some extra analysis
-			-- procMacro = { enable = false }, -- disable procedural macros
+			procMacro = { enable = false }, -- disable procedural macros
 			checkOnSave = { command = "clippy" }, -- only run on save, not continuously
 			files = {
 				excludeDirs = { "target", "node_modules" }, -- don’t watch huge dirs

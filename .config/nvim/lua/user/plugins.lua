@@ -1671,14 +1671,15 @@ MEMENTO VIVERE]],
 				-- cond = conditions.hide_in_width,
 			})
 
-			-- ins_right({
-			-- 	"filesize",
-			-- 	fmt = string.upper,
-			-- 	cond = function()
-			-- 		return conditions.buffer_not_empty() and conditions.hide_in_width()
-			-- 	end,
-			-- 	color = { fg = colors.cyan },
-			-- })
+			ins_right({
+				"filesize",
+				fmt = string.upper,
+				cond = function()
+					return conditions.buffer_not_empty() and conditions.hide_in_width()
+				end,
+				color = { fg = colors.cyan },
+				cond = conditions.hide_in_width,
+			})
 
 			ins_right({
 				"progress",
