@@ -928,6 +928,7 @@ vim.api.nvim_create_autocmd("ColorScheme", {
 				StatusLineNC = { bg = "NONE", fg = "NONE" },
 				StatusLineTerm = { bg = "NONE", fg = "NONE" },
 				StatusLineTermNC = { bg = "NONE", fg = "NONE" },
+				String = { fg = "#D7AF5F" },
 				TabLineFill = { bg = "NONE", fg = "NONE" },
 				TabLineSel = { fg = "#ffffff", bg = "NONE" },
 				VertSplit = { bg = "NONE", fg = "#5f5f5f" },
@@ -974,6 +975,7 @@ vim.api.nvim_create_autocmd("ColorScheme", {
 				Search = { bg = "#3b5b8a", fg = "NONE" },
 				SignColumn = { bg = "#1A1528", fg = "#CDD6F5" },
 				SnacksIndent = { fg = "#444444" }, -- same as Whitespace
+				String = { fg = "#D7AF5F" },
 				TabLineFill = { bg = "#130F1E" },
 				TabLineSel = { fg = "#ffffff", bg = "#1A1528" },
 				WinSeparator = { fg = "#554D80" },
