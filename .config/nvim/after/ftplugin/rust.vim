@@ -7,7 +7,7 @@ let @i='cargo install'
 let @p='cargo publish'
 let @r='RUST_BACKTRACE=1 cargo run --quiet'
 let @x='cargo run --quiet'
-let @t='cargo test'
+let @t='cargo test --quiet'
 let @u='cargo update'
 
 setlocal makeprg=cargo\ build
