@@ -13,7 +13,7 @@ function M.setup(on_attach, capabilities)
 		"codelldb",
 		"cpptools",
 		-- NOTE: dotnet tool install --global csharp-ls
-		"csharp-language-server", -- NOTE: roslyn works well too
+		-- "csharp-language-server", -- NOTE: roslyn works well too
 		"csharpier",
 		"css-lsp",
 		"delve",
@@ -38,6 +38,7 @@ function M.setup(on_attach, capabilities)
 		-- "node-debug2-adapter",
 		-- "phpactor",
 		"prettierd",
+		"pgformatter",
 		-- "prisma-language-server",
 		"pyright",
 		"rust-analyzer",

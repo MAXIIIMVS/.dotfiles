@@ -111,7 +111,7 @@ return require("lazy").setup({
 		event = "BufReadPre",
 		config = function()
 			require("colorizer").setup({
-				filetypes = { "css", "sass", "html", "!toggleterm", "!vimwiki" },
+				filetypes = { "css", "sass", "html", "snacks_picker_preview", "conf", "!toggleterm", "!vimwiki" },
 				user_default_options = {
 					RGB = true,
 					RRGGBB = true,
