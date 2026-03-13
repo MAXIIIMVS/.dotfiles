@@ -1046,6 +1046,7 @@ require("which-key").add({
 	{
 		"<space>lr",
 		function()
+			vim.lsp.stop_client(vim.lsp.get_clients({ bufnr = vim.api.nvim_get_current_buf() }))
 			vim.cmd("e")
 		end,
 		desc = "Restart LSP",

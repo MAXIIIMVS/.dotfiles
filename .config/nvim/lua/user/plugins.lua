@@ -212,7 +212,10 @@ return require("lazy").setup({
 		priority = 2000,
 		lazy = false,
 		opts = {
-			bigfile = { size = 1 * 1024 * 1024 },
+			bigfile = {
+				notify = false,
+				size = 1 * 1024 * 1024,
+			},
 			bufdelete = { enabled = true },
 			gitbrowse = {
 				enabled = true,

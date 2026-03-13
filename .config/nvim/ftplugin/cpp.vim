@@ -64,8 +64,8 @@ function! s:setup_build_registers()
     let @i = ''
     let @r = ''
     let @t = ''
-    let @v = 'valgrind ./%:r.out'
-    let @x = './%:r.out'
+    let @v = 'valgrind %:r.out'
+    let @x = '%:r.out'
   endif
 endfunction
 
