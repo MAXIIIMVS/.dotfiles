@@ -206,6 +206,7 @@ pyproxy() {
 		"MIT https://pypi.mit.edu/simple"
 		"Python Venezuela https://pypi.ve/simple"
 		"Iceland University https://ftp.hi.is/pub/pypi/simple"
+		"Runflare https://mirror-pypi.runflare.com/simple"
 	)
 
 	echo "Select a Python mirror to use with pip:"
@@ -313,6 +314,10 @@ pyproxy() {
 			export PIP_INDEX_URL="https://ftp.hi.is/pub/pypi/simple"
 			break
 			;;
+		26)
+			export PIP_INDEX_URL="https://mirror-pypi.runflare.com/simple"
+			break
+			;;
 		*)
 			echo "Invalid option. Please try again."
 			continue
@@ -329,8 +334,25 @@ reset_pip_mirror() {
 	echo "Reset pip mirror to default (PyPI)"
 }
 
-goproxy() {
-	export GOPROXY=https://goproxy.io,direct
+# goproxy() {
+# 	export GOPROXY=https://goproxy.io,direct
+# }
+
+function goproxy() {
+	MIRRORS=(
+		"https://goproxy.io,direct"
+		"https://mirror-go.runflare.com"
+	)
+	echo "Select a Go mirror:"
+	select MIRROR_URL in "${MIRRORS[@]}"; do
+		if [[ -n $MIRROR_URL ]]; then
+			export GOPROXY=$MIRROR_URL
+			echo "Switched to mirror: $MIRROR_URL"
+			return
+		else
+			echo "Invalid selection. Please try again."
+		fi
+	done
 }
 
 function rustproxy() {

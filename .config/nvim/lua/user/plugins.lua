@@ -1854,7 +1854,6 @@ MEMENTO VIVERE]],
 					-- 	filetypes = { "asm" },
 					-- 	args = { "-style=llvm" },
 					-- }),
-					require("null-ls").builtins.formatting.pg_format,
 					require("null-ls").builtins.formatting.stylua,
 					require("null-ls").builtins.formatting.black,
 					require("null-ls").builtins.formatting.gdformat,
@@ -1866,6 +1865,9 @@ MEMENTO VIVERE]],
 					-- require("null-ls").builtins.formatting.clang_format.with({
 					-- 	filetypes = { "cs" },
 					-- }),
+					require("null-ls").builtins.formatting.pg_format.with({
+						filetypes = { "sql", "mysql" },
+					}),
 					require("null-ls").builtins.formatting.prettierd.with({
 						filetypes = {
 							"javascript",
