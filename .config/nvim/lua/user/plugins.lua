@@ -160,7 +160,7 @@ return require("lazy").setup({
 					search = { wrap = true },
 					multi_line = true,
 					highlight = { backdrop = true },
-					label = { exclude = "hjkliardcsKxpy" },
+					label = { exclude = "hjkKliIaArdDcCsSxXpPyYvV" },
 					keys = { "f", "F", "t", "T" },
 					char_actions = function()
 						return {
@@ -2138,7 +2138,9 @@ MEMENTO VIVERE]],
 			vim.g.vimwiki_listsyms = "    x"
 			vim.g.vimwiki_markdown_link_ext = 1
 			vim.g.vimwiki_global_ext = 0
-			vim.g.vimwiki_list = { { path = "~/notes/wiki/", syntax = "markdown", ext = ".md", auto_diary_index = 1 } }
+			vim.g.vimwiki_list = {
+				{ path = os.getenv("HOME") .. "/notes/wiki/", syntax = "markdown", ext = ".md", auto_diary_index = 1 },
+			}
 			vim.g.vimwiki_ext2syntax = { [".md"] = "markdown", [".mkd"] = "markdown", [".wiki"] = "media" }
 		end,
 	},

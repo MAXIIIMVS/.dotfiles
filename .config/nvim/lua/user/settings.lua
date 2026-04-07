@@ -451,23 +451,18 @@ function toggle_todo_window(todo_file)
 
 	if vim.fn.filereadable(todo_file) == 0 then
 		local default_content = {
-			"# To-do",
+			"# [Project Name]",
 			"",
-			"## 🔴 Critical (Do Today)",
+			"## Doing",
 			"",
-			"## 🟡 High Priority (This Week)",
 			"",
-			"## 🔵 Medium Priority (When Possible)",
+			"## Tasks",
 			"",
-			"## ⚪ Low Priority/Backlog",
-			"",
-			"## ✅ Done",
 			"",
 		}
 		vim.fn.writefile(default_content, todo_file)
 	end
 	local buf = vim.api.nvim_create_buf(false, true)
-	vim.api.nvim_buf_set_option(buf, "filetype", "vimwiki")
 	local content = vim.fn.readfile(todo_file)
 	vim.api.nvim_buf_set_lines(buf, 0, -1, false, content)
 	local width = math.floor(vim.o.columns * 0.8)
@@ -484,6 +479,7 @@ function toggle_todo_window(todo_file)
 		style = "minimal",
 		border = "rounded",
 	})
+	vim.api.nvim_buf_set_option(buf, "filetype", "vimwiki")
 	vim.g.is_todo_open = true
 	-- vim.api.nvim_win_set_option(win, "number", true)
 	-- vim.api.nvim_win_set_option(win, "relativenumber", true)
@@ -529,7 +525,7 @@ function toggle_local_todo_window()
 end
 
 function toggle_global_todo_window()
-	local todo_file = vim.fn.expand("~/.todo.md")
+	local todo_file = vim.fn.expand(os.getenv("HOME") .. "/.todo.md")
 	toggle_todo_window(todo_file)
 end
 
