@@ -1865,8 +1865,11 @@ MEMENTO VIVERE]],
 					-- require("null-ls").builtins.formatting.clang_format.with({
 					-- 	filetypes = { "cs" },
 					-- }),
+					require("null-ls").builtins.formatting.sqlfmt.with({
+						filetypes = { "mysql" },
+					}),
 					require("null-ls").builtins.formatting.pg_format.with({
-						filetypes = { "sql", "mysql" },
+						filetypes = { "sql" },
 					}),
 					require("null-ls").builtins.formatting.prettierd.with({
 						filetypes = {
