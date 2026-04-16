@@ -954,6 +954,7 @@ vim.api.nvim_create_autocmd("ColorScheme", {
 				CmpItemMenu = { fg = "#8f8f99", bg = "#181826", italic = true },
 				ColorColumn = { bg = "#313245" },
 				CursorLine = { bg = "#29283B" },
+				CursorLineNr = { bg = "#1A1528", fg = "#ffaf00", bold = true },
 				DiagnosticError = { fg = "#ff5f5f" },
 				DiagnosticWarn = { fg = "#ffaf00" },
 				DiagnosticInfo = { fg = "#5fafff" },

@@ -1412,6 +1412,126 @@ MEMENTO VIVERE]],
 				end,
 			})
 
+			-- Insert mid section. You can make any number of sections in neovim :)
+			-- for lualine it's any number greater then 2
+			-- ins_left({
+			-- 	function()
+			-- 		return "%="
+			-- 	end,
+			-- })
+
+			ins_right({
+				"selectioncount",
+				color = { fg = colors.orange },
+			})
+
+			ins_right({
+				"searchcount",
+				cond = conditions.search_available,
+				color = { fg = colors.orange },
+			})
+
+			ins_right({
+				function()
+					if vim.o.cmdheight == 0 then
+						return show_macro_recording()
+					else
+						return ""
+					end
+				end,
+				color = { fg = colors.orange },
+			})
+
+			-- ins_right({
+			-- 	function()
+			-- 		if #vim.api.nvim_list_wins() > 1 then
+			-- 			return "[" .. vim.api.nvim_win_get_number(0) .. "]"
+			-- 		else
+			-- 			return ""
+			-- 		end
+			-- 	end,
+			-- 	color = { fg = colors.orange },
+			-- })
+
+			ins_right({
+				"diagnostics",
+				sources = { "nvim_diagnostic" },
+				-- symbols = { error = " ", warn = " ", info = " " },
+				symbols = {
+					error = signs.Error,
+					warn = signs.Warn,
+					info = signs.Info,
+					hint = signs.Hint,
+				},
+				diagnostics_color = {
+					color_error = { fg = colors.red },
+					color_warn = { fg = colors.yellow },
+					color_info = { fg = colors.cyan },
+				},
+			})
+
+			ins_right({
+				function()
+					local msg = ""
+					local buf_ft = vim.api.nvim_buf_get_option(0, "filetype")
+					local clients = vim.lsp.get_clients()
+					if next(clients) == nil then
+						return msg
+					end
+
+					local uniqueNames = {}
+					for _, client in ipairs(clients) do
+						local filetypes = client.config.filetypes
+						if filetypes and vim.fn.index(filetypes, buf_ft) ~= -1 then
+							if not uniqueNames[client.name] then
+								uniqueNames[client.name] = true
+								if msg ~= "" then
+									msg = msg .. ", "
+								end
+								msg = msg .. client.name
+							end
+						end
+					end
+
+					return msg
+				end,
+				color = { fg = colors.yellow, gui = "bold" },
+				cond = conditions.hide_in_width,
+			})
+
+			-- ins_right({
+			-- 	"o:encoding", -- option component same as &encoding in viml
+			-- 	fmt = string.upper, -- I'm not sure why it's upper case either ;)
+			-- 	cond = conditions.hide_in_width,
+			-- 	color = { fg = colors.green },
+			-- })
+
+			-- ins_right({
+			-- 	"fileformat",
+			-- 	fmt = string.upper,
+			-- 	icons_enabled = false,
+			-- 	color = { fg = colors.green, gui = "bold" },
+			-- 	cond = conditions.hide_in_width,
+			-- })
+
+			ins_right({
+				"diff",
+				symbols = { added = " ", modified = " ", removed = " " },
+				diff_color = {
+					added = { fg = colors.green },
+					modified = { fg = colors.orange },
+					removed = { fg = colors.red },
+				},
+				-- cond = conditions.hide_in_width,
+			})
+
+			ins_right({
+				"branch",
+				icon = "",
+				color = { fg = colors.violet, gui = "bold" },
+				-- cond = conditions.hide_in_width,
+			})
+
 			if vim.fn.executable("gnome-pomodoro") == 1 and vim.fn.executable("gdbus") == 1 then
 				local pomodoro_text = ""
 
@@ -1548,131 +1668,11 @@ MEMENTO VIVERE]],
 					return pomodoro_text
 				end
 
-				ins_left({
+				ins_right({
 					PomodoroStatus,
 					color = { fg = colors.orange },
 				})
 			end
-
-			-- Insert mid section. You can make any number of sections in neovim :)
-			-- for lualine it's any number greater then 2
-			-- ins_left({
-			-- 	function()
-			-- 		return "%="
-			-- 	end,
-			-- })
-
-			ins_right({
-				"selectioncount",
-				color = { fg = colors.orange },
-			})
-
-			ins_right({
-				"searchcount",
-				cond = conditions.search_available,
-				color = { fg = colors.orange },
-			})
-
-			ins_right({
-				function()
-					if vim.o.cmdheight == 0 then
-						return show_macro_recording()
-					else
-						return ""
-					end
-				end,
-				color = { fg = colors.orange },
-			})
-
-			-- ins_right({
-			-- 	function()
-			-- 		if #vim.api.nvim_list_wins() > 1 then
-			-- 			return "[" .. vim.api.nvim_win_get_number(0) .. "]"
-			-- 		else
-			-- 			return ""
-			-- 		end
-			-- 	end,
-			-- 	color = { fg = colors.orange },
-			-- })
-
-			ins_right({
-				"diagnostics",
-				sources = { "nvim_diagnostic" },
-				-- symbols = { error = " ", warn = " ", info = " " },
-				symbols = {
-					error = signs.Error,
-					warn = signs.Warn,
-					info = signs.Info,
-					hint = signs.Hint,
-				},
-				diagnostics_color = {
-					color_error = { fg = colors.red },
-					color_warn = { fg = colors.yellow },
-					color_info = { fg = colors.cyan },
-				},
-			})
-
-			ins_right({
-				function()
-					local msg = ""
-					local buf_ft = vim.api.nvim_buf_get_option(0, "filetype")
-					local clients = vim.lsp.get_clients()
-					if next(clients) == nil then
-						return msg
-					end
-
-					local uniqueNames = {}
-					for _, client in ipairs(clients) do
-						local filetypes = client.config.filetypes
-						if filetypes and vim.fn.index(filetypes, buf_ft) ~= -1 then
-							if not uniqueNames[client.name] then
-								uniqueNames[client.name] = true
-								if msg ~= "" then
-									msg = msg .. ", "
-								end
-								msg = msg .. client.name
-							end
-						end
-					end
-
-					return msg
-				end,
-				color = { fg = colors.yellow, gui = "bold" },
-				cond = conditions.hide_in_width,
-			})
-
-			-- ins_right({
-			-- 	"o:encoding", -- option component same as &encoding in viml
-			-- 	fmt = string.upper, -- I'm not sure why it's upper case either ;)
-			-- 	cond = conditions.hide_in_width,
-			-- 	color = { fg = colors.green },
-			-- })
-
-			-- ins_right({
-			-- 	"fileformat",
-			-- 	fmt = string.upper,
-			-- 	icons_enabled = false,
-			-- 	color = { fg = colors.green, gui = "bold" },
-			-- 	cond = conditions.hide_in_width,
-			-- })
-
-			ins_right({
-				"diff",
-				symbols = { added = " ", modified = " ", removed = " " },
-				diff_color = {
-					added = { fg = colors.green },
-					modified = { fg = colors.orange },
-					removed = { fg = colors.red },
-				},
-				-- cond = conditions.hide_in_width,
-			})
-
-			ins_right({
-				"branch",
-				icon = "",
-				color = { fg = colors.violet, gui = "bold" },
-				-- cond = conditions.hide_in_width,
-			})
 
 			ins_right({
 				"filesize",
