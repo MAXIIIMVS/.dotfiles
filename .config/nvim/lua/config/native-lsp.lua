@@ -103,6 +103,7 @@ function M.setup(on_attach, capabilities)
 				"scss",
 				"svelte",
 				"templ",
+				"template",
 				"tsx",
 				"typescriptreact",
 				"vue",

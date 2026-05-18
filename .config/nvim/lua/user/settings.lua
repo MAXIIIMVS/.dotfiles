@@ -822,9 +822,16 @@ vim.api.nvim_create_autocmd("FileType", {
 	command = "setlocal fo-=c fo-=r fo-=o",
 })
 
+-- vim.api.nvim_create_autocmd("FileType", {
+-- 	pattern = "template",
+-- 	command = "setlocal filetype=html",
+-- })
+
 vim.api.nvim_create_autocmd("FileType", {
 	pattern = "template",
-	command = "setlocal filetype=html",
+	callback = function()
+		vim.bo.commentstring = "<!-- %s -->"
+	end,
 })
 
 vim.api.nvim_create_autocmd("FileType", {
