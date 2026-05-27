@@ -296,7 +296,7 @@ require("which-key").add({
 	-- { ";T", "<cmd>Telescope tags<CR>", desc = "tags", nowait = true, remap = false },
 	{ ";t", "<cmd>lua Snacks.picker.todo_comments()<CR>", desc = "See notes/todos...", nowait = true, remap = false },
 	{ ";U", "<cmd>e!<CR>", desc = "Undo all changes to the file", nowait = true, remap = false },
-	{ ";u", vim.cmd.UndotreeToggle, desc = "Toggle Undotree", nowait = true, remap = false },
+	{ ";u", "<cmd>Undotree<CR>", desc = "Undotree", nowait = true, remap = false },
 	{
 		";v",
 		"<cmd>lua Snacks.picker.files({ cwd = '~/.config/nvim' })<CR>",

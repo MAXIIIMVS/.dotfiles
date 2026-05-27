@@ -63,12 +63,6 @@ return require("lazy").setup({
 						highlight = "Directory",
 						separator = true,
 					},
-					{
-						filetype = "undotree",
-						text = "Undo Tree",
-						highlight = "Directory",
-						separator = true,
-					},
 				},
 				sort_by = "insert_at_end",
 				numbers = "ordinal",
@@ -874,17 +868,6 @@ MEMENTO VIVERE]],
 			end
 			require("config.native-lsp").setup(on_attach, capabilities)
 		end,
-	},
-	{
-		"mbbill/undotree",
-		cmd = {
-			"UndotreeToggle",
-			"UndotreeShow",
-			"UndotreeToggle",
-			"UndotreeHide",
-			"UndotreeFocus",
-			"UndotreePersistUndo",
-		},
 	},
 	{
 		"mfussenegger/nvim-dap",
