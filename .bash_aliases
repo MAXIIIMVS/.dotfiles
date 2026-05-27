@@ -54,3 +54,9 @@ alias pomo="gnome-pomodoro"
 alias catlinks="cat << 'EOF' > links.txt"
 alias lamadeep="x-nvidia ollama run deepseek-coder:6.7b"
 alias lamagemma="x-nvidia ollama run gemma3:12b"
+# Lenovo Battery Conservation Mode Aliases
+alias bat-conservation-on='echo 1 | sudo tee /sys/devices/pci0000:00/0000:00:1f.0/PNP0C09:00/VPC2004:00/conservation_mode && echo "✓ Conservation mode ON (will stop at ~80%)"'
+alias bat-conservation-off='echo 0 | sudo tee /sys/devices/pci0000:00/0000:00:1f.0/PNP0C09:00/VPC2004:00/conservation_mode && echo "✓ Conservation mode OFF (will charge to 100%)"'
+alias bat-status='cat /sys/devices/pci0000:00/0000:00:1f.0/PNP0C09:00/VPC2004:00/conservation_mode'
+alias bat-level='cat /sys/class/power_supply/BAT1/capacity'
+alias bat-toggle='current=$(cat /sys/devices/pci0000:00/0000:00:1f.0/PNP0C09:00/VPC2004:00/conservation_mode); if [ "$current" = "1" ]; then bat-conservation-off; else bat-conservation-on; fi'
