@@ -57,6 +57,7 @@ vim.diagnostic.config({
 })
 
 -- vim.o.omnifunc = 'syntaxcomplete#Complete'
+-- vim.o.autocomplete = true
 vim.wo.winblend = 0
 vim.o.pumblend = 0
 vim.o.errorbells = false
@@ -108,8 +109,9 @@ vim.o.breakindent = true
 -- vim.bo.expandtab = true
 vim.o.nrformats = "bin,octal,hex"
 vim.o.fillchars = "eob: "
-
 vim.o.winborder = "rounded"
+-- vim.o.pumborder = "rounded"
+-- vim.o.pummaxwidth = 40
 vim.o.completeopt = "menu,menuone,noinsert,noselect"
 vim.o.cursorlineopt = "number,line"
 vim.o.list = true
