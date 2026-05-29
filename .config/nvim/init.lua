@@ -1,4 +1,3 @@
-require("vim._core.ui2").enable()
 vim.g.termdebug_running = false
 vim.g.show_cursorline = true
 vim.g.is_diff_on = false
