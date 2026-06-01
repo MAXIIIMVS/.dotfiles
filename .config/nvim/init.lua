@@ -14,4 +14,3 @@ require("user")
 vim.o.secure = true
 vim.g.is_transparent = get_transparency()
 vim.cmd.colorscheme("retrobox")
-require("utils.rclone")
