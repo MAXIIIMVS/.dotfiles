@@ -920,6 +920,7 @@ vim.api.nvim_create_autocmd("ColorScheme", {
 				DiffText = { bg = "#575268", fg = "NONE" },
 				ErrorMsg = { bg = "NONE" },
 				FloatBorder = { fg = "#5f5f5f", bg = "NONE" },
+				FoldColumn = { bg = "NONE" },
 				Normal = { bg = "NONE" },
 				NormalFloat = { bg = "NONE" },
 				Pmenu = { bg = "NONE", fg = "#d0d0d0" },
@@ -974,6 +975,7 @@ vim.api.nvim_create_autocmd("ColorScheme", {
 				ErrorMsg = { bg = "NONE" },
 				Function = { bold = false, fg = "#B8BB26" },
 				FloatBorder = { fg = "#554d80", bg = "#181826" }, -- NOTE: same background as NormalFloat
+				FoldColumn = { bg = "#1A1528" },
 				Normal = { bg = "#1A1528", fg = "#CDD6F5" },
 				NormalFloat = { bg = "#181826", fg = "#CDD6F5" },
 				Pmenu = { bg = "#181826", fg = "#CDD6F5" },
