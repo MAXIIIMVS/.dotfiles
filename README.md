@@ -10,6 +10,7 @@ My personal dotfiles for managing system and app configurations using GNU Stow a
 - GNU Stow
 - A POSIX-compliant shell (bash, zsh, etc.)
 - Linux (tested on Ubuntu-based distros)
+- Rclone
 
 ## 🚀 Installation
 

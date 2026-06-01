@@ -349,7 +349,7 @@ MEMENTO VIVERE]],
 						{
 							align = "center",
 							-- text = "󰆥 " .. "がんばれ" .. " 󰆥", -- 頑張れ
-							text = "󰆥 " .. "1% Better Every Day!" .. " 󰆥",
+							text = "󰆥 " .. "You're running out of somedays!" .. " 󰆥",
 						},
 					},
 				},
