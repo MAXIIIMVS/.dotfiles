@@ -441,7 +441,7 @@ function toggle_breakpoint_in_sign_col()
 	end
 end
 
-function toggle_todo_window(todo_file)
+function toggle_todo_window(todo_file, should_sync)
 	if vim.g.is_todo_open then
 		vim.cmd("q")
 		return
@@ -507,6 +507,9 @@ function toggle_todo_window(todo_file)
 				vim.fn.writefile(lines, todo_file)
 				vim.api.nvim_buf_delete(buf, { force = true })
 			end
+			if should_sync then
+				vim.cmd("RcloneCopy " .. todo_file)
+			end
 		end,
 	})
 end
@@ -519,12 +522,12 @@ function toggle_local_todo_window()
 	end
 
 	local todo_file = root .. "/.todo.md"
-	toggle_todo_window(todo_file)
+	toggle_todo_window(todo_file, false)
 end
 
 function toggle_global_todo_window()
 	local todo_file = vim.fn.expand(os.getenv("HOME") .. "/.todo.md")
-	toggle_todo_window(todo_file)
+	toggle_todo_window(todo_file, true)
 end
 
 function toggle_todo()
