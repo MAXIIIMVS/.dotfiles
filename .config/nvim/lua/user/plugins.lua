@@ -1874,7 +1874,7 @@ MEMENTO VIVERE]],
 							"graphql",
 							"template",
 							"handlebars",
-							"xml",
+							-- "xml",
 						},
 						extra_args = function(params)
 							if params.ft == "xml" then
