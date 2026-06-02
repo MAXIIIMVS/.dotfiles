@@ -2103,6 +2103,7 @@ MEMENTO VIVERE]],
 	-- ────────────────────────────────── V ──────────────────────────────────
 	{
 		"vimwiki/vimwiki",
+		name = "vimwiki",
 		cmd = {
 			"VimwikiIndex",
 			"VimwikiVar",

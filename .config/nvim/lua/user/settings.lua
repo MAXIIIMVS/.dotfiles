@@ -441,7 +441,7 @@ function toggle_breakpoint_in_sign_col()
 	end
 end
 
-function toggle_todo_window(todo_file, should_sync)
+function toggle_todo_window(todo_file)
 	if vim.g.is_todo_open then
 		vim.cmd("q")
 		return
@@ -460,7 +460,10 @@ function toggle_todo_window(todo_file, should_sync)
 		}
 		vim.fn.writefile(default_content, todo_file)
 	end
-	local buf = vim.api.nvim_create_buf(false, true)
+
+	local buf = vim.api.nvim_create_buf(false, false)
+	vim.api.nvim_buf_set_name(buf, todo_file)
+
 	local content = vim.fn.readfile(todo_file)
 	vim.api.nvim_buf_set_lines(buf, 0, -1, false, content)
 	local width = math.floor(vim.o.columns * 0.8)
@@ -477,15 +480,23 @@ function toggle_todo_window(todo_file, should_sync)
 		style = "minimal",
 		border = "rounded",
 	})
-	vim.api.nvim_buf_set_option(buf, "filetype", "vimwiki")
+	vim.api.nvim_buf_set_option(buf, "filetype", "markdown")
 	vim.g.is_todo_open = true
-	-- vim.api.nvim_win_set_option(win, "number", true)
-	-- vim.api.nvim_win_set_option(win, "relativenumber", true)
 	vim.api.nvim_win_set_option(win, "spell", true)
 	vim.api.nvim_buf_set_keymap(buf, "n", "q", "<cmd>q<CR>", { noremap = true, silent = true })
 	vim.api.nvim_buf_set_keymap(buf, "n", "<C-c>", "<cmd>q<CR>", { noremap = true, silent = true })
-	vim.api.nvim_create_autocmd("BufLeave", {
-		buffer = buf,
+	vim.api.nvim_buf_set_keymap(buf, "n", ";;", "<cmd>q<CR>", { noremap = true, silent = true })
+	vim.api.nvim_buf_set_keymap(
+		buf,
+		"n",
+		"<leader>c",
+		"<cmd>w | RcloneCopy " .. todo_file .. "<CR>",
+		{ noremap = true, silent = true }
+	)
+
+	vim.api.nvim_create_autocmd("WinClosed", {
+		pattern = tostring(win),
+		once = true, -- Ensure it only runs once per window lifetime
 		callback = function()
 			vim.g.is_todo_open = false
 			local lines = vim.api.nvim_buf_get_lines(buf, 0, -1, false)
@@ -496,19 +507,22 @@ function toggle_todo_window(todo_file, should_sync)
 					break
 				end
 			end
+
+			local function save_file()
+				vim.fn.writefile(lines, todo_file)
+			end
+
 			if is_empty then
 				vim.ui.input({ prompt = "File is empty. Save anyway? (y/n): " }, function(input)
 					if input and input:lower() == "y" then
-						vim.fn.writefile(lines, todo_file)
+						save_file()
 					end
-					vim.api.nvim_buf_delete(buf, { force = true })
+					-- Silently delete the buffer via API (does not trigger Neovim exit)
+					pcall(vim.api.nvim_buf_delete, buf, { force = true })
 				end)
 			else
-				vim.fn.writefile(lines, todo_file)
-				vim.api.nvim_buf_delete(buf, { force = true })
-			end
-			if should_sync then
-				vim.cmd("RcloneCopy " .. todo_file)
+				save_file()
+				pcall(vim.api.nvim_buf_delete, buf, { force = true })
 			end
 		end,
 	})
@@ -522,12 +536,12 @@ function toggle_local_todo_window()
 	end
 
 	local todo_file = root .. "/.todo.md"
-	toggle_todo_window(todo_file, false)
+	toggle_todo_window(todo_file)
 end
 
 function toggle_global_todo_window()
 	local todo_file = vim.fn.expand(os.getenv("HOME") .. "/.todo.md")
-	toggle_todo_window(todo_file, true)
+	toggle_todo_window(todo_file)
 end
 
 function toggle_todo()
@@ -833,6 +847,11 @@ vim.api.nvim_create_autocmd("FileType", {
 	callback = function()
 		vim.bo.commentstring = "<!-- %s -->"
 	end,
+})
+
+vim.api.nvim_create_autocmd("FileType", {
+	pattern = "markdown",
+	command = "setlocal filetype=vimwiki",
 })
 
 vim.api.nvim_create_autocmd("FileType", {
