@@ -253,10 +253,10 @@ end
 
 -- User Commands Definition
 if vim.api.nvim_create_user_command then
-	vim.api.nvim_create_user_command("RcloneCopy", function(opts)
+	vim.api.nvim_create_user_command("RclonePush", function(opts)
 		local args = opts.fargs
 		if #args < 1 or #args > 2 then
-			notify("Usage: RcloneCopy <file_path> [destination]", vim.log.levels.ERROR)
+			notify("Usage: RclonePush <file_path> [destination]", vim.log.levels.ERROR)
 			return
 		end
 		M.copy_to_gdrive(args[1], args[2] or "/")
@@ -280,7 +280,7 @@ if vim.api.nvim_create_user_command then
 	})
 else
 	-- Safe legacy fallback string interpolation for older Neovim versions
-	vim.api.nvim_command("command! -nargs=+ RcloneCopy lua require('utils.rclone').copy_to_gdrive(<f-args>)")
+	vim.api.nvim_command("command! -nargs=+ RclonePush lua require('utils.rclone').copy_to_gdrive(<f-args>)")
 	vim.api.nvim_command("command! -nargs=+ RclonePull lua require('utils.rclone').pull_from_gdrive(<f-args>)")
 end
 

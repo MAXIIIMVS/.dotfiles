@@ -154,7 +154,7 @@ return require("lazy").setup({
 					search = { wrap = true },
 					multi_line = true,
 					highlight = { backdrop = true },
-					label = { exclude = "hjkKliIaArdDcCsSxXpPyYvV" },
+					label = { exclude = "ghjkKliIaArdDcCsSxXpPyYvV" },
 					keys = { "f", "F", "t", "T" },
 					char_actions = function()
 						return {

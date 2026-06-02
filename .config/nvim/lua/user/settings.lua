@@ -517,9 +517,9 @@ function toggle_todo_window(todo_file)
 	vim.api.nvim_buf_set_keymap(
 		buf,
 		"n",
-		"<leader>c",
-		"<cmd>w | RcloneCopy " .. todo_file .. "<CR>",
-		{ noremap = true, silent = true }
+		"<leader>p",
+		"<cmd>w | RclonePush " .. todo_file .. "<CR>",
+		{ noremap = true, silent = true, desc = "Push changes to gdrive" }
 	)
 
 	vim.api.nvim_create_autocmd("WinClosed", {
