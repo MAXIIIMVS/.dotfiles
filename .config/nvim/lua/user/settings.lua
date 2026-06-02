@@ -13,7 +13,6 @@ signs = {
 	Hint = " ",
 	Info = " ",
 }
-local diagnostics_config = vim.diagnostic.config()
 local diagnostics_enabled = true
 
 local abbrs = {
@@ -40,8 +39,8 @@ local abbrs = {
 -- │                    Core Vim Settings                    │
 -- ╰─────────────────────────────────────────────────────────╯
 
-vim.diagnostic.config({
-	virtual_text = { current_line = true },
+local diagnostics_config = vim.diagnostic.config({
+	virtual_text = { current_line = true, prefix = "●" },
 	severity_sort = true,
 	signs = {
 		text = {
@@ -53,6 +52,35 @@ vim.diagnostic.config({
 	},
 	underline = {
 		severity = vim.diagnostic.severity.ERROR,
+	},
+	float = {
+		border = "rounded",
+	},
+	jump = {
+		on_jump = function(diagnostic, bufnr)
+			if not diagnostic then
+				return
+			end
+			vim.diagnostic.show(nil, bufnr, nil, {
+				virtual_text = false,
+				virtual_lines = false,
+			})
+			vim.diagnostic.open_float({
+				bufnr = bufnr,
+				scope = "cursor",
+				border = "rounded",
+				focus = false,
+			})
+			local group = vim.api.nvim_create_augroup("RestoreDiagnosticsOnMove", { clear = true })
+			vim.api.nvim_create_autocmd("CursorMoved", {
+				group = group,
+				buffer = bufnr,
+				once = true,
+				callback = function()
+					vim.diagnostic.show(nil, bufnr)
+				end,
+			})
+		end,
 	},
 })
 
