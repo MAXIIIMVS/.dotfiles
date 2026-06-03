@@ -850,6 +850,12 @@ MEMENTO VIVERE]],
 					handler_opts = { border = "rounded" },
 				}, bufnr)
 
+				if client.server_capabilities.inlayHintProvider then
+					vim.lsp.inlay_hint.enable(true, {
+						bufnr = bufnr,
+					})
+				end
+
 				-- if client.server_capabilities.codeLensProvider then
 				-- 	vim.api.nvim_create_autocmd({ "BufEnter", "CursorHold", "InsertLeave" }, {
 				-- 		buffer = bufnr,
@@ -1990,11 +1996,50 @@ MEMENTO VIVERE]],
 		event = { "BufNewFile", "BufReadPost", "BufFilePost" },
 		dependencies = { "nvim-cmp", "LuaSnip" },
 	},
-	{ "seblyng/roslyn.nvim", opts = { silent = true }, ft = { "cs" } },
-	-- {
-	-- 	"sphamba/smear-cursor.nvim",
-	-- 	opts = {},
-	-- },
+	{
+		"seblyng/roslyn.nvim",
+		opts = {
+			silent = true,
+			settings = {
+				["csharp|inlay_hints"] = {
+					csharp_enable_inlay_hints_for_implicit_object_creation = true,
+					csharp_enable_inlay_hints_for_implicit_variable_types = true,
+					csharp_enable_inlay_hints_for_lambda_parameter_types = true,
+					csharp_enable_inlay_hints_for_types = true,
+					dotnet_enable_inlay_hints_for_parameters = true,
+					dotnet_enable_inlay_hints_for_literal_parameters = true,
+					dotnet_enable_inlay_hints_for_indexer_parameters = true,
+					dotnet_enable_inlay_hints_for_object_creation_parameters = true,
+					dotnet_enable_inlay_hints_for_other_parameters = true,
+					dotnet_suppress_inlay_hints_for_parameters_that_differ_only_by_suffix = true,
+					dotnet_suppress_inlay_hints_for_parameters_that_match_argument_name = true,
+					dotnet_suppress_inlay_hints_for_parameters_that_match_method_intent = true,
+				},
+				["csharp|code_lens"] = {
+					dotnet_enable_references_code_lens = true,
+					dotnet_enable_tests_code_lens = true,
+				},
+				["csharp|completion"] = {
+					dotnet_show_completion_items_from_unimported_namespaces = true,
+					dotnet_show_name_completion_suggestions = true,
+					dotnet_provide_regex_completions = true,
+				},
+				["csharp|background_analysis"] = {
+					-- Best accuracy: "fullSolution"
+					-- Better performance: "openFiles"
+					dotnet_analyzer_diagnostics_scope = "fullSolution",
+					dotnet_compiler_diagnostics_scope = "fullSolution",
+				},
+				["csharp|symbol_search"] = {
+					dotnet_search_reference_assemblies = true,
+				},
+				["csharp|formatting"] = {
+					dotnet_organize_imports_on_format = true,
+				},
+			},
+		},
+		ft = { "cs" },
+	},
 	{
 		"stevearc/oil.nvim",
 		dependencies = { "nvim-tree/nvim-web-devicons" },
@@ -2101,6 +2146,7 @@ MEMENTO VIVERE]],
 	{ "tpope/vim-speeddating", keys = { { "<c-a>", mode = { "n", "v" } }, { "<c-x>", mode = { "n", "v" } } } },
 	-- ────────────────────────────────── U ──────────────────────────────────
 	-- ────────────────────────────────── V ──────────────────────────────────
+	-- { "VidocqH/lsp-lens.nvim", opts = {} },
 	{
 		"vimwiki/vimwiki",
 		name = "vimwiki",
