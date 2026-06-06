@@ -326,6 +326,7 @@ require("which-key").add({
 		nowait = true,
 		remap = false,
 	},
+	{ "<M-CR>", "<cmd>lua vim.lsp.buf.code_action()<CR>", desc = "Code action", nowait = true, remap = false },
 	{ "<M-Down>", "<c-w>-", desc = "Decrease window height", nowait = true, remap = false },
 	{ "<M-Up>", "<c-w>+", desc = "Increase window height", nowait = true, remap = false },
 	{ "<M-h>", "<CMD>silent NavigatorLeft<CR>", desc = "Go to the left window", nowait = true, remap = false },
@@ -415,7 +416,6 @@ require("which-key").add({
 		remap = false,
 	},
 	{ "g?", "<cmd>WhichKey<CR>", desc = "WhichKey", nowait = true, remap = false },
-	{ "ga", "<cmd>lua vim.lsp.buf.code_action()<CR>", desc = "Code action", nowait = true, remap = false },
 	{ "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>", desc = "Go to declaration", nowait = true, remap = false },
 	{ "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", desc = "Go to definition", nowait = true, remap = false },
 	{ "gS", "<c-w>sgf", desc = "Edit the file in a horizontal split", nowait = true, remap = false },
@@ -429,13 +429,6 @@ require("which-key").add({
 		remap = false,
 	},
 	{ "gV", "<c-w>vgf", desc = "Edit the file in a vertical split", nowait = true, remap = false },
-	{
-		"gy",
-		"<cmd>lua vim.lsp.buf.type_definition()<CR>",
-		desc = "Go to type definition",
-		nowait = true,
-		remap = false,
-	},
 	{
 		"|",
 		function()
@@ -1019,25 +1012,6 @@ require("which-key").add({
 			vim.lsp.buf.format({ async = true })
 		end,
 		desc = "Format",
-		nowait = true,
-		remap = false,
-	},
-	{
-		"<space>lr",
-		function()
-			vim.lsp.stop_client(vim.lsp.get_clients({ bufnr = vim.api.nvim_get_current_buf() }))
-			vim.cmd("e")
-		end,
-		desc = "Restart LSP",
-		nowait = true,
-		remap = false,
-	},
-	{
-		"<space>ls",
-		function()
-			vim.lsp.stop_client(vim.lsp.get_clients({ bufnr = vim.api.nvim_get_current_buf() }))
-		end,
-		desc = "Stop LSP",
 		nowait = true,
 		remap = false,
 	},

@@ -104,8 +104,9 @@ vim.o.autoread = true
 vim.bo.swapfile = false
 vim.opt.swapfile = false
 vim.opt.backup = false
-vim.opt.undodir = os.getenv("HOME") .. "/.config/undodir"
 vim.opt.undofile = true
+-- NOTE: use the default path for undodir.
+-- vim.opt.undodir = os.getenv("HOME") .. "/.config/undodir"
 vim.o.showmode = false
 vim.bo.textwidth = 80
 -- vim.wo.colorcolumn = "80"

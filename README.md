@@ -8,9 +8,11 @@ My personal dotfiles for managing system and app configurations using GNU Stow a
 
 - Git
 - GNU Stow
+- Neovim v0.12.2
 - A POSIX-compliant shell (bash, zsh, etc.)
 - Linux (tested on Ubuntu-based distros)
 - Rclone
+- Gnome Pomodoro.
 
 ## 🚀 Installation
 
