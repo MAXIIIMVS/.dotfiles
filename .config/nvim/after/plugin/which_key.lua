@@ -1163,16 +1163,38 @@ require("which-key").add({
 		"<space>r",
 		function()
 			require("toggleterm")
-			local reg = get_char("Enter the register name: ")
-			if reg == "" then
+			local function get_char(prompt)
+				vim.api.nvim_echo({ { prompt, "Question" } }, false, {})
+				local char_code = vim.fn.getchar()
+				if type(char_code) == "number" then
+					return vim.fn.nr2char(char_code)
+				end
+				return ""
+			end
+
+			local key = get_char("Enter build command key: ")
+			if key == "" or key == "\x1b" then -- Exit on empty or Escape
 				return
 			end
-			vim.cmd('101TermExec cmd="' .. vim.fn.getreg(reg) .. '"')
+			-- Look up the command in the current buffer's build table
+			local build_cmds = vim.b.build_cmds or {}
+			local cmd = build_cmds[key]
+			-- Fallback: If no buffer command exists, try using it as a standard register
+			if not cmd or cmd == "" then
+				cmd = vim.fn.getreg(key)
+			end
+			if not cmd or cmd == "" then
+				vim.notify("No command found for key/register '" .. key .. "'", vim.log.levels.WARN)
+				return
+			end
+			-- Execute inside ToggleTerm terminal 101
+			vim.cmd('TermExec cmd="' .. cmd .. '"')
+			-- Gracefully drop back into Normal mode inside the active editor window
 			vim.defer_fn(function()
 				vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<C-\\><C-n>", true, false, true), "n", true)
 			end, 50)
 		end,
-		desc = "Run the command in register",
+		desc = "Run project build target",
 		silent = false,
 		nowait = true,
 		remap = false,

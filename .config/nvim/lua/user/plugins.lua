@@ -871,11 +871,11 @@ MEMENTO VIVERE]],
 					handler_opts = { border = "rounded" },
 				}, bufnr)
 
-				if client.server_capabilities.inlayHintProvider then
-					vim.lsp.inlay_hint.enable(true, {
-						bufnr = bufnr,
-					})
-				end
+				-- if client.server_capabilities.inlayHintProvider then
+				-- 	vim.lsp.inlay_hint.enable(true, {
+				-- 		bufnr = bufnr,
+				-- 	})
+				-- end
 
 				-- if client.server_capabilities.codeLensProvider then
 				-- 	vim.api.nvim_create_autocmd({ "BufEnter", "CursorHold", "InsertLeave" }, {
