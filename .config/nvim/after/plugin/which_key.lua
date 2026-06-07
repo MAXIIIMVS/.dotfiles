@@ -143,7 +143,7 @@ require("which-key").add({
 	{
 		";A",
 		function()
-			openURL("https://gemini.google.com/app")
+			openURL("https://chat.deepseek.com/")
 		end,
 		desc = "Ask AI",
 		nowait = true,
@@ -418,7 +418,20 @@ require("which-key").add({
 	{ "g?", "<cmd>WhichKey<CR>", desc = "WhichKey", nowait = true, remap = false },
 	{ "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>", desc = "Go to declaration", nowait = true, remap = false },
 	{ "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", desc = "Go to definition", nowait = true, remap = false },
-	{ "gS", "<c-w>sgf", desc = "Edit the file in a horizontal split", nowait = true, remap = false },
+	{
+		"gF",
+		function()
+			if vim.fn.winwidth(0) > vim.g.big_screen_size then
+				vim.cmd("vertical wincmd f")
+			else
+				vim.cmd("split")
+				vim.cmd("normal! gf")
+			end
+		end,
+		desc = "Edit the file in a split based on window width",
+		nowait = true,
+		remap = false,
+	},
 	{
 		"gs",
 		function()
@@ -428,7 +441,6 @@ require("which-key").add({
 		nowait = true,
 		remap = false,
 	},
-	{ "gV", "<c-w>vgf", desc = "Edit the file in a vertical split", nowait = true, remap = false },
 	{
 		"|",
 		function()
