@@ -430,6 +430,27 @@ MEMENTO VIVERE]],
 	{ "godlygeek/tabular", cmd = "Tabularize" },
 	-- ────────────────────────────────── H ──────────────────────────────────
 	{
+		"hat0uma/csvview.nvim",
+		ft = { "csv", "tsv" },
+		opts = {
+			parser = { comments = { "#", "//" } },
+			keymaps = {
+				textobject_field_inner = { "if", mode = { "o", "x" } },
+				textobject_field_outer = { "af", mode = { "o", "x" } },
+				jump_next_field_end = { "<Tab>", mode = { "n", "v" } },
+				jump_prev_field_end = { "<S-Tab>", mode = { "n", "v" } },
+				jump_next_row = { "<Enter>", mode = { "n", "v" } },
+				jump_prev_row = { "<S-Enter>", mode = { "n", "v" } },
+			},
+			view = {
+				display_mode = "border", -- Use border display mode
+				-- header_lnum = 1, -- Line 1 is the header row
+				sticky_header = { enabled = true, separator = "─" },
+			},
+		},
+		cmd = { "CsvViewEnable", "CsvViewDisable", "CsvViewToggle" },
+	},
+	{
 		"hrsh7th/nvim-cmp",
 		event = { "InsertEnter", "CmdlineEnter" },
 		dependencies = { "L3MON4D3/LuaSnip" },
@@ -1996,50 +2017,7 @@ MEMENTO VIVERE]],
 		event = { "BufNewFile", "BufReadPost", "BufFilePost" },
 		dependencies = { "nvim-cmp", "LuaSnip" },
 	},
-	{
-		"seblyng/roslyn.nvim",
-		opts = {
-			silent = true,
-			settings = {
-				["csharp|inlay_hints"] = {
-					csharp_enable_inlay_hints_for_implicit_object_creation = true,
-					csharp_enable_inlay_hints_for_implicit_variable_types = true,
-					csharp_enable_inlay_hints_for_lambda_parameter_types = true,
-					csharp_enable_inlay_hints_for_types = true,
-					dotnet_enable_inlay_hints_for_parameters = true,
-					dotnet_enable_inlay_hints_for_literal_parameters = true,
-					dotnet_enable_inlay_hints_for_indexer_parameters = true,
-					dotnet_enable_inlay_hints_for_object_creation_parameters = true,
-					dotnet_enable_inlay_hints_for_other_parameters = true,
-					dotnet_suppress_inlay_hints_for_parameters_that_differ_only_by_suffix = true,
-					dotnet_suppress_inlay_hints_for_parameters_that_match_argument_name = true,
-					dotnet_suppress_inlay_hints_for_parameters_that_match_method_intent = true,
-				},
-				["csharp|code_lens"] = {
-					dotnet_enable_references_code_lens = true,
-					dotnet_enable_tests_code_lens = true,
-				},
-				["csharp|completion"] = {
-					dotnet_show_completion_items_from_unimported_namespaces = true,
-					dotnet_show_name_completion_suggestions = true,
-					dotnet_provide_regex_completions = true,
-				},
-				["csharp|background_analysis"] = {
-					-- Best accuracy: "fullSolution"
-					-- Better performance: "openFiles"
-					dotnet_analyzer_diagnostics_scope = "fullSolution",
-					dotnet_compiler_diagnostics_scope = "fullSolution",
-				},
-				["csharp|symbol_search"] = {
-					dotnet_search_reference_assemblies = true,
-				},
-				["csharp|formatting"] = {
-					dotnet_organize_imports_on_format = true,
-				},
-			},
-		},
-		ft = { "cs" },
-	},
+	{ "seblyng/roslyn.nvim", opts = { silent = true }, ft = { "cs" } },
 	{
 		"stevearc/oil.nvim",
 		dependencies = { "nvim-tree/nvim-web-devicons" },
