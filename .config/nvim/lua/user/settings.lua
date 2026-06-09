@@ -886,6 +886,27 @@ vim.api.nvim_create_autocmd("FileType", {
 })
 
 vim.api.nvim_create_autocmd("FileType", {
+	pattern = "python",
+	callback = function()
+		vim.bo.commentstring = "# %s"
+	end,
+})
+
+vim.api.nvim_create_autocmd("FileType", {
+	pattern = "go",
+	callback = function()
+		vim.bo.commentstring = "// %s"
+	end,
+})
+
+vim.api.nvim_create_autocmd("FileType", {
+	pattern = "lua",
+	callback = function()
+		vim.bo.commentstring = "-- %s"
+	end,
+})
+
+vim.api.nvim_create_autocmd("FileType", {
 	pattern = "markdown",
 	command = "setlocal filetype=vimwiki",
 })
