@@ -1,5 +1,3 @@
-vim.env.XDG_STATE_HOME = "/tmp" -- Redirect logs to /tmp
-
 vim.g.termdebug_running = false
 vim.g.show_cursorline = true
 vim.g.is_diff_on = false

@@ -411,8 +411,14 @@ MEMENTO VIVERE]],
 	},
 	{
 		"folke/ts-comments.nvim",
-		event = "InsertEnter",
-		opts = {},
+		event = "BufEnter",
+		opts = {
+			lang = {
+				go = { "// %s", "/* %s */" },
+				lua = { "-- %s", "[[[ %s ]]]" },
+				python = "# %s",
+			},
+		},
 		enabled = vim.fn.has("nvim-0.10.0") == 1,
 	},
 	{

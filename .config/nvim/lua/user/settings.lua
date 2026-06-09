@@ -879,15 +879,15 @@ vim.api.nvim_create_autocmd("FileType", {
 })
 
 vim.api.nvim_create_autocmd("FileType", {
-	pattern = "markdown",
-	command = "setlocal filetype=vimwiki",
-})
-
-vim.api.nvim_create_autocmd("FileType", {
 	pattern = "mysql",
 	callback = function()
 		vim.bo.commentstring = "-- %s"
 	end,
+})
+
+vim.api.nvim_create_autocmd("FileType", {
+	pattern = "markdown",
+	command = "setlocal filetype=vimwiki",
 })
 
 -- vim.api.nvim_create_autocmd("FocusGained", {
