@@ -45,7 +45,7 @@ function! s:setup_build_targets() abort
 
   else
     " Single-file fallback
-    let b:build_cmds['b'] = 'gcc -ggdb3 -Wall -Werror -Wpedantic -Wextra -Wsign-conversion -o %:p:r.out %:p'
+    let b:build_cmds['b'] = 'gcc -ggdb3 -Wall -Werror -Wpedantic -Wextra -Wsign-conversion -std=c2x -o %:p:r.out %:p'
     let b:build_cmds['c'] = 'rm -f %:p:r.out'
     let b:build_cmds['f'] = ''
     let b:build_cmds['d'] = ''
@@ -66,7 +66,7 @@ if s:is_cmake()
 elseif s:is_make()
   setlocal makeprg=make
 else
-  setlocal makeprg=gcc\ -ggdb3\ -Wall\ -Werror\ -Wpedantic\ -Wextra\ -Wsign-conversion\ -o\ %:p:r.out\ %:p
+  setlocal makeprg=gcc\ -ggdb3\ -Wall\ -Werror\ -Wpedantic\ -Wextra\ -Wsign-conversion\ -std=c2x\ -o\ %:p:r.out\ %:p
 endif
 
 setlocal errorformat=%f:%l:%c:\ %m,%f:%l:\ %m
