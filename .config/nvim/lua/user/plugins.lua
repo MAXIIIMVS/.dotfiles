@@ -229,6 +229,8 @@ return require("lazy").setup({
 			-- terminal = { enabled = true },
 			quickfile = { enabled = true },
 			picker = {
+				hidden = true,
+				ignored = true,
 				enabled = true,
 				exclude = { ".git", "node_modules", "build", "vendor" },
 				layout = {

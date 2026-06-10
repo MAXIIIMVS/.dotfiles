@@ -12,7 +12,6 @@ endif
 
 function! s:setup_build_targets() abort
   let b:build_cmds = {}
-  
   " Lua files are typically interpreted directly
   let b:build_cmds['b'] = s:lua_exec . ' -b %:p %:p:r.out' " Bytecode compilation
   let b:build_cmds['c'] = 'rm -f %:p:r.out'
