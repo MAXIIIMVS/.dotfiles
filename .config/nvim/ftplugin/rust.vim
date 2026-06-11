@@ -3,6 +3,8 @@ if exists("b:did_ftplugin")
 endif
 let b:did_ftplugin = 1
 
+compiler rustc
+
 function! s:is_project() abort
   return filereadable(getcwd() . '/Cargo.toml')
 endfunction
@@ -28,7 +30,7 @@ endfunction
 if s:is_project()
   setlocal makeprg=cargo\ check
 else
-  setlocal makeprg=rustc\ --force-warn\ lines\ %:p
+  setlocal makeprg=rustc\ --force-warn\ dead_code\ %:p
 endif
 
 call s:setup_build_targets()

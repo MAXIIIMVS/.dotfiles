@@ -345,6 +345,20 @@ require("which-key").add({
 		remap = false,
 	},
 	{
+		"H",
+		"{",
+		desc = "Previous empty line",
+		nowait = true,
+		remap = false,
+	},
+	{
+		"L",
+		"}",
+		desc = "Next empty line",
+		nowait = true,
+		remap = false,
+	},
+	{
 		"K",
 		function()
 			vim.lsp.buf.hover({
@@ -419,7 +433,7 @@ require("which-key").add({
 	{ "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>", desc = "Go to declaration", nowait = true, remap = false },
 	{ "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", desc = "Go to definition", nowait = true, remap = false },
 	{
-		"gF",
+		"gS",
 		function()
 			if vim.fn.winwidth(0) > vim.g.big_screen_size then
 				vim.cmd("vertical wincmd f")
@@ -1478,6 +1492,20 @@ require("which-key").add({
 	},
 	{
 		mode = { "v" },
+		{
+			"H",
+			"{",
+			desc = "Previous empty line",
+			nowait = true,
+			remap = false,
+		},
+		{
+			"L",
+			"}",
+			desc = "Next empty line",
+			nowait = true,
+			remap = false,
+		},
 		{ "<c-t>", ":Tabularize /", desc = "Tabularize", silent = false, nowait = true, remap = false },
 		{ "<leader>m", [[ygvs<C-r>=<C-r>"<CR>]], desc = "Math Result", nowait = true, remap = false },
 		{ ";", group = "Quick", nowait = true, remap = false },

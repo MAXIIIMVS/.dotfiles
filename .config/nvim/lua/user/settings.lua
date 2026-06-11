@@ -886,14 +886,14 @@ vim.api.nvim_create_autocmd("FileType", {
 })
 
 vim.api.nvim_create_autocmd("FileType", {
-	pattern = "python",
+	pattern = { "python", "gdscript" },
 	callback = function()
 		vim.bo.commentstring = "# %s"
 	end,
 })
 
 vim.api.nvim_create_autocmd("FileType", {
-	pattern = "go",
+	pattern = { "rust", "go" },
 	callback = function()
 		vim.bo.commentstring = "// %s"
 	end,
