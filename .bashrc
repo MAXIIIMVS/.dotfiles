@@ -381,14 +381,6 @@ function rustproxy() {
 	done
 }
 
-v() {
-	command nvim "$@"
-
-	if [ -n "$TMUX" ]; then
-		tmux set -g status-style bg=default
-	fi
-}
-
 function git_commits_ahead() {
 	local start_commit=$(git rev-list --max-parents=0 HEAD)
 	local end_commit=$(git rev-parse HEAD)

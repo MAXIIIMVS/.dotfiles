@@ -14,8 +14,7 @@ alias cg='clang++ -std=c++2a -ggdb3 -O0 -pg -Wconversion -Wshadow -Wpedantic -Wa
 alias ggr='g++ -std=c++2a -Wconversion -Wshadow -Wpedantic -O2 -DNDEBUG -Wall -Wextra -Wsign-conversion -Werror -pedantic-errors -o a.out'
 alias lg='lazygit'
 alias p8='ping 8.8.8.8'
-alias vb="nvim ~/.bashrc"
-alias vt="nvim ~/.tmux.conf"
+alias v="nvim"
 alias gdvim="nvim --listen /tmp/godot.pipe"
 alias f="fzf"
 # Sync vimwiki notes with google drive

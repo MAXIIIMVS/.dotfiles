@@ -230,7 +230,7 @@ return require("lazy").setup({
 			quickfile = { enabled = true },
 			picker = {
 				hidden = true,
-				ignored = true,
+				-- ignored = true,
 				enabled = true,
 				exclude = { ".git", "node_modules", "build", "vendor" },
 				layout = {

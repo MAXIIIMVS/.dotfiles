@@ -658,28 +658,39 @@ function get_highlight(group)
 	return dict
 end
 
-function is_tmux_running()
-	local tmux_env = vim.env.TMUX
-	return tmux_env ~= nil and tmux_env ~= ""
+local function is_tmux_running()
+	return vim.env.TMUX ~= nil and vim.env.TMUX ~= ""
 end
 
-function set_tmux_status_color(color)
-	if is_tmux_running() then
-		local command = string.format(
-			"tmux show-option -gq status-style | grep -q 'bg=%s' && tmux set-option -gq status-style bg=%s || tmux set-option -gq status-style bg=%s; tmux refresh-client -S",
-			color,
-			color,
-			color
-		)
-		local handle = io.popen(command)
-		if handle then
-			handle:close()
-		else
-			print("Failed to execute the command.")
-		end
-		-- else
-		-- 	print("Tmux is not running. Skipping statusline color change.")
+local function set_tmux_window_bg(color)
+	if not is_tmux_running() then
+		return
 	end
+
+	local args
+	if color == "default" then
+		args = { "set-option", "-wu", "@nvim_bg" }
+	else
+		args = { "set-option", "-w", "@nvim_bg", color }
+	end
+
+	-- Run the initial tmux setting asynchronously
+	vim.loop.spawn("tmux", { args = args }, function(code)
+		if code == 0 then
+			-- Once set, queue the refresh-client call asynchronously on the main loop
+			vim.schedule(function()
+				vim.loop.spawn("tmux", { args = { "refresh-client", "-S" } }, function() end)
+			end)
+		end
+	end)
+end
+
+local function sync_statusline_with_tmux()
+	local normal_hl = vim.api.nvim_get_hl(0, { name = "Normal" })
+	local current_background = normal_hl.bg and string.format("#%06x", normal_hl.bg) or "default"
+
+	vim.api.nvim_set_hl(0, "StatusLine", { bg = current_background == "default" and "NONE" or "bg" })
+	set_tmux_window_bg(current_background)
 end
 
 function get_git_hash()
@@ -695,14 +706,6 @@ function get_git_hash()
 	else
 		print("Error: Failed to run command")
 	end
-end
-
-function sync_statusline_with_tmux()
-	local current_background = get_highlight("Normal")["guibg"]
-	vim.api.nvim_set_hl(0, "StatusLine", { bg = current_background == nil and "NONE" or "bg" })
-	set_tmux_status_color(current_background == nil and "default" or current_background)
-	-- vim.o.fillchars = "eob: "
-	-- vim.wo.colorcolumn = current_background ~= nil and "80" or ""
 end
 
 function git_next()
@@ -911,20 +914,24 @@ vim.api.nvim_create_autocmd("FileType", {
 	command = "setlocal filetype=vimwiki",
 })
 
--- vim.api.nvim_create_autocmd("FocusGained", {
+local tmux_group = vim.api.nvim_create_augroup("sync_tmux", { clear = true })
+
 vim.api.nvim_create_autocmd("VimEnter", {
-	group = vim.api.nvim_create_augroup("sync_tmux", { clear = true }),
-	callback = function()
-		sync_statusline_with_tmux()
-	end,
+	group = tmux_group,
+	callback = sync_statusline_with_tmux,
 })
 
 vim.api.nvim_create_autocmd("ColorScheme", {
-	group = vim.api.nvim_create_augroup("sync_tmux", { clear = true }),
+	group = tmux_group,
 	callback = function()
-		vim.schedule(function()
-			sync_statusline_with_tmux()
-		end)
+		vim.schedule(sync_statusline_with_tmux)
+	end,
+})
+
+vim.api.nvim_create_autocmd("VimLeave", {
+	group = tmux_group,
+	callback = function()
+		set_tmux_window_bg("default")
 	end,
 })
 

@@ -18,6 +18,7 @@ function! s:setup_build_targets() abort
     let b:build_cmds['d'] = 'cargo build --profile dev'
     let b:build_cmds['r'] = 'cargo build --release'
     let b:build_cmds['t'] = 'cargo test'
+    let b:build_cmds['u'] = 'cargo update'
     let b:build_cmds['x'] = 'cargo run'
   else
     " Single-file fallback (using rustc)

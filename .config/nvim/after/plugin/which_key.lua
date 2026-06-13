@@ -1425,13 +1425,6 @@ require("which-key").add({
 		remap = false,
 	},
 	{ "<leader>S", "<cmd>silent so %<CR>", desc = "Source the file", nowait = true, remap = false },
-	{
-		"<leader>s",
-		"<cmd>lua sync_statusline_with_tmux()<CR>",
-		desc = "Sync statusline",
-		nowait = true,
-		remap = false,
-	},
 	{ "<leader>t", "<cmd>tabnew<CR>", desc = "Create a new tab", nowait = true, remap = false },
 	{ "<leader>w", group = "VimWiki", nowait = true, remap = false },
 	{
