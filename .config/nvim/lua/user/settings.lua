@@ -896,7 +896,7 @@ vim.api.nvim_create_autocmd("FileType", {
 })
 
 vim.api.nvim_create_autocmd("FileType", {
-	pattern = { "rust", "go" },
+	pattern = { "rust", "go", "cpp" },
 	callback = function()
 		vim.bo.commentstring = "// %s"
 	end,
@@ -997,6 +997,7 @@ vim.api.nvim_create_autocmd("ColorScheme", {
 				ErrorMsg = { bg = "NONE" },
 				FloatBorder = { fg = "#5f5f5f", bg = "NONE" },
 				FoldColumn = { bg = "NONE" },
+				Function = { bold = false, fg = "#B8BB26" },
 				Normal = { bg = "NONE" },
 				NormalFloat = { bg = "NONE" },
 				Pmenu = { bg = "NONE", fg = "#d0d0d0" },
