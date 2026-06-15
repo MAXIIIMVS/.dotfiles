@@ -1268,24 +1268,274 @@ MEMENTO VIVERE]],
 		dependencies = {
 			"nvim-tree/nvim-web-devicons",
 		},
-		config = function()
-			local custom_auto = require("lualine.themes.auto")
-			custom_auto.normal.c.bg = "NONE"
-			-- stylua: ignore
-			local colors = {
-				bg       = '#202328',
-				fg       = '#bbc2cf',
-				yellow   = '#ECBE7B',
-				cyan     = '#008080',
-				darkblue = '#081633',
-				green    = '#98be65',
-				orange   = '#FF8800',
-				violet   = '#a9a1e1',
-				magenta  = '#c678dd',
-				blue     = '#51afef',
-				red      = '#ec5f67',
-				tmux     = '#E9AD0C',
+		-- NOTE: If you decide to drop Lualine in the future, your custom retrobox
+		-- colors and overrides will remain entirely intact and unaffected. If you
+		-- want to strip out Lualine but keep those exact retrobox tweaks, you would
+		-- simply move the entire block inside init = function() ... end out of this
+		-- file and drop it into your core init.lua or your dedicated colorscheme.lua
+		-- configuration file.
+		init = function()
+			-----------------------------------------------------------------------
+			-- 1. RETROBOX HIGH-PERFORMANCE OVERRIDES
+			-----------------------------------------------------------------------
+			local common_hl = {
+				NonText = { fg = "#9ca0b1" },
+				Visual = { bg = "#45475b", fg = "NONE" },
+				VisualNOS = { bg = "#45475b", fg = "NONE" },
+				Whitespace = { fg = "#444444" },
 			}
+
+			local transparent_hl = {
+				CmpItemAbbr = { fg = "#a0a0b0" },
+				CmpItemAbbrMatch = { fg = "#ffaf00", bold = true },
+				CmpItemAbbrMatchFuzzy = { fg = "#ffaf00" },
+				CmpItemKind = { fg = "#7fafff", bg = "NONE" },
+				CmpItemMenu = { fg = "#8f8f99", bg = "#181826", italic = true },
+				CursorLineNr = { bg = "NONE", fg = "NONE" },
+				DiagnosticError = { fg = "#ff5f5f", bold = true },
+				DiagnosticWarn = { fg = "#ffaf00", bold = true },
+				DiagnosticInfo = { fg = "#5fafff" },
+				DiagnosticHint = { fg = "#5fffaf" },
+				DiffAdd = { bg = "#2a332d", fg = "NONE" },
+				DiffChange = { bg = "#3a2e36", fg = "NONE" },
+				DiffDelete = { bg = "#3e2d2e", fg = "NONE" },
+				DiffText = { bg = "#575268", fg = "NONE" },
+				ErrorMsg = { bg = "NONE" },
+				FloatBorder = { fg = "#5f5f5f", bg = "NONE" },
+				FoldColumn = { bg = "NONE" },
+				Function = { bold = false, fg = "#B8BB26" },
+				Normal = { bg = "NONE" },
+				NormalFloat = { bg = "NONE" },
+				Pmenu = { bg = "NONE", fg = "#d0d0d0" },
+				PmenuSel = { bg = "#444444", fg = "#ffffff" },
+				QuickFixLine = { bg = "#38384C", bold = true },
+				Search = { bg = "#2f4f75", fg = "NONE" },
+				SignColumn = { bg = "NONE" },
+				SnacksIndent = { fg = "#504945" },
+				StatusLine = { bg = "NONE", fg = "NONE" },
+				StatusLineNC = { bg = "NONE", fg = "NONE" },
+				StatusLineTerm = { bg = "NONE", fg = "NONE" },
+				StatusLineTermNC = { bg = "NONE", fg = "NONE" },
+				String = { fg = "#D7AF5F" },
+				TabLineFill = { bg = "NONE", fg = "NONE" },
+				TabLineSel = { fg = "#ffffff", bg = "NONE" },
+				VertSplit = { bg = "NONE", fg = "#5f5f5f" },
+				debugPC = { bg = "#45475b" },
+			}
+
+			local dark_hl = {
+				CmpItemAbbr = { fg = "#a0a0b0" },
+				CmpItemAbbrMatch = { fg = "#ffaf00", bold = true },
+				CmpItemAbbrMatchFuzzy = { fg = "#ffaf00" },
+				CmpItemKind = { fg = "#7fafff", bg = "#181826" },
+				CmpItemMenu = { fg = "#8f8f99", bg = "#181826", italic = true },
+				ColorColumn = { bg = "#313245" },
+				CursorLine = { bg = "#29283B" },
+				CursorLineNr = { bg = "#1A1528", fg = "#ffaf00", bold = true },
+				DiagnosticError = { fg = "#ff5f5f" },
+				DiagnosticWarn = { fg = "#ffaf00" },
+				DiagnosticInfo = { fg = "#5fafff" },
+				DiagnosticHint = { fg = "#5fffaf" },
+				DiffAdd = { bg = "#2a332d", fg = "NONE" },
+				DiffChange = { bg = "#3a2e36", fg = "NONE" },
+				DiffDelete = { bg = "#3e2d2e", fg = "NONE" },
+				DiffText = { bg = "#575268", fg = "NONE" },
+				ErrorMsg = { bg = "NONE" },
+				Function = { bold = false, fg = "#B8BB26" },
+				FloatBorder = { fg = "#554d80", bg = "#181826" },
+				FoldColumn = { bg = "#1A1528" },
+				Normal = { bg = "#1A1528", fg = "#CDD6F5" },
+				NormalFloat = { bg = "#181826", fg = "#CDD6F5" },
+				Pmenu = { bg = "#181826", fg = "#CDD6F5" },
+				PmenuSel = { bg = "#444444", fg = "#ffffff" },
+				QuickFixLine = { bg = "#38384C", bold = true },
+				Search = { bg = "#3b5b8a", fg = "NONE" },
+				SignColumn = { bg = "#1A1528", fg = "#CDD6F5" },
+				SnacksIndent = { fg = "#444444" },
+				String = { fg = "#D7AF5F" },
+				TabLineFill = { bg = "#130F1E" },
+				TabLineSel = { fg = "#ffffff", bg = "#1A1528" },
+				WinSeparator = { fg = "#554D80" },
+				debugPC = { bg = "#45475b" },
+			}
+
+			local light_hl = {
+				Added = { fg = "#40a02b", bg = "NONE" },
+				Bold = { fg = "NONE", bg = "NONE" },
+				Changed = { fg = "#1e66f5", bg = "NONE" },
+				Character = { fg = "#179299", bg = "NONE" },
+				CmpItemAbbr = { fg = "#7c7f93" },
+				CmpItemAbbrMatch = { fg = "#1e66f5", bold = true },
+				CmpItemAbbrMatchFuzzy = { fg = "#1e66f5" },
+				CmpItemKind = { fg = "#1e66f5", bg = "NONE" },
+				CmpItemMenu = { fg = "#FF0000", bg = "#FF0000", italic = true },
+				ColorColumn = { fg = "NONE", bg = "#e6e9ef" },
+				Comment = { fg = "#7c7f93", bg = "NONE" },
+				Conceal = { fg = "#8c8fa1", bg = "NONE" },
+				Conditional = { fg = "#8839ef", bg = "NONE" },
+				Constant = { fg = "#fe640b", bg = "NONE" },
+				CurSearch = { fg = "NONE", bg = "#fc8fc3" },
+				Cursor = { fg = "#eff1f5", bg = "#dc8a78" },
+				CursorColumn = { fg = "NONE", bg = "#e6e9ef" },
+				CursorIM = { fg = "#eff1f5", bg = "#8839ef" },
+				CursorLine = { fg = "NONE", bg = "#e9ebf1" },
+				CursorLineNr = { fg = "#7287fd", bg = "NONE" },
+				Delimiter = { fg = "#7c7f93", bg = "NONE" },
+				DiagnosticError = { fg = "#cc241d", bold = true },
+				DiagnosticWarn = { fg = "#d79921" },
+				DiagnosticInfo = { fg = "#458588" },
+				DiagnosticHint = { fg = "#689d6a" },
+				DiffAdd = { fg = "NONE", bg = "#d0e2d1" },
+				DiffChange = { fg = "NONE", bg = "#e0e7f5" },
+				DiffDelete = { fg = "NONE", bg = "#eac8d3" },
+				DiffText = { fg = "NONE", bg = "#b0c7f5" },
+				Directory = { fg = "#1e66f5", bg = "NONE" },
+				EndOfBuffer = { fg = "#bcc0cc", bg = "NONE" },
+				Error = { fg = "#d20f39", bg = "NONE" },
+				ErrorMsg = { fg = "#d20f39", bg = "NONE" },
+				Exception = { fg = "#8839ef", bg = "NONE" },
+				FloatBorder = { fg = "#1e66f5", bg = "#ECECF0" },
+				FoldColumn = { fg = "#9ca0b0", bg = "NONE" },
+				Folded = { fg = "#1e66f5", bg = "NONE" },
+				Function = { fg = "#1e66f5", bg = "NONE" },
+				Identifier = { fg = "#dd7878", bg = "NONE" },
+				Include = { fg = "#8839ef", bg = "NONE" },
+				Italic = { fg = "NONE", bg = "NONE" },
+				Keyword = { fg = "#8839ef", bg = "NONE" },
+				Label = { fg = "#209fb5", bg = "NONE" },
+				LineNr = { fg = "#bcc0cc", bg = "NONE" },
+				Macro = { fg = "#8839ef", bg = "NONE" },
+				MatchParen = { fg = "#fe640b", bg = "NONE" },
+				ModeMsg = { fg = "#4c4f69", bg = "NONE" },
+				MoreMsg = { fg = "#1e66f5", bg = "NONE" },
+				NonText = { fg = "#9ca0b0", bg = "NONE" },
+				Normal = { fg = "#4c4f69", bg = "#eff1f5" },
+				NormalFloat = { fg = "#4c4f69", bg = "#ECECF0" },
+				Operator = { fg = "#04a5e5", bg = "NONE" },
+				Pmenu = { fg = "#7c7f93", bg = "#e6e9ef" },
+				PmenuExtra = { fg = "#9ca0b0", bg = "#e6e9ef" },
+				PmenuExtraSel = { fg = "#9ca0b0", bg = "#ccd0da" },
+				PmenuMatch = { fg = "#4c4f69", bg = "NONE" },
+				PmenuMatchSel = { fg = "NONE", bg = "NONE" },
+				PmenuSbar = { fg = "NONE", bg = "#ccd0da" },
+				PmenuSel = { fg = "NONE", bg = "#ccd0da" },
+				PmenuThumb = { fg = "NONE", bg = "#9ca0b0" },
+				PreInsert = { fg = "#7c7f93", bg = "NONE" },
+				PreProc = { fg = "#ea76cb", bg = "NONE" },
+				Question = { fg = "#1e66f5", bg = "NONE" },
+				QuickFixLine = { fg = "NONE", bg = "#d0baf3" },
+				Removed = { fg = "#d20f39", bg = "NONE" },
+				Repeat = { fg = "#8839ef", bg = "NONE" },
+				Search = { fg = "#4c4f69", bg = "#a8daf0" },
+				SignColumn = { fg = "#bcc0cc", bg = "NONE" },
+				Special = { fg = "#ea76cb", bg = "NONE" },
+				SpellBad = { fg = "NONE", bg = "NONE" },
+				SpellCap = { fg = "NONE", bg = "NONE" },
+				SpellLocal = { fg = "NONE", bg = "NONE" },
+				SpellRare = { fg = "NONE", bg = "NONE" },
+				Statement = { fg = "#8839ef", bg = "NONE" },
+				StatusLine = { fg = "#4c4f69", bg = "#dce0e8" },
+				StatusLineNC = { fg = "#bcc0cc", bg = "#e6e9ef" },
+				StorageClass = { fg = "#df8e1d", bg = "NONE" },
+				String = { fg = "#40a02b", bg = "NONE" },
+				Structure = { fg = "#df8e1d", bg = "NONE" },
+				TabLine = { fg = "#9ca0b0", bg = "#dce0e8" },
+				TabLineFill = { fg = "NONE", bg = "#e6e9ef" },
+				TabLineSel = { fg = "#4c4f69", bg = "#eff1f5" },
+				Tag = { fg = "#7287fd", bg = "NONE" },
+				Title = { fg = "#1e66f5", bg = "NONE" },
+				TitleBar = { fg = "#4c4f69", bg = "#e6e9ef" },
+				TitleBarNC = { fg = "#9ca0b0", bg = "#dce0e8" },
+				Todo = { fg = "#dd7878", bg = "NONE" },
+				ToolbarButton = { fg = "#dc8a78", bg = "NONE" },
+				ToolbarLine = { fg = "NONE", bg = "NONE" },
+				Type = { fg = "#df8e1d", bg = "NONE" },
+				Underlined = { fg = "NONE", bg = "NONE" },
+				VertSplit = { fg = "#dce0e8", bg = "NONE" },
+				Visual = { fg = "NONE", bg = "#bcc0cc" },
+				VisualNOS = { fg = "NONE", bg = "#bcc0cc" },
+				WarningMsg = { fg = "#df8e1d", bg = "NONE" },
+				Whitespace = { fg = "#787575" },
+				WildMenu = { fg = "NONE", bg = "#9ca0b0" },
+				debugBreakpoint = { fg = "#9ca0b0", bg = "#eff1f5" },
+				debugPC = { fg = "NONE", bg = "#dce0e8" },
+				lCursor = { fg = "#eff1f5", bg = "#d20f39" },
+			}
+
+			vim.api.nvim_create_autocmd("ColorScheme", {
+				pattern = "retrobox",
+				callback = function()
+					for group, opts in pairs(common_hl) do
+						vim.api.nvim_set_hl(0, group, opts)
+					end
+
+					local target_hl
+					if vim.g.is_transparent then
+						target_hl = transparent_hl
+					else
+						target_hl = (vim.o.background == "dark") and dark_hl or light_hl
+					end
+
+					for group, opts in pairs(target_hl) do
+						vim.api.nvim_set_hl(0, group, opts)
+					end
+				end,
+			})
+		end,
+		config = function()
+			-----------------------------------------------------------------------
+			-- 2. DYNAMIC LUALINE SPECIFICATION
+			-----------------------------------------------------------------------
+			local function get_dynamic_theme()
+				local modes = { "normal", "insert", "visual", "replace", "command", "inactive" }
+				local sections = { "a", "b", "c" }
+
+				if vim.g.is_transparent then
+					local transparent_theme = {}
+					for _, mode in ipairs(modes) do
+						transparent_theme[mode] = {}
+						for _, section in ipairs(sections) do
+							transparent_theme[mode][section] = { bg = "NONE", gui = "bold" }
+						end
+					end
+					return transparent_theme
+				elseif vim.o.background == "dark" then
+					local dark_theme = {}
+					for _, mode in ipairs(modes) do
+						dark_theme[mode] = {}
+						for _, section in ipairs(sections) do
+							dark_theme[mode][section] = { bg = "#1A1528", fg = "#CDD6F5" }
+						end
+					end
+					return dark_theme
+				else
+					local light_theme = {}
+					for _, mode in ipairs(modes) do
+						light_theme[mode] = {}
+						for _, section in ipairs(sections) do
+							light_theme[mode][section] = { bg = "#eff1f5", fg = "#4c4f69" }
+						end
+					end
+					return light_theme
+				end
+			end
+
+		-- stylua: ignore
+		local colors = {
+			bg       = '#202328',
+			fg       = '#bbc2cf',
+			yellow   = '#ECBE7B',
+			cyan     = '#008080',
+			darkblue = '#081633',
+			green    = '#98be65',
+			orange   = '#FF8800',
+			violet   = '#a9a1e1',
+			magenta  = '#c678dd',
+			blue     = '#51afef',
+			red      = '#ec5f67',
+			tmux     = '#E9AD0C',
+		}
+
 			local mode_color = {
 				n = colors.tmux,
 				i = colors.green,
@@ -1323,7 +1573,7 @@ MEMENTO VIVERE]],
 					return vim.fn.empty(vim.fn.expand("%:t")) ~= 1
 				end,
 				hide_in_width = function()
-					return vim.fn.winwidth(0) > vim.g.big_screen_size
+					return vim.fn.winwidth(0) > (vim.g.big_screen_size or 120)
 				end,
 				check_git_workspace = function()
 					local filepath = vim.fn.expand("%:p:h")
@@ -1344,24 +1594,17 @@ MEMENTO VIVERE]],
 					component_separators = "",
 					section_separators = "",
 					globalstatus = true,
-					theme = custom_auto,
-					-- theme = {
-					-- 	normal = { c = { fg = colors.fg, bg = colors.bg } },
-					-- 	inactive = { c = { fg = colors.fg, bg = colors.bg } },
-					-- },
+					theme = get_dynamic_theme,
 				},
 				sections = {
-					-- these are to remove the defaults
 					lualine_a = {},
 					lualine_b = {},
 					lualine_y = {},
 					lualine_z = {},
-					-- These will be filled later
 					lualine_c = {},
 					lualine_x = {},
 				},
 				inactive_sections = {
-					-- these are to remove the defaults
 					lualine_a = {},
 					lualine_b = {},
 					lualine_y = {},
@@ -1371,12 +1614,10 @@ MEMENTO VIVERE]],
 				},
 			}
 
-			-- Inserts a component in lualine_c at left section
 			local function ins_left(component)
 				table.insert(config.sections.lualine_c, component)
 			end
 
-			-- Inserts a component in lualine_x or right section
 			local function ins_right(component)
 				table.insert(config.sections.lualine_x, component)
 			end
@@ -1388,7 +1629,7 @@ MEMENTO VIVERE]],
 				color = function()
 					return { fg = mode_color[vim.fn.mode()] }
 				end,
-				padding = { left = 0, right = 1 }, -- We don't need space before this
+				padding = { left = 0, right = 1 },
 			})
 
 			ins_left({
@@ -1402,7 +1643,6 @@ MEMENTO VIVERE]],
 			ins_left({
 				"filetype",
 				icon_only = true,
-				-- icon = { align = "left" },
 				cond = function()
 					return conditions.is_not_terminal() and conditions.hide_in_width()
 				end,
@@ -1414,14 +1654,6 @@ MEMENTO VIVERE]],
 				color = { fg = colors.magenta, gui = "bold" },
 				path = 4,
 			})
-
-			-- ins_left({
-			-- 	function()
-			-- 		return vim.api.nvim_buf_line_count(0)
-			-- 	end,
-			-- 	color = { fg = colors.cyan, gui = "bold" },
-			-- 	cond = conditions.hide_in_width,
-			-- })
 
 			ins_left({
 				"location",
@@ -1492,7 +1724,7 @@ MEMENTO VIVERE]],
 			ins_right({
 				function()
 					local msg = ""
-					local buf_ft = vim.api.nvim_buf_get_option(0, "filetype")
+					local buf_ft = vim.api.nvim_get_option_value("filetype", { buf = 0 })
 					local clients = vim.lsp.get_clients()
 					if next(clients) == nil then
 						return msg
@@ -1518,21 +1750,6 @@ MEMENTO VIVERE]],
 				cond = conditions.hide_in_width,
 			})
 
-			-- ins_right({
-			-- 	"o:encoding", -- option component same as &encoding in viml
-			-- 	fmt = string.upper, -- I'm not sure why it's upper case either ;)
-			-- 	cond = conditions.hide_in_width,
-			-- 	color = { fg = colors.green },
-			-- })
-
-			-- ins_right({
-			-- 	"fileformat",
-			-- 	fmt = string.upper,
-			-- 	icons_enabled = false,
-			-- 	color = { fg = colors.green, gui = "bold" },
-			-- 	cond = conditions.hide_in_width,
-			-- })
-
 			ins_right({
 				"diff",
 				symbols = { added = " ", modified = " ", removed = " " },
@@ -1541,26 +1758,21 @@ MEMENTO VIVERE]],
 					modified = { fg = colors.orange },
 					removed = { fg = colors.red },
 				},
-				-- cond = conditions.hide_in_width,
 			})
 
 			ins_right({
 				"branch",
 				icon = "",
 				color = { fg = colors.violet, gui = "bold" },
-				-- cond = conditions.hide_in_width,
 			})
 
 			if vim.fn.executable("gnome-pomodoro") == 1 and vim.fn.executable("gdbus") == 1 then
 				local pomodoro_text = ""
-
-				-- Cache state locally
 				local state = nil
 				local duration = 0
 				local elapsed = 0
 				local paused = false
 
-				-- Function to re-calculate and format the display string
 				local function update_display()
 					local remaining = math.max(duration - elapsed, 0)
 					local minutes = math.floor(remaining / 60)
@@ -1577,7 +1789,6 @@ MEMENTO VIVERE]],
 						icon = ""
 					end
 
-					-- Only show time if we are in an active state
 					if state then
 						pomodoro_text = string.format("%s %02d:%02d", icon, minutes, seconds)
 					else
@@ -1585,7 +1796,6 @@ MEMENTO VIVERE]],
 					end
 				end
 
-				-- Force a redraw of the statusline
 				local function refresh_ui()
 					update_display()
 					vim.schedule(function()
@@ -1593,37 +1803,30 @@ MEMENTO VIVERE]],
 					end)
 				end
 
-				-- Parse the raw string output from GDBus
-				-- Handles the format: {'Key': <Value>, ...}
 				local function parse_dbus_output(output)
 					if not output then
 						return
 					end
-
 					local changed = false
 
-					-- 1. Parse 'Elapsed': <18.27...>
 					local new_elapsed = output:match("'Elapsed': <([%d%.]+)>")
 					if new_elapsed then
 						elapsed = tonumber(new_elapsed)
 						changed = true
 					end
 
-					-- 2. Parse 'IsPaused': <true/false>
 					local new_paused = output:match("'IsPaused': <(%a+)>")
 					if new_paused then
 						paused = (new_paused == "true")
 						changed = true
 					end
 
-					-- 3. Parse 'State': <'pomodoro'>
 					local new_state = output:match("'State': <'([^']+)'>")
 					if new_state then
 						state = new_state
 						changed = true
 					end
 
-					-- 4. Parse 'StateDuration': <1500.0>
 					local new_duration = output:match("'StateDuration': <([%d%.]+)>")
 					if new_duration then
 						duration = tonumber(new_duration)
@@ -1635,8 +1838,6 @@ MEMENTO VIVERE]],
 					end
 				end
 
-				-- 1. Start a persistent monitor process
-				-- This receives signals every second when running, and state changes instantly
 				local monitor = vim.system({
 					"gdbus",
 					"monitor",
@@ -1647,15 +1848,12 @@ MEMENTO VIVERE]],
 					"/org/gnome/Pomodoro",
 				}, {
 					stdout = function(_, data)
-						-- Data might contain multiple lines or partial chunks, but gdbus
-						-- typically flushes lines cleanly. We process the whole chunk.
 						if data then
 							parse_dbus_output(data)
 						end
 					end,
 				})
 
-				-- 2. Perform one initial fetch to sync state on startup
 				vim.system({
 					"gdbus",
 					"call",
@@ -1673,7 +1871,6 @@ MEMENTO VIVERE]],
 					end
 				end)
 
-				-- Cleanup on exit to prevent zombie processes
 				vim.api.nvim_create_autocmd("VimLeavePre", {
 					callback = function()
 						if monitor then
@@ -1682,7 +1879,6 @@ MEMENTO VIVERE]],
 					end,
 				})
 
-				-- Component for lualine
 				local function PomodoroStatus()
 					return pomodoro_text
 				end
@@ -1700,7 +1896,6 @@ MEMENTO VIVERE]],
 					return conditions.buffer_not_empty() and conditions.hide_in_width()
 				end,
 				color = { fg = colors.cyan },
-				cond = conditions.hide_in_width,
 			})
 
 			ins_right({
@@ -1718,6 +1913,7 @@ MEMENTO VIVERE]],
 				end,
 				padding = { left = 1 },
 			})
+
 			require("lualine").setup(config)
 		end,
 	},
