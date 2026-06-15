@@ -812,6 +812,16 @@ end
 -- │                        Autocmds                         │
 -- ╰─────────────────────────────────────────────────────────╯
 
+local yank_group = vim.api.nvim_create_augroup("HighlightYank", { clear = true })
+
+vim.api.nvim_create_autocmd("TextYankPost", {
+	group = yank_group,
+	desc = "Highlight yanked text",
+	callback = function()
+		vim.hl.on_yank({ higroup = "IncSearch", timeout = 100 })
+	end,
+})
+
 vim.api.nvim_create_autocmd("BufWinLeave", {
 	pattern = "*",
 	callback = function()
