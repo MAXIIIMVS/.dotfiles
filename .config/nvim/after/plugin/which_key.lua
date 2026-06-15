@@ -372,6 +372,24 @@ require("which-key").add({
 		nowait = true,
 		remap = false,
 	},
+	{
+		"]c",
+		function()
+			goto_comment(true)
+		end,
+		desc = "Go to next comment or diff hunk",
+		nowait = true,
+		remap = false,
+	},
+	{
+		"[c",
+		function()
+			goto_comment(false)
+		end,
+		desc = "Go to previous comment or diff hunk",
+		nowait = true,
+		remap = false,
+	},
 	{ "]g", "<cmd>silent Gitsigns next_hunk<CR>", desc = "Next git hunk", nowait = true, remap = false },
 	{ "[g", "<cmd>silent Gitsigns prev_hunk<CR>", desc = "Previous git hunk", nowait = true, remap = false },
 	{ "]p", "<cmd>pu<CR>", desc = "Paste below current line", nowait = true, remap = false },

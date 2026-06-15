@@ -310,6 +310,63 @@ endfunction
 -- │                        Functions                        │
 -- ╰─────────────────────────────────────────────────────────╯
 
+function goto_comment(forward)
+	-- 1. Check if we are in diff mode
+	if vim.wo.diff then
+		-- Feed keys using 'n' (noremap) so it triggers Neovim's built-in diff jump
+		local key = forward and "]c" or "[c"
+		local escaped = vim.api.nvim_replace_termcodes(key, true, false, true)
+		vim.api.nvim_feedkeys(escaped, "n", false)
+		return
+	end
+
+	-- 2. Treesitter availability check
+	local has_parser, parser = pcall(vim.treesitter.get_parser, 0)
+	if not has_parser or not parser then
+		return
+	end
+
+	local cursor_row, cursor_col = unpack(vim.api.nvim_win_get_cursor(0))
+	cursor_row = cursor_row - 1
+
+	local ft = vim.bo.filetype
+	local has_query, query = pcall(vim.treesitter.query.get, ft, "highlights")
+	if not has_query or not query then
+		pcall(function()
+			query = vim.treesitter.query.parse(ft, "((comment) @comment)")
+		end)
+	end
+	if not query then
+		return
+	end
+
+	local root = parser:parse()[1]:root()
+	local target_pos = nil
+
+	for id, node in query:iter_captures(root, 0) do
+		local capture_name = query.captures[id]
+		if capture_name == "comment" then
+			local start_row, start_col, _, _ = node:range()
+
+			if forward then
+				if start_row > cursor_row or (start_row == cursor_row and start_col > cursor_col) then
+					target_pos = { start_row + 1, start_col }
+					break
+				end
+			else
+				if start_row < cursor_row or (start_row == cursor_row and start_col < cursor_col) then
+					target_pos = { start_row + 1, start_col }
+				end
+			end
+		end
+	end
+
+	if target_pos then
+		vim.cmd("normal! m'") -- Save to jumplist
+		vim.api.nvim_win_set_cursor(0, target_pos)
+	end
+end
+
 function pomodoro_break(length)
 	-- NOTE: length can be "short-break" or "long-break"
 	local cmd = {
@@ -876,7 +933,13 @@ vim.api.nvim_create_autocmd("TermClose", {
 
 vim.api.nvim_create_autocmd("FileType", {
 	pattern = "*",
-	command = "setlocal fo-=c fo-=r fo-=o",
+	-- NOTE: fo for formatoptions, c for auto-wrap comments while typing, r
+	-- for continue comments when pressing enter, o for continue comments
+	-- using o or O.
+	-- command = "setlocal fo-=c fo-=r fo-=o",
+	callback = function()
+		vim.opt_local.formatoptions:remove({ "c", "r", "o" })
+	end,
 })
 
 -- vim.api.nvim_create_autocmd("FileType", {
@@ -946,7 +1009,6 @@ vim.api.nvim_create_autocmd("VimLeave", {
 })
 
 vim.api.nvim_create_autocmd("ColorScheme", {
-	pattern = "*",
 	callback = function()
 		-- NOTE: requires https://github.com/catppuccin/lazygit
 		local base = vim.fn.expand("$HOME/.config/lazygit/")
