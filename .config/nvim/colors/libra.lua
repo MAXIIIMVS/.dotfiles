@@ -5,7 +5,7 @@ vim.cmd("hi clear")
 if vim.fn.exists("syntax_on") == 1 then
 	vim.cmd("syntax reset")
 end
-vim.g.colors_name = "maximus"
+vim.g.colors_name = "libra"
 
 -- 1. True Retrobox Palette Definitions (Upstream Base)
 local retro_dark = {
