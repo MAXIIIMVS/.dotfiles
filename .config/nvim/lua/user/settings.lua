@@ -984,7 +984,11 @@ vim.api.nvim_create_autocmd("FileType", {
 
 vim.api.nvim_create_autocmd("FileType", {
 	pattern = "markdown",
-	command = "setlocal filetype=vimwiki",
+	callback = function(args)
+		if vim.bo[args.buf].filetype ~= "vimwiki" then
+			vim.bo[args.buf].filetype = "vimwiki"
+		end
+	end,
 })
 
 local tmux_group = vim.api.nvim_create_augroup("sync_tmux", { clear = true })

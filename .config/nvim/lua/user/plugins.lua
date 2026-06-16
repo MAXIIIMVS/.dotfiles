@@ -1269,9 +1269,6 @@ MEMENTO VIVERE]],
 			"nvim-tree/nvim-web-devicons",
 		},
 		config = function()
-			-----------------------------------------------------------------------
-			-- 2. DYNAMIC LUALINE SPECIFICATION
-			-----------------------------------------------------------------------
 			local function get_dynamic_theme()
 				local modes = { "normal", "insert", "visual", "replace", "command", "inactive" }
 				local sections = { "a", "b", "c" }

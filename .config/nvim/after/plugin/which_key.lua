@@ -345,20 +345,6 @@ require("which-key").add({
 		remap = false,
 	},
 	{
-		"H",
-		"{",
-		desc = "Previous empty line",
-		nowait = true,
-		remap = false,
-	},
-	{
-		"L",
-		"}",
-		desc = "Next empty line",
-		nowait = true,
-		remap = false,
-	},
-	{
 		"K",
 		function()
 			vim.lsp.buf.hover({
@@ -1503,20 +1489,6 @@ require("which-key").add({
 	},
 	{
 		mode = { "v" },
-		{
-			"H",
-			"{",
-			desc = "Previous empty line",
-			nowait = true,
-			remap = false,
-		},
-		{
-			"L",
-			"}",
-			desc = "Next empty line",
-			nowait = true,
-			remap = false,
-		},
 		{ "<c-t>", ":Tabularize /", desc = "Tabularize", silent = false, nowait = true, remap = false },
 		{ "<leader>m", [[ygvs<C-r>=<C-r>"<CR>]], desc = "Math Result", nowait = true, remap = false },
 		{ ";", group = "Quick", nowait = true, remap = false },
@@ -1558,6 +1530,23 @@ require("which-key").add({
 		{ "<space>g", group = "Git", nowait = true, remap = false },
 		{ "<space>gW", "<cmd>Gitsigns undo_stage_hunk<CR>", desc = "Undo stage hunk", nowait = true, remap = false },
 		{ "<space>gw", "<cmd>Gitsigns stage_hunk<CR>", desc = "Stage hunk", nowait = true, remap = false },
+	},
+	{
+		mode = { "n", "v", "o" },
+		{
+			"H",
+			"{",
+			desc = "Previous empty line",
+			nowait = true,
+			remap = false,
+		},
+		{
+			"L",
+			"}",
+			desc = "Next empty line",
+			nowait = true,
+			remap = false,
+		},
 	},
 	{
 		mode = { "s" },
