@@ -15,6 +15,7 @@ alias ggr='g++ -std=c++2a -Wconversion -Wshadow -Wpedantic -O2 -DNDEBUG -Wall -W
 alias lg='lazygit'
 alias p8='ping 8.8.8.8'
 alias v="nvim"
+alias vims="vim -S Session.vim"
 alias gdvim="nvim --listen /tmp/godot.pipe"
 alias f="fzf"
 # Sync vimwiki notes with google drive

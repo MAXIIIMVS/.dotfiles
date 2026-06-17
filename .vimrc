@@ -156,7 +156,6 @@ nnoremap ;h :h
 nnoremap ;o <cmd>silent %bd<bar>e#<bar>bd#<CR><bar>'"
 nnoremap ;s :s/<c-r><c-w>/<c-r><c-w>/gI<left><left><left>
 nnoremap ;S :%s/<c-r><c-w>/<c-r><c-w>/gI<left><left><left>
-nnoremap ;n <cmd>silent call ToggleNetrw()<CR>
 " nnoremap ;n <cmd>silent call ToggleNetrw()<CR>
 nnoremap ;n :call ToggleNetrw() <bar> :sil! /<C-R>=expand("%:t")<CR><CR> :nohlsearch<CR>
 nnoremap [B <cmd>bfirst<CR>
@@ -249,6 +248,15 @@ endfunction
 
 nnoremap <leader>u <cmd>call GitPullVimPlugins()<CR>
 " keymaps }}}
+
+function! SaveSessionIfExists()
+  let l:session = getcwd() . "/Session.vim"
+  if filereadable(l:session)
+    execute "mksession! " . l:session
+  endif
+endfunction
+
+autocmd VimLeavePre * call SaveSessionIfExists()
 
 autocmd BufRead,BufNewFile *.asm set filetype=asm
 
