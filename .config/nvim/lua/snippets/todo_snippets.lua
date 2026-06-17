@@ -18,6 +18,7 @@ local function comment_tag(tag, name)
 end
 
 return {
+	s("bug", { comment_tag("BUG"), i(1) }),
 	s("todo", { comment_tag("TODO"), i(1) }),
 	s("note", { comment_tag("NOTE"), i(1) }),
 	s("warn", { comment_tag("WARN"), i(1) }),
@@ -32,6 +33,7 @@ return {
 	s("important", { comment_tag("IMPORTANT"), i(1) }),
 	s("idea", { comment_tag("IDEA"), i(1) }),
 
+	s("mbug", { comment_tag("BUG", "<Mustafa> "), i(1) }),
 	s("mtodo", { comment_tag("TODO", "<Mustafa> "), i(1) }),
 	s("mnote", { comment_tag("NOTE", "<Mustafa> "), i(1) }),
 	s("mwarn", { comment_tag("WARN", "<Mustafa> "), i(1) }),

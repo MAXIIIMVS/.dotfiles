@@ -166,7 +166,12 @@ local function apply_highlights()
 		groups.Visual = { bg = "#45475b", fg = "NONE" }
 		groups.VisualNOS = { bg = "#45475b", fg = "NONE" }
 
-		-- groups.Constant = { fg = "#CBA6F7" }
+		-- local dark_constant = p.purple
+		-- groups.Constant = { fg = dark_constant }
+		-- groups.Character = { fg = dark_constant }
+		-- groups.Number = { fg = dark_constant }
+		-- groups.Boolean = { fg = dark_constant }
+		-- groups.Float = { fg = dark_constant }
 
 		-- Complete Punctuation & Operator Mapping for Dark Mode (Fixes white symbols)
 		groups.Operator = { fg = p.orange }

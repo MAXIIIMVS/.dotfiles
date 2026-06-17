@@ -2,6 +2,26 @@
 colorscheme retrobox " sorbet, habamax, zaibatsu, wildcharm, retrobox, wildcharm, industry
 filetype plugin on
 syntax enable
+
+function! MyTabLabel(n)
+    let buflist = tabpagebuflist(a:n)
+    let winnr = tabpagewinnr(a:n)
+    return fnamemodify(bufname(buflist[winnr - 1]), ':t')
+endfunction
+
+function! MyTabLine()
+    let s = ''
+    for i in range(tabpagenr('$'))
+        let s .= (i + 1 == tabpagenr() ? '%#TabLineSel#' : '%#TabLine#')
+        let s .= '%' . (i + 1) . 'T'
+        let s .= ' ' . (i + 1) . ': ' . MyTabLabel(i + 1) . ' '
+    endfor
+    let s .= '%#TabLineFill#%T'
+    return s
+endfunction
+
+set tabline=%!MyTabLine()
+
 set t_Co=256  " Enable 256 colors
 set autochdir
 set autoindent
@@ -56,6 +76,24 @@ set wildignorecase
 " settings }}}
 
 " keymaps {{{
+function! FindOrTabFind()
+    " Get all listed buffers
+    let buffers = getbufinfo({'buflisted': 1})
+
+    " Detect if we're effectively in a fresh empty state:
+    " - only one tab
+    " - only one listed buffer
+    " - current buffer is unnamed and unmodified
+    if tabpagenr('$') == 1
+        \ && len(buffers) == 1
+        \ && empty(bufname('%'))
+        \ && !&modified
+        return ":find "
+    endif
+
+    return ":tabfind "
+endfunction
+
 function! MyTermdebug()
   " let current_dir = expand("%:p:h")
   packadd termdebug
@@ -79,7 +117,6 @@ function! RunFromRegister()
   :terminal
   call feedkeys(getreg(reg) . "\<CR>")
 endfunction
-
 nnoremap <Tab> <cmd>bn<CR>
 nnoremap <S-Tab> <cmd>bp<CR>
 nnoremap <space>1 <cmd>tabn 1<CR>
@@ -109,8 +146,9 @@ tnoremap <leader>T <cmd>call ToggleTermColors()<CR>
 nnoremap ;b :b 
 nnoremap <F4> :call MyTermdebug()<CR>
 nnoremap <space>r :call RunFromRegister()<CR>
-nnoremap ;f :tabfind 
-nnoremap ;F :find 
+" nnoremap ;f :tabfind 
+" nnoremap ;F :find 
+nnoremap <expr> ;f FindOrTabFind()
 nnoremap ;e :e 
 nnoremap ;t :tabedit 
 nnoremap ;g :silent grep -i 
@@ -280,11 +318,29 @@ augroup Mkdir
 augroup END
 " autocommands }}}
 
+" NOTE: how to install plugins
+" mkdir -p ~/.vim/pack/plugins/start
+" cd ~/.vim/pack/plugins/start
+" git clone https://github.com/airblade/vim-rooter.git
+
 " vim-rooter {{{
 let g:rooter_silent_chdir= 1
 let g:rooter_resolve_links= 1
 let g:rooter_cd_cmd = 'lcd'
 let g:rooter_change_directory_for_non_project_files = 'current'
+let g:rooter_patterns = [
+      \ '.project-root',
+      \ 'project.godot',
+      \ '.git',
+      \ 'Makefile',
+      \ '*.sln',
+      \ '*.csproj',
+      \ '_darcs',
+      \ 'package.json',
+      \ '.hg',
+      \ '.bzr',
+      \ '.svn',
+      \ ]
 " vim-rooter }}}
 
 " statusline {{{
