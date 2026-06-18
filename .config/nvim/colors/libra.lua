@@ -1,3 +1,6 @@
+-- Name:         Libra.nvim
+-- Description:  Yoinked from retrobox and catppuccin; Designed by Mustafa Hayati <mustafa.hayati1992@gmail.com>.
+
 local hl = vim.api.nvim_set_hl
 
 -- Reset existing highlights to prevent bleeding from previous themes
