@@ -1532,23 +1532,6 @@ require("which-key").add({
 		{ "<space>gw", "<cmd>Gitsigns stage_hunk<CR>", desc = "Stage hunk", nowait = true, remap = false },
 	},
 	{
-		mode = { "n", "v", "o" },
-		{
-			"H",
-			"{",
-			desc = "Previous empty line",
-			nowait = true,
-			remap = false,
-		},
-		{
-			"L",
-			"}",
-			desc = "Next empty line",
-			nowait = true,
-			remap = false,
-		},
-	},
-	{
 		mode = { "s" },
 		{ "<S-S>", "S", desc = "Insert S", nowait = true, remap = false },
 		{ "<C-a>", "<ESC>I", desc = "Go to the beginning of line", nowait = true, remap = false },
