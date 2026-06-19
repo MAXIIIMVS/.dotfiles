@@ -1,5 +1,5 @@
 " settings {{{
-colorscheme retrobox " sorbet, habamax, zaibatsu, wildcharm, retrobox, wildcharm, industry
+colorscheme libra " sorbet, habamax, zaibatsu, wildcharm, retrobox, wildcharm, industry
 filetype plugin on
 syntax enable
 
