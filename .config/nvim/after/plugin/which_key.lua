@@ -1037,6 +1037,20 @@ require("which-key").add({
 	{ "<space>gwu", ":G worktree unlock ", desc = "Unlock", nowait = true, remap = false, silent = false },
 	{ "<space>l", group = "LSP", nowait = true, remap = false },
 	{
+		"<space>ld",
+		":lsp disable ",
+		desc = "Disable a lsp",
+		silent = false,
+		remap = false,
+	},
+	{
+		"<space>le",
+		":lsp enable ",
+		desc = "Enable a lsp",
+		silent = false,
+		remap = false,
+	},
+	{
 		"<space>lf",
 		function()
 			vim.lsp.buf.format({ async = true })

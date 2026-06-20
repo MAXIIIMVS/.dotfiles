@@ -11,6 +11,7 @@ end
 
 require("user")
 
+-- vim.o.exrc = true
 vim.o.secure = true
 vim.g.is_transparent = get_transparency()
 vim.cmd.colorscheme("libra")

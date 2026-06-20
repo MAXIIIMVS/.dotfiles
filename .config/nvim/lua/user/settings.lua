@@ -310,6 +310,18 @@ endfunction
 -- │                        Functions                        │
 -- ╰─────────────────────────────────────────────────────────╯
 
+function lsp_disabled()
+	local cwd = vim.fn.getcwd()
+	return vim.fn.filereadable(cwd .. "/.disable_lsp") == 1
+		or vim.fn.filereadable(cwd .. "/.disable_lsp_and_null-ls") == 1
+end
+
+function null_ls_disabled()
+	local cwd = vim.fn.getcwd()
+	return vim.fn.filereadable(cwd .. "/.disable_null-ls") == 1
+		or vim.fn.filereadable(cwd .. "/.disable_lsp_and_null-ls") == 1
+end
+
 function goto_comment(forward)
 	-- 1. Check if we are in diff mode
 	if vim.wo.diff then

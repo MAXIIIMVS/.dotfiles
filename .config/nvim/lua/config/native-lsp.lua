@@ -455,7 +455,9 @@ function M.setup(on_attach, capabilities)
 		end
 		config.capabilities = capabilities
 		vim.lsp.config(server, config)
-		vim.lsp.enable(server)
+		if not lsp_disabled() then
+			vim.lsp.enable(server)
+		end
 		table.insert(ensure_installed, server)
 	end
 
