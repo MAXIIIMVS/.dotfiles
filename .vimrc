@@ -326,11 +326,6 @@ augroup Mkdir
 augroup END
 " autocommands }}}
 
-" NOTE: how to install plugins
-" mkdir -p ~/.vim/pack/plugins/start
-" cd ~/.vim/pack/plugins/start
-" git clone https://github.com/airblade/vim-rooter.git
-
 " vim-rooter {{{
 let g:rooter_silent_chdir= 1
 let g:rooter_resolve_links= 1
@@ -378,6 +373,16 @@ let g:airline_section_c = '%f'
 " }}}
 
 " plugins {{{
+" NOTE: how to install plugins
+" mkdir -p ~/.vim/pack/plugins/start
+" cd ~/.vim/pack/plugins/start
+" Clone them
+" https://github.com/airblade/vim-rooter.git
+" git@github.com:tpope/vim-rsi.git
+" git@github.com:ludovicchabant/vim-gutentags.git
+" git@github.com:romainl/vim-cool.git
+
+
 " Plugins that I installed using vim packages (:h packages)
 " vim-airline  vim-airline-themes  vim-polyglot  vim-rooter  vim-rsi vim-gutentags
 " plugins }}}

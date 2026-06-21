@@ -1,5 +1,5 @@
 -- Name:         Libra.nvim
--- Description:  Yoinked from retrobox and catppuccin; Designed by Mustafa Hayati <mustafa.hayati1992@gmail.com>.
+-- Description:  Yoinked from retrobox and catppuccin; Designed by Mustafa Hayati.
 
 local hl = vim.api.nvim_set_hl
 
@@ -169,12 +169,14 @@ local function apply_highlights()
 		groups.Visual = { bg = "#45475b", fg = "NONE" }
 		groups.VisualNOS = { bg = "#45475b", fg = "NONE" }
 
-		-- local dark_constant = p.purple
-		-- groups.Constant = { fg = dark_constant }
+		-- Constants, Literals, and Core Types
+		local dark_constant = "#D19407"
+		groups.Constant = { fg = dark_constant }
 		-- groups.Character = { fg = dark_constant }
 		-- groups.Number = { fg = dark_constant }
 		-- groups.Boolean = { fg = dark_constant }
 		-- groups.Float = { fg = dark_constant }
+		groups["@type.builtin"] = { link = "Type" }
 
 		-- Complete Punctuation & Operator Mapping for Dark Mode (Fixes white symbols)
 		groups.Operator = { fg = p.orange }
@@ -184,6 +186,14 @@ local function apply_highlights()
 		groups["@punctuation.delimiter"] = { fg = p.orange }
 		groups["@punctuation.bracket"] = { fg = p.orange }
 		groups["@punctuation.special"] = { fg = p.orange }
+
+		-- Global Preprocessor and Macro Names (e.g., #define MAX_COUNT)
+		local dark_macro = p.aqua
+		groups.PreProc = { fg = dark_macro }
+		groups.Define = { fg = dark_macro }
+		groups.Macro = { fg = dark_macro }
+		groups["@macro"] = { fg = dark_macro, bold = true }
+		groups["@keyword.directive"] = { fg = dark_macro }
 
 		-- MatchParen / Structural Marks
 		groups.MatchParen = { bg = "#504945", fg = "NONE", bold = true, underline = true, sp = "#bdae93" }
@@ -285,6 +295,7 @@ local function apply_highlights()
 		groups.Comment = { fg = "#7c7f93", bg = "NONE" }
 		groups.NonText = { fg = "#9ca0b0", bg = "NONE" }
 		groups.Whitespace = { fg = "#787575" }
+		groups["@type.builtin"] = { link = "Type" }
 
 		-- Complete Punctuation & Operator Mapping for Light Mode
 		groups.Operator = { fg = light_text }
@@ -333,6 +344,8 @@ local function apply_highlights()
 		groups.PreProc = { fg = "#ea76cb", bg = "NONE" }
 		groups.Character = { fg = "#179299", bg = "NONE" }
 		groups.Label = { fg = "#209fb5", bg = "NONE" }
+		groups["@macro"] = { fg = "#8839ef", bold = true }
+		groups["@keyword.directive"] = { fg = "#8839ef" }
 
 		-- Tree-sitter & LSP Semantic Token Mapping for Variables
 		local light_var_color = "#458588"
@@ -375,7 +388,7 @@ local function apply_highlights()
 		groups.CmpItemAbbrMatch = { fg = "#1e66f5", bold = true }
 		groups.CmpItemAbbrMatchFuzzy = { fg = "#1e66f5" }
 		groups.CmpItemKind = { fg = "#1e66f5", bg = "NONE" }
-		groups.CmpItemMenu = { fg = "#FF0000", bg = "#FF0000", italic = true }
+		groups.CmpItemMenu = { fg = "#8f8f99", bg = "NONE", italic = true }
 
 		-- Spell Checking Highlights (Light Mode)
 		groups.SpellBad = { undercurl = true, sp = "#cc241d" }
