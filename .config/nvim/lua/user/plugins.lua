@@ -1287,6 +1287,7 @@ MEMENTO VIVERE]],
 					for _, mode in ipairs(modes) do
 						dark_theme[mode] = {}
 						for _, section in ipairs(sections) do
+							-- NOTE: same color for background as normal
 							dark_theme[mode][section] = { bg = "#1A1528", fg = "#CDD6F5" }
 						end
 					end

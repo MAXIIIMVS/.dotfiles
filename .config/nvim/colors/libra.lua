@@ -16,7 +16,7 @@ local retro_dark = {
 	bg1 = "#3c3836",
 	bg2 = "#504945",
 	bg3 = "#665c54",
-	bg4 = "#7c6f64",
+	bg4 = "#0e0b16",
 	fg0 = "#fbf1c7",
 	fg1 = "#ebdbb2",
 	fg2 = "#d5c4a1",
@@ -33,6 +33,7 @@ local retro_dark = {
 	sign_bg = "#282828",
 	visual_bg = "#404945",
 	search_bg = "#766c34",
+	normal = "#1A1528",
 }
 
 local retro_light = {
@@ -73,7 +74,7 @@ local function apply_highlights()
 		-- UI Elements
 		CursorLine = { bg = p.bg1 },
 		CursorLineNr = { fg = p.yellow, bg = p.bg1 },
-		LineNr = { fg = p.bg4 },
+		LineNr = { fg = p.bg3 },
 		SignColumn = { bg = p.sign_bg },
 		FoldColumn = { fg = p.grey, bg = p.sign_bg },
 		VertSplit = { fg = p.bg3, bg = "NONE" },
@@ -135,7 +136,7 @@ local function apply_highlights()
 		StatusLineNC = { fg = p.bg2, bg = p.fg4, reverse = true },
 		TabLine = { fg = p.fg4, bg = p.bg4 },
 		TabLineFill = { fg = p.fg4, bg = p.bg4 },
-		TabLineSel = { fg = p.green, bg = p.bg0 },
+		TabLineSel = { fg = p.green, bg = p.normal },
 
 		-- Completion Menus
 		Pmenu = { fg = p.fg1, bg = p.bg2 },
@@ -158,7 +159,7 @@ local function apply_highlights()
 	if bg == "dark" then
 		-- Global Dark Base Overrides (Applied to both Opaque and Transparent Dark)
 		local dark_text = "#CDD6F5"
-		groups.Normal = { fg = dark_text, bg = "#1A1528" }
+		groups.Normal = { fg = dark_text, bg = p.normal }
 		groups.NormalFloat = { fg = dark_text, bg = "#181826" }
 		groups.CursorLine = { bg = "#29283B" }
 		groups.Function = { fg = "#B8BB26", bold = false }
@@ -215,20 +216,20 @@ local function apply_highlights()
 		groups.FloatBorder = { fg = "#554d80", bg = "#181826" }
 
 		-- Structure Layouts
-		groups.SignColumn = { bg = "#1A1528", fg = dark_text }
-		groups.FoldColumn = { bg = "#1A1528" }
-		groups.CursorLineNr = { bg = "#1A1528", fg = "#ffaf00", bold = true }
+		groups.SignColumn = { bg = p.normal, fg = dark_text }
+		groups.FoldColumn = { bg = p.normal }
+		groups.CursorLineNr = { bg = p.normal, fg = "#ffaf00", bold = true }
 		groups.ColorColumn = { bg = "#313245" }
 		groups.WinSeparator = { fg = "#554D80" }
 		groups.VertSplit = { fg = "#5f5f5f" }
 		groups.TabLineFill = { bg = "#130F1E" }
-		groups.TabLineSel = { fg = dark_text, bg = "#1A1528" }
+		groups.TabLineSel = { fg = dark_text, bg = p.normal }
 
 		-- Lists / Custom Search Highlights (#5f431f)
 		groups.QuickFixLine = { bg = "#38384C", bold = true }
 		groups.Search = { bg = "#2f4f75", fg = "NONE" }
-		groups.IncSearch = { bg = "#fe8019", fg = "#1A1528", bold = true }
-		groups.CurSearch = { bg = "#fabd2f", fg = "#1A1528", bold = true }
+		groups.IncSearch = { bg = "#fe8019", fg = p.normal, bold = true }
+		groups.CurSearch = { bg = "#fabd2f", fg = p.normal, bold = true }
 		groups.ErrorMsg = { bg = "NONE" }
 		groups.debugPC = { bg = "#45475b" }
 		groups.SnacksIndent = { fg = "#444444" }
@@ -268,6 +269,7 @@ local function apply_highlights()
 			groups.FloatBorder = { fg = "#5f5f5f", bg = "NONE" }
 			groups.VertSplit = { bg = "NONE", fg = "#5f5f5f" }
 			groups.Pmenu = { fg = "#d0d0d0", bg = "NONE" }
+			groups.TabLine = { bg = "NONE", fg = "#5f5f5f" }
 			groups.TabLineFill = { bg = "NONE", fg = "NONE" }
 			groups.TabLineSel = { fg = dark_text, bg = "NONE" }
 			groups.StatusLine = { bg = "NONE", fg = "NONE" }
