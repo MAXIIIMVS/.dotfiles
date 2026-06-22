@@ -6,7 +6,7 @@ nmap <buffer> q <cmd>bd<CR>
 nmap <buffer> gb o.disable_lsp_and_null-ls<C-S>
 nmap <buffer> gl o.disable_lsp<C-S>
 nmap <buffer> gn o.disable_null-ls<C-S>
-nmap <buffer> gp o.project-root<C-S>
+nmap <buffer> gp o.project_root<C-S>
 nmap <buffer> gh <cmd>Oil ~/<CR>
 nmap <buffer> gt <cmd>Oil /tmp/<CR>
 nmap <buffer> g0 <cmd>Oil ~/Documents/00/<CR>

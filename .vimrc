@@ -14,7 +14,7 @@ function! MyTabLine()
     for i in range(tabpagenr('$'))
         let s .= (i + 1 == tabpagenr() ? '%#TabLineSel#' : '%#TabLine#')
         let s .= '%' . (i + 1) . 'T'
-        let s .= ' ' . (i + 1) . ': ' . MyTabLabel(i + 1) . ' '
+        let s .= '| ' . (i + 1) . '. ' . MyTabLabel(i + 1) . ' '
     endfor
     let s .= '%#TabLineFill#%T'
     return s
@@ -332,7 +332,7 @@ let g:rooter_resolve_links= 1
 let g:rooter_cd_cmd = 'lcd'
 let g:rooter_change_directory_for_non_project_files = 'current'
 let g:rooter_patterns = [
-      \ '.project-root',
+      \ '.project_root',
       \ 'project.godot',
       \ '.git',
       \ 'Makefile',

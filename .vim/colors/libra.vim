@@ -14,7 +14,7 @@ function! s:ApplyHighlights()
     " 1. True Retrobox Palette Definitions (Upstream Base)
     if l:bg ==# "dark"
         let l:p = {
-        \ 'bg0': '#282828', 'bg1': '#3c3836', 'bg2': '#504945', 'bg3': '#665c54', 'bg4': '#7c6f64',
+        \ 'bg0': '#282828', 'bg1': '#3c3836', 'bg2': '#504945', 'bg3': '#665c54', 'bg4': '#130F1E',
         \ 'fg0': '#fbf1c7', 'fg1': '#ebdbb2', 'fg2': '#d5c4a1', 'fg3': '#bdae93', 'fg4': '#a89984',
         \ 'red': '#fb4934', 'green': '#b8bb26', 'yellow': '#fabd2f', 'blue': '#83a598', 'purple': '#d3869b',
         \ 'aqua': '#8ec07c', 'orange': '#fe8019', 'grey': '#928374', 'sign_bg': '#282828',
@@ -38,7 +38,7 @@ function! s:ApplyHighlights()
     let l:groups['NormalFloat'] = 'guifg=' . l:p.fg1 . ' guibg=' . l:p.bg1 . ' gui=NONE cterm=NONE'
     let l:groups['CursorLine'] = 'guibg=' . l:p.bg1 . ' gui=NONE cterm=NONE'
     let l:groups['CursorLineNr'] = 'guifg=' . l:p.yellow . ' guibg=' . l:p.bg1 . ' gui=NONE cterm=NONE'
-    let l:groups['LineNr'] = 'guifg=' . l:p.bg4 . ' gui=NONE cterm=NONE'
+    let l:groups['LineNr'] = 'guifg=' . l:p.bg2 . ' gui=NONE cterm=NONE'
     let l:groups['SignColumn'] = 'guibg=' . l:p.sign_bg . ' gui=NONE cterm=NONE'
     let l:groups['FoldColumn'] = 'guifg=' . l:p.grey . ' guibg=' . l:p.sign_bg . ' gui=NONE cterm=NONE'
     let l:groups['VertSplit'] = 'guifg=' . l:p.bg3 . ' guibg=NONE gui=NONE cterm=NONE'
@@ -83,10 +83,14 @@ function! s:ApplyHighlights()
     let l:groups['Delimiter'] = 'guifg=' . l:p.orange . ' gui=NONE cterm=NONE'
     let l:groups['SpecialComment'] = 'guifg=' . l:p.grey . ' gui=NONE cterm=NONE'
     let l:groups['Debug'] = 'guifg=' . l:p.red . ' gui=NONE cterm=NONE'
-    let l:groups['StatusLine'] = 'guifg=' . '#130F1E' . ' guibg=' . l:p.fg1 . ' gui=reverse cterm=reverse'
+    let l:groups['StatusLine'] = 'guifg=' . l:p.bg4 . ' guibg=' . l:p.fg1 . ' gui=reverse cterm=reverse'
     let l:groups['StatusLineNC'] = 'guifg=' . l:p.bg2 . ' guibg=' . l:p.fg4 . ' gui=reverse cterm=reverse'
-    let l:groups['TabLine'] = 'guifg=' . l:p.fg4 . ' guibg=' . l:p.bg4 . ' gui=NONE cterm=NONE'
-    let l:groups['TabLineFill'] = 'guifg=' . l:p.fg4 . ' guibg=' . l:p.bg4 . ' gui=NONE cterm=NONE'
+    " NOTE:
+    " TabLine → inactive tabs
+    " TabLineSel → active tab
+    " TabLineFill → the empty space after the tabs
+    let l:groups['TabLine'] = 'guifg=' . l:p.bg4 . ' guibg=' . l:p.fg1 . ' gui=NONE cterm=NONE'
+    let l:groups['TabLineFill'] = 'guifg=' . l:p.bg4 . ' guibg=' . l:p.bg4 . ' gui=NONE cterm=NONE'
     let l:groups['TabLineSel'] = 'guifg=' . l:p.green . ' guibg=' . l:p.bg0 . ' gui=NONE cterm=NONE'
     let l:groups['Pmenu'] = 'guifg=' . l:p.fg1 . ' guibg=' . l:p.bg2 . ' gui=NONE cterm=NONE'
     let l:groups['PmenuSel'] = 'guifg=' . l:p.bg0 . ' guibg=' . l:p.blue . ' gui=NONE cterm=NONE'
