@@ -34,6 +34,7 @@ local retro_dark = {
 	visual_bg = "#404945",
 	search_bg = "#766c34",
 	normal = "#1A1528",
+	border = "#554d80",
 }
 
 local retro_light = {
@@ -142,7 +143,7 @@ local function apply_highlights()
 		Pmenu = { fg = p.fg1, bg = p.bg2 },
 		PmenuSel = { fg = p.bg0, bg = p.blue },
 		PmenuSbar = { bg = p.bg2 },
-		PmenuThumb = { bg = p.bg4 },
+		PmenuThumb = { bg = p.border },
 
 		-- Diagnostics
 		DiagnosticError = { fg = p.red },
@@ -213,14 +214,14 @@ local function apply_highlights()
 		-- Completion / Floats
 		groups.Pmenu = { fg = dark_text, bg = "#181826" }
 		groups.PmenuSel = { fg = dark_text, bg = "#444444" }
-		groups.FloatBorder = { fg = "#554d80", bg = "#181826" }
+		groups.FloatBorder = { fg = p.border, bg = "#181826" }
 
 		-- Structure Layouts
 		groups.SignColumn = { bg = p.normal, fg = dark_text }
 		groups.FoldColumn = { bg = p.normal }
 		groups.CursorLineNr = { bg = p.normal, fg = "#ffaf00", bold = true }
 		groups.ColorColumn = { bg = "#313245" }
-		groups.WinSeparator = { fg = "#554D80" }
+		groups.WinSeparator = { fg = p.border }
 		groups.VertSplit = { fg = "#5f5f5f" }
 		groups.TabLineFill = { bg = "#130F1E" }
 		groups.TabLineSel = { fg = dark_text, bg = p.normal }
