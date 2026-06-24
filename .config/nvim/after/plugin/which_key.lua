@@ -92,7 +92,14 @@ require("which-key").add({
 		remap = false,
 		silent = false,
 	},
-	{ ",x", "<cmd>BufferLinePickClose<CR>", desc = "Pick a buffer to close", nowait = true, remap = false },
+	{
+		",x",
+		":tabc ",
+		desc = "Close a tab by number",
+		nowait = true,
+		remap = false,
+		silent = false,
+	},
 	{
 		",z",
 		function()
@@ -123,15 +130,15 @@ require("which-key").add({
 	},
 	{ "-", "<cmd>silent Oil<CR>", desc = "Current directory", nowait = true, remap = false },
 	{ ";", group = "Quick", nowait = true, remap = false },
-	{ ";1", "<cmd>BufferLineGoToBuffer 1<CR>", desc = "Go to 1st buffer", nowait = true, remap = false },
-	{ ";2", "<cmd>BufferLineGoToBuffer 2<CR>", desc = "Go to 2nd buffer", nowait = true, remap = false },
-	{ ";3", "<cmd>BufferLineGoToBuffer 3<CR>", desc = "Go to 3rd buffer", nowait = true, remap = false },
-	{ ";4", "<cmd>BufferLineGoToBuffer 4<CR>", desc = "Go to 4th buffer", nowait = true, remap = false },
-	{ ";5", "<cmd>BufferLineGoToBuffer 5<CR>", desc = "Go to 5th buffer", nowait = true, remap = false },
-	{ ";6", "<cmd>BufferLineGoToBuffer 6<CR>", desc = "Go to 6th buffer", nowait = true, remap = false },
-	{ ";7", "<cmd>BufferLineGoToBuffer 7<CR>", desc = "Go to 7th buffer", nowait = true, remap = false },
-	{ ";8", "<cmd>BufferLineGoToBuffer 8<CR>", desc = "Go to 8th buffer", nowait = true, remap = false },
-	{ ";9", "<cmd>BufferLineGoToBuffer 9<CR>", desc = "Go to 9th buffer", nowait = true, remap = false },
+	{ ";1", "<cmd>tabn 1<CR>", desc = "Go to 1st tab", nowait = true, remap = false },
+	{ ";2", "<cmd>tabn 2<CR>", desc = "Go to 2nd tab", nowait = true, remap = false },
+	{ ";3", "<cmd>tabn 3<CR>", desc = "Go to 3rd tab", nowait = true, remap = false },
+	{ ";4", "<cmd>tabn 4<CR>", desc = "Go to 4th tab", nowait = true, remap = false },
+	{ ";5", "<cmd>tabn 5<CR>", desc = "Go to 5th tab", nowait = true, remap = false },
+	{ ";6", "<cmd>tabn 6<CR>", desc = "Go to 6th tab", nowait = true, remap = false },
+	{ ";7", "<cmd>tabn 7<CR>", desc = "Go to 7th tab", nowait = true, remap = false },
+	{ ";8", "<cmd>tabn 8<CR>", desc = "Go to 8th tab", nowait = true, remap = false },
+	{ ";9", "<cmd>tabn 9<CR>", desc = "Go to 9th tab", nowait = true, remap = false },
 	{
 		";;",
 		"<cmd>lua Snacks.bufdelete()<CR>",
@@ -345,6 +352,20 @@ require("which-key").add({
 		remap = false,
 	},
 	{
+		"H",
+		"gT",
+		desc = "Previous tab",
+		nowait = true,
+		remap = false,
+	},
+	{
+		"L",
+		"gt",
+		desc = "Next tab",
+		nowait = true,
+		remap = false,
+	},
+	{
 		"K",
 		function()
 			vim.lsp.buf.hover({
@@ -398,14 +419,6 @@ require("which-key").add({
 		nowait = true,
 		remap = false,
 	},
-	{
-		"]x",
-		"<cmd>BufferLineCloseRight<CR>",
-		desc = "Close all the buffers to the right",
-		nowait = true,
-		remap = false,
-	},
-	{ "[x", "<cmd>BufferLineCloseLeft<CR>", desc = "Close all the buffers to the left", nowait = true, remap = false },
 	{
 		"_",
 		function()
@@ -470,15 +483,6 @@ require("which-key").add({
 		remap = false,
 	},
 	{ "<space>", group = "Groups", nowait = true, remap = false },
-	{ "<space>1", "<cmd>tabn 1<CR>", desc = "Go to 1st tab", nowait = true, remap = false },
-	{ "<space>2", "<cmd>tabn 2<CR>", desc = "Go to 2nd tab", nowait = true, remap = false },
-	{ "<space>3", "<cmd>tabn 3<CR>", desc = "Go to 3rd tab", nowait = true, remap = false },
-	{ "<space>4", "<cmd>tabn 4<CR>", desc = "Go to 4th tab", nowait = true, remap = false },
-	{ "<space>5", "<cmd>tabn 5<CR>", desc = "Go to 5th tab", nowait = true, remap = false },
-	{ "<space>6", "<cmd>tabn 6<CR>", desc = "Go to 6th tab", nowait = true, remap = false },
-	{ "<space>7", "<cmd>tabn 7<CR>", desc = "Go to 7th tab", nowait = true, remap = false },
-	{ "<space>8", "<cmd>tabn 8<CR>", desc = "Go to 8th tab", nowait = true, remap = false },
-	{ "<space>9", "<cmd>tabn 9<CR>", desc = "Go to 9th tab", nowait = true, remap = false },
 	{
 		"<space><space>",
 		function()
@@ -505,7 +509,6 @@ require("which-key").add({
 		nowait = true,
 		remap = false,
 	},
-	{ "<space>bP", "<cmd>BufferLineTogglePin<CR>", desc = "Pin buffer", nowait = true, remap = false },
 	{
 		"<space>bA",
 		"<cmd>lua Snacks.bufdelete.all()<CR>",
@@ -532,23 +535,8 @@ require("which-key").add({
 					end
 				end
 			end
-			require("bufferline.ui").refresh()
 		end,
 		desc = "Close empty buffers (not current one)",
-		nowait = true,
-		remap = false,
-	},
-	{
-		"<space>bh",
-		"<cmd>BufferLineMovePrev<CR>",
-		desc = "Move the buffer to the previous position",
-		nowait = true,
-		remap = false,
-	},
-	{
-		"<space>bl",
-		"<cmd>BufferLineMoveNext<CR>",
-		desc = "Move the buffer to the next position",
 		nowait = true,
 		remap = false,
 	},
@@ -560,7 +548,6 @@ require("which-key").add({
 		remap = false,
 		silent = false,
 	},
-	{ "<space>bp", "<cmd>BufferLinePick<CR>", desc = "Pick a Buffer", nowait = true, remap = false },
 	{ "<space>c", group = "Calendar", nowait = true, remap = false, icon = " " },
 	{ "<space>cD", "<cmd>Calendar -view=days<CR>", desc = "View Days", nowait = true, remap = false },
 	{

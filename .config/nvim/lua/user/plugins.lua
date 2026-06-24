@@ -44,34 +44,6 @@ return require("lazy").setup({
 		event = "UIEnter",
 	},
 	{
-		"akinsho/bufferline.nvim",
-		event = { "BufNewFile", "BufReadPre" },
-		dependencies = "nvim-tree/nvim-web-devicons",
-		opts = {
-			options = {
-				themable = true,
-				offsets = {
-					{
-						filetype = "dbui",
-						text = "DB",
-						highlight = "Directory",
-						separator = true,
-					},
-					{
-						filetype = "netrw",
-						text = "Netrw",
-						highlight = "Directory",
-						separator = true,
-					},
-				},
-				sort_by = "insert_at_end",
-				numbers = "ordinal",
-				separator_style = "thin",
-				diagnostics = "nvim_lsp",
-			},
-		},
-	},
-	{
 		"akinsho/toggleterm.nvim",
 		version = "*",
 		opts = {
@@ -229,6 +201,30 @@ return require("lazy").setup({
 			-- terminal = { enabled = true },
 			quickfile = { enabled = true },
 			picker = {
+				actions = {
+					open_in_new_tab = function(picker, item)
+						-- NOTE: this has a bug, if the file is from another project. To
+						-- fix it, first open the file in a buffer in current tab, then move
+						-- it to a new tab, then others will work fine.
+						if item and item.file then
+							picker:close()
+							vim.schedule(function()
+								-- 1. Get the current buffer in the active window
+								local bufnr = vim.api.nvim_get_current_buf()
+								-- 2. Check if the current tab has more than one window
+								local tab_wins = vim.api.nvim_tabpage_list_wins(0)
+								-- 3. Check if the current buffer is empty, unnamed, and untouched
+								local is_empty_buf = vim.api.nvim_buf_get_name(bufnr) == ""
+									and not vim.bo[bufnr].modified
+									and vim.api.nvim_buf_line_count(bufnr) == 1
+									and vim.api.nvim_buf_get_lines(bufnr, 0, 1, false)[1] == ""
+								-- 4. Decide command: use current tab if it's a single, pristine empty buffer
+								local cmd = (#tab_wins == 1 and is_empty_buf) and "edit " or "tabedit "
+								vim.cmd(cmd .. vim.fn.fnameescape(item.file))
+							end)
+						end
+					end,
+				},
 				hidden = true,
 				-- ignored = true,
 				enabled = true,
@@ -278,6 +274,7 @@ return require("lazy").setup({
 							["<c-f>"] = { "list_scroll_down", mode = { "i", "n" } },
 							["<c-b>"] = { "list_scroll_up", mode = { "i", "n" } },
 							["<C-c>"] = { "close", mode = { "i", "n" } },
+							["<c-t>"] = { "open_in_new_tab", mode = { "n", "i" }, desc = "Open in new tab" },
 						},
 					},
 				},

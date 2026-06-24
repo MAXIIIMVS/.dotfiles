@@ -111,7 +111,7 @@ vim.o.showmode = false
 vim.bo.textwidth = 80
 -- vim.wo.colorcolumn = "80"
 vim.wo.linebreak = true
-vim.o.autochdir = true
+-- vim.o.autochdir = true -- conflict with vim-rooter
 vim.o.hidden = true
 vim.o.wildmenu = true
 vim.o.wildmode = "longest:full,full"
@@ -128,6 +128,7 @@ vim.g.python3_host_prog = "/usr/bin/python3"
 
 -- vim.o.smarttab = true
 -- b.smartindent = true
+vim.o.tabline = "%!v:lua.MyTabLine()"
 vim.o.tabstop = 2
 vim.o.shiftwidth = 2
 -- vim.o.softtabstop = 2
@@ -309,6 +310,60 @@ endfunction
 -- ╭─────────────────────────────────────────────────────────╮
 -- │                        Functions                        │
 -- ╰─────────────────────────────────────────────────────────╯
+
+local function my_tab_label(tabnr)
+	local buflist = vim.fn.tabpagebuflist(tabnr)
+	local winnr = vim.fn.tabpagewinnr(tabnr)
+	if not buflist or #buflist == 0 then
+		return "[No Name]"
+	end
+	local bufnr = buflist[winnr] or buflist[1]
+	local win_id = vim.fn.win_getid(winnr, tabnr)
+	if win_id and win_id > 0 then
+		local win_config = vim.api.nvim_win_get_config(win_id)
+		-- Floating windows have a 'relative' key set (e.g., 'editor', 'win', 'cursor')
+		if win_config.relative and win_config.relative ~= "" then
+			-- Loop through the tab's buffers to find a normal one
+			for _, b in ipairs(buflist) do
+				if vim.bo[b].buftype == "" and vim.fn.bufname(b) ~= "" then
+					bufnr = b
+					break
+				end
+			end
+		end
+	end
+	local bufname = vim.fn.bufname(bufnr)
+	if bufname == "" then
+		return "[No Name]"
+	end
+	local buftype = vim.bo[bufnr].buftype
+	if buftype == "terminal" then
+		return " Terminal"
+	elseif buftype == "help" then
+		return "󰘥 Help"
+	end
+	return vim.fn.fnamemodify(bufname, ":t")
+end
+
+function _G.MyTabLine()
+	local s = ""
+	local total_tabs = vim.fn.tabpagenr("$")
+	local current_tab = vim.fn.tabpagenr()
+	for i = 1, total_tabs do
+		-- Set highlight group based on active state
+		if i == current_tab then
+			s = s .. "%#TabLineSel#"
+		else
+			s = s .. "%#TabLine#"
+		end
+		-- %iT makes the tab clickable with a mouse
+		s = s .. "%" .. i .. "T"
+		s = s .. "| " .. i .. ". " .. my_tab_label(i) .. " "
+	end
+	-- Fill the rest of the tabline space and reset click targets
+	s = s .. "%#TabLineFill#%T"
+	return s
+end
 
 function lsp_disabled()
 	local cwd = vim.fn.getcwd()

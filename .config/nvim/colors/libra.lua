@@ -35,6 +35,7 @@ local retro_dark = {
 	search_bg = "#766c34",
 	normal = "#1A1528",
 	border = "#554d80",
+	changed = "#8CF8F7", -- for changed highlight
 }
 
 local retro_light = {
@@ -224,7 +225,7 @@ local function apply_highlights()
 		groups.WinSeparator = { fg = p.border }
 		groups.VertSplit = { fg = "#5f5f5f" }
 		groups.TabLineFill = { bg = "#130F1E" }
-		groups.TabLineSel = { fg = dark_text, bg = p.normal }
+		groups.TabLineSel = { fg = p.yellow, bg = p.normal }
 
 		-- Lists / Custom Search Highlights (#5f431f)
 		groups.QuickFixLine = { bg = "#38384C", bold = true }

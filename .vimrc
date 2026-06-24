@@ -155,15 +155,15 @@ endfunction
 
 nnoremap <Tab> <cmd>bn<CR>
 nnoremap <S-Tab> <cmd>bp<CR>
-nnoremap <space>1 <cmd>tabn 1<CR>
-nnoremap <space>2 <cmd>tabn 2<CR>
-nnoremap <space>3 <cmd>tabn 3<CR>
-nnoremap <space>4 <cmd>tabn 4<CR>
-nnoremap <space>5 <cmd>tabn 5<CR>
-nnoremap <space>6 <cmd>tabn 6<CR>
-nnoremap <space>7 <cmd>tabn 7<CR>
-nnoremap <space>8 <cmd>tabn 8<CR>
-nnoremap <space>9 <cmd>tabn 9<CR>
+nnoremap ;1 <cmd>tabn 1<CR>
+nnoremap ;2 <cmd>tabn 2<CR>
+nnoremap ;3 <cmd>tabn 3<CR>
+nnoremap ;4 <cmd>tabn 4<CR>
+nnoremap ;5 <cmd>tabn 5<CR>
+nnoremap ;6 <cmd>tabn 6<CR>
+nnoremap ;7 <cmd>tabn 7<CR>
+nnoremap ;8 <cmd>tabn 8<CR>
+nnoremap ;9 <cmd>tabn 9<CR>
 tnoremap <ESC> <c-w>N
 nnoremap <c-l> <cmd>nohlsearch<bar>diffupdate<bar>normal! <C-L><cr>
 nnoremap <leader>t :let $CUR_DIR=expand('%:p:h')<CR>:terminal<CR>cd $CUR_DIR<CR>
