@@ -4,26 +4,44 @@ filetype plugin on
 syntax enable
 
 function! MyTabLabel(n)
-    let buflist = tabpagebuflist(a:n)
-    let winnr = tabpagewinnr(a:n)
-    return fnamemodify(bufname(buflist[winnr - 1]), ':t')
+    let l:buflist = tabpagebuflist(a:n)
+    let l:winnr = tabpagewinnr(a:n)
+    " Fallback if the buffer list is somehow empty
+    if empty(l:buflist)
+        return '[No Name]'
+    endif
+    let l:bufnr = l:buflist[l:winnr - 1]
+    let l:bufname = bufname(l:bufnr)
+    " Fix the fnamemodify bug for empty names
+    if l:bufname == ''
+        return '[No Name]'
+    endif
+    " Optional: Make special windows look clean
+    let l:buftype = getbufvar(l:bufnr, '&buftype')
+    if l:buftype == 'terminal'
+        return 'Terminal'
+    elseif l:buftype == 'help'
+        return 'Help'
+    endif
+    return fnamemodify(l:bufname, ':t')
 endfunction
 
 function! MyTabLine()
-    let s = ''
+    let l:s = ''
     for i in range(tabpagenr('$'))
-        let s .= (i + 1 == tabpagenr() ? '%#TabLineSel#' : '%#TabLine#')
-        let s .= '%' . (i + 1) . 'T'
-        let s .= '| ' . (i + 1) . '. ' . MyTabLabel(i + 1) . ' '
+        let l:tabnr = i + 1
+        let l:s .= (l:tabnr == tabpagenr() ? '%#TabLineSel#' : '%#TabLine#')
+        let l:s .= '%' . l:tabnr . 'T'
+        let l:s .= '| ' . l:tabnr . '. ' . MyTabLabel(l:tabnr) . ' '
     endfor
-    let s .= '%#TabLineFill#%T'
-    return s
+    let l:s .= '%#TabLineFill#%T'
+    return l:s
 endfunction
 
 set tabline=%!MyTabLine()
 
 set t_Co=256  " Enable 256 colors
-set autochdir
+" REMOVED autochdir to prevent breaking vim-rooter
 set autoindent
 set background=dark
 set confirm
@@ -65,12 +83,17 @@ set smartcase
 set smartindent
 set splitright
 set splitbelow
+set suffixesadd+=.lua,.vim,.conf,.json,.sh
 set tabstop=4
 set termguicolors
 set title
 set ttimeoutlen=0
 set wildmenu
-set wildoptions=pum
+set wildoptions+=pum
+set wildmode=longest:full,full
+if has('wildcards')
+    set wildcards
+endif
 set wildignore=*/node_modules/*,tags,*.o,*/vendor/*,*/build/*,*/external/*,*.obj,*.pyc,*.class,*/.git/*,*/.svn/*
 set wildignorecase
 " settings }}}
@@ -95,7 +118,6 @@ function! FindOrTabFind()
 endfunction
 
 function! MyTermdebug()
-  " let current_dir = expand("%:p:h")
   packadd termdebug
   :Termdebug
   :Asm
@@ -117,6 +139,20 @@ function! RunFromRegister()
   :terminal
   call feedkeys(getreg(reg) . "\<CR>")
 endfunction
+
+" Custom Wrapper to handle ;n cleanly without hanging empty buffers
+function! SafeToggleNetrw()
+    let l:filename = expand("%:t")
+    call ToggleNetrw()
+    if l:filename != ''
+        " Only attempt to search and highlight if a file actually exists
+        silent! execute '/' . escape(l:filename, '.~^$[]*\\')
+        setlocal hlsearch
+        redraw
+        setlocal nohlsearch
+    endif
+endfunction
+
 nnoremap <Tab> <cmd>bn<CR>
 nnoremap <S-Tab> <cmd>bp<CR>
 nnoremap <space>1 <cmd>tabn 1<CR>
@@ -146,8 +182,6 @@ tnoremap <leader>T <cmd>call ToggleTermColors()<CR>
 nnoremap ;b :b 
 nnoremap <F4> :call MyTermdebug()<CR>
 nnoremap <space>r :call RunFromRegister()<CR>
-" nnoremap ;f :tabfind 
-" nnoremap ;F :find 
 nnoremap <expr> ;f FindOrTabFind()
 nnoremap ;e :e 
 nnoremap ;t :tabedit 
@@ -156,8 +190,7 @@ nnoremap ;h :h
 nnoremap ;o <cmd>silent %bd<bar>e#<bar>bd#<CR><bar>'"
 nnoremap ;s :s/<c-r><c-w>/<c-r><c-w>/gI<left><left><left>
 nnoremap ;S :%s/<c-r><c-w>/<c-r><c-w>/gI<left><left><left>
-" nnoremap ;n <cmd>silent call ToggleNetrw()<CR>
-nnoremap ;n :call ToggleNetrw() <bar> :sil! /<C-R>=expand("%:t")<CR><CR> :nohlsearch<CR>
+nnoremap ;n :call SafeToggleNetrw()<CR>
 nnoremap [B <cmd>bfirst<CR>
 nnoremap [b <cmd>bp<CR>
 nnoremap ]B <cmd>blast<CR>
@@ -204,12 +237,11 @@ vnoremap <silent> * :<C-U>
   \gV:call setreg('"', old_reg, old_regtype)<CR>
 vnoremap <silent> # :<C-U>
   \let old_reg=getreg('"')<Bar>let old_regtype=getregtype('"')<CR>
-  \gvy?<C-R><C-R>=substitute(
+  \gvy?\\<C-R><C-R>=substitute(
   \escape(@", '?\.*$^~['), '\_s\+', '\\_s\\+', 'g')<CR><CR>
   \gV:call setreg('"', old_reg, old_regtype)<CR>
 
 function! GitPullVimPlugins()
-  " TODO: add other plugin directories too
   let plugin_dir = expand('~/.vim/pack/plugins/start')
   let updated_count = 0
   let skipped_count = 0
@@ -257,7 +289,6 @@ function! SaveSessionIfExists()
 endfunction
 
 autocmd VimLeavePre * call SaveSessionIfExists()
-
 autocmd BufRead,BufNewFile *.asm set filetype=asm
 
 " netrw {{{
@@ -353,52 +384,18 @@ let g:rooter_patterns = [
 " vim-airline {{{
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#formatter = 'default'
-" let g:airline_theme='deus'
 let g:airline_powerline_fonts=1
-  let g:airline_detect_spell=0
+let g:airline_detect_spell=0
 let g:airline_theme='base16_spacemacs'
-" let g:airline_theme='base16_snazzy'
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#formatter = 'unique_tail'
 let g:airline#extensions#whitespace#enabled = 0
-let g:airline_powerline_fonts = 1
 let g:airline_skip_empty_sections = 1
- let g:airline_left_sep = ''
- let g:airline_right_sep = ''
-" let g:airline#extensions#tabline#left_sep = ' '
-" let g:airline#extensions#tabline#formatter = 'unique_tail_improved'
-" let g:airline_theme='base16_gruvbox_dark_hard'
-" let g:airline_theme='papercolor'
+let g:airline_left_sep = ''
+let g:airline_right_sep = ''
+let g:airline#extensions#tabline#left_sep = ' '
 let g:airline_section_c = '%f'
 " }}}
-
-" plugins {{{
-" NOTE: how to install plugins
-" mkdir -p ~/.vim/pack/plugins/start
-" cd ~/.vim/pack/plugins/start
-" Clone them
-" https://github.com/airblade/vim-rooter.git
-" git@github.com:tpope/vim-rsi.git
-" git@github.com:ludovicchabant/vim-gutentags.git
-" git@github.com:romainl/vim-cool.git
-
-
-" Plugins that I installed using vim packages (:h packages)
-" vim-airline  vim-airline-themes  vim-polyglot  vim-rooter  vim-rsi vim-gutentags
-" plugins }}}
-
-" gutentags {{{
-" let g:gutentags_cache_dir = expand('~/.cache/vim/ctags/')
-let g:gutentags_generate_on_new = 1
-let g:gutentags_generate_on_missing = 1
-let g:gutentags_generate_on_write = 1
-let g:gutentags_generate_on_empty_buffer = 0
-" gutentags}}}
-
-" Termdebug {{{
-let g:termdebug_wide=1
-let g:termdebug_map_K = 0
-" Termdebug }}}
 
 " Prefer rg > ag > ack
 if executable('rg')
