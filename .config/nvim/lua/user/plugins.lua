@@ -234,7 +234,13 @@ return require("lazy").setup({
 						return vim.o.columns <= 130 and "vertical" or "telescope"
 					end,
 				},
-				sources = { explorer = { auto_close = true, hidden = true } },
+				sources = {
+					explorer = {
+						auto_close = true,
+						hidden = true,
+						win = { list = { keys = { ["<C-t>"] = "open_in_new_tab" } } },
+					},
+				},
 				layouts = {
 					telescope = { -- override telescope layout, swap input and list place
 						reverse = false,
