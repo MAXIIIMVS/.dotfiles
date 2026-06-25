@@ -4,6 +4,7 @@ vim.g.is_diff_on = false
 vim.g.is_todo_open = false
 vim.g.big_screen_size = 120
 vim.g.zen_mode = false
+vim.g.cmp_enabled = true
 
 if vim.loader then
 	vim.loader.enable()

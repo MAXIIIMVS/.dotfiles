@@ -1221,6 +1221,36 @@ require("which-key").add({
 	},
 	{ "<space>t", group = "Toggle", nowait = true, remap = false },
 	{
+		"<space>ta",
+		function()
+			local cmp = require("cmp")
+			local TriggerEvent = require("cmp.types").cmp.TriggerEvent
+			if vim.b.cmp_enabled == nil then
+				vim.b.cmp_enabled = false -- Default was true (active), so the first toggle turns it off
+			else
+				vim.b.cmp_enabled = not vim.b.cmp_enabled
+			end
+			if vim.b.cmp_enabled then
+				cmp.setup.buffer({
+					completion = {
+						autocomplete = { TriggerEvent.TextChanged, TriggerEvent.InsertEnter },
+					},
+				})
+			else
+				cmp.setup.buffer({
+					completion = { autocomplete = false },
+				})
+			end
+			vim.notify(
+				"CMP: " .. (vim.b.cmp_enabled and "Enabled ✓" or "Disabled ✗"),
+				vim.b.cmp_enabled and vim.log.levels.INFO or vim.log.levels.WARN
+			)
+		end,
+		desc = "Auto completion",
+		nowait = true,
+		remap = false,
+	},
+	{
 		"<space>tb",
 		function()
 			vim.o.background = vim.o.background == "dark" and "light" or "dark"
