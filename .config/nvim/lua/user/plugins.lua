@@ -354,7 +354,7 @@ MEMENTO VIVERE]],
 						{
 							align = "center",
 							-- text = "󰆥 " .. "がんばれ" .. " 󰆥", -- 頑張れ
-							text = "󰆥 " .. "You're running out of somedays!" .. " 󰆥",
+							text = "󰆥 " .. "No man is free who is not master of himself" .. " 󰆥",
 						},
 					},
 				},
