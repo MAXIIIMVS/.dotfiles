@@ -136,7 +136,7 @@ local function apply_highlights()
 		-- Window Navigation / Tabs
 		StatusLine = { fg = p.bg4, bg = p.fg1, reverse = true },
 		StatusLineNC = { fg = p.bg2, bg = p.fg4, reverse = true },
-		TabLine = { fg = p.fg4, bg = p.bg4 },
+		TabLine = { fg = p.fg4, bg = "#130f1e" },
 		TabLineFill = { fg = p.fg4, bg = p.bg4 },
 		TabLineSel = { fg = p.green, bg = p.normal },
 
