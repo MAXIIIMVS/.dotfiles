@@ -29,6 +29,7 @@ return require("lazy").setup({
 			vim.g.rooter_change_directory_for_non_project_files = "current"
 			vim.g.rooter_patterns = {
 				".project_root",
+				".project-root",
 				"project.godot",
 				".git",
 				"Makefile",
@@ -2150,16 +2151,16 @@ MEMENTO VIVERE]],
 		end,
 	},
 	-- ────────────────────────────────── W ──────────────────────────────────
-	{
-		"willothy/flatten.nvim",
-		lazy = false,
-		opts = {
-			window = {
-				open = "alternate",
-			},
-		},
-		priority = 1001,
-	},
+	-- {
+	-- 	"willothy/flatten.nvim",
+	-- 	lazy = false,
+	-- 	opts = {
+	-- 		window = {
+	-- 			open = "alternate",
+	-- 		},
+	-- 	},
+	-- 	priority = 1001,
+	-- },
 	{
 		"windwp/nvim-ts-autotag",
 		opts = {},
@@ -2194,7 +2195,7 @@ MEMENTO VIVERE]],
 	-- 	event = { "InsertLeave" },
 	-- },
 }, {
-	install = { colorscheme = { "retrobox" } },
+	install = { colorscheme = { "libra" } },
 	ui = {
 		border = "rounded",
 		backdrop = 100,
