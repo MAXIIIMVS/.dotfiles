@@ -101,6 +101,7 @@ end)
 vim.o.mouse = "a"
 -- vim.o.mousemoveevent = true
 vim.o.autoread = true
+vim.opt.sessionoptions = { "buffers", "tabpages", "globals", "winsize", "winpos", "folds", "help", "terminal" }
 vim.bo.swapfile = false
 vim.opt.swapfile = false
 vim.opt.backup = false

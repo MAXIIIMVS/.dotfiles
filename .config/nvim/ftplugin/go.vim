@@ -22,13 +22,13 @@ function! s:setup_build_targets() abort
     let b:build_cmds['x'] = 'make run'
   elseif s:is_go_mod()
     " Standard Go module project
-    let b:build_cmds['b'] = 'go build ./...'
+    let b:build_cmds['b'] = 'go build -gcflags=all="-N -l" ./...'
     let b:build_cmds['c'] = 'go clean'
     let b:build_cmds['t'] = 'go test ./...'
     let b:build_cmds['x'] = 'go run .'
   else
     " Single-file fallback
-    let b:build_cmds['b'] = 'go build -o %:p:r %:p'
+    let b:build_cmds['b'] = 'go build -gcflags=all="-N -l" -o %:p:r %:p'
     let b:build_cmds['c'] = 'rm -f %:p:r'
     let b:build_cmds['x'] = 'go run %:p'
   endif
@@ -38,9 +38,9 @@ endfunction
 if s:is_make()
   setlocal makeprg=make
 elseif s:is_go_mod()
-  setlocal makeprg=go\ build\ ./...
+  setlocal makeprg=go\ build\ -gcflags=all=\"-N\ -l\"\ ./...
 else
-  setlocal makeprg=go\ build\ -o\ %:p:r\ %:p
+  setlocal makeprg=go\ build\ -gcflags=all=\"-N\ -l\"\ -o\ %:p:r\ %:p
 endif
 
 setlocal errorformat=%f:%l:%c:\ %m,%f:%l:\ %m
