@@ -15,3 +15,4 @@ nmap <buffer> gR <cmd>Oil /<CR>
 nmap <buffer> gm <cmd>Oil ~/Music/<CR>
 nmap <buffer> gC <cmd>Oil ~/.config/<CR>
 nmap <buffer> gc <cmd>Oil ~/code/<CR>
+nmap <buffer> gw <cmd>Oil ~/notes/<CR>

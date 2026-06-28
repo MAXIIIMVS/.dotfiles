@@ -53,9 +53,6 @@ local diagnostics_config = vim.diagnostic.config({
 	underline = {
 		severity = vim.diagnostic.severity.ERROR,
 	},
-	float = {
-		border = "rounded",
-	},
 	jump = {
 		on_jump = function(diagnostic, bufnr)
 			if not diagnostic then
@@ -68,7 +65,6 @@ local diagnostics_config = vim.diagnostic.config({
 			vim.diagnostic.open_float({
 				bufnr = bufnr,
 				scope = "cursor",
-				border = "rounded",
 				focus = false,
 			})
 			local group = vim.api.nvim_create_augroup("RestoreDiagnosticsOnMove", { clear = true })
@@ -632,7 +628,6 @@ function toggle_todo_window(todo_file)
 		row = row,
 		col = col,
 		style = "minimal",
-		border = "rounded",
 	})
 	vim.api.nvim_buf_set_option(buf, "filetype", "markdown")
 	vim.g.is_todo_open = true
@@ -1047,15 +1042,6 @@ vim.api.nvim_create_autocmd("FileType", {
 	pattern = "lua",
 	callback = function()
 		vim.bo.commentstring = "-- %s"
-	end,
-})
-
-vim.api.nvim_create_autocmd("FileType", {
-	pattern = "markdown",
-	callback = function(args)
-		if vim.bo[args.buf].filetype ~= "vimwiki" then
-			vim.bo[args.buf].filetype = "vimwiki"
-		end
 	end,
 })
 

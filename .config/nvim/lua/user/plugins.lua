@@ -78,7 +78,7 @@ return require("lazy").setup({
 		event = "BufReadPre",
 		config = function()
 			require("colorizer").setup({
-				filetypes = { "css", "sass", "html", "snacks_picker_preview", "conf", "!toggleterm", "!vimwiki" },
+				filetypes = { "css", "sass", "html", "snacks_picker_preview", "conf", "!toggleterm" },
 				user_default_options = {
 					RGB = true,
 					RRGGBB = true,
@@ -320,10 +320,12 @@ MEMENTO VIVERE]],
 							key = "c",
 						},
 						{
-							icon = "󰖬 ",
-							desc = "Open Wiki",
-							action = ":VimwikiIndex",
-							key = "w",
+							icon = " ",
+							desc = "Notes",
+							action = function()
+								vim.cmd("Oil ~/notes/")
+							end,
+							key = "n",
 						},
 						{
 							icon = " ",
@@ -335,7 +337,7 @@ MEMENTO VIVERE]],
 						},
 						{
 							icon = " ",
-							desc = "Manage external editor tooling",
+							desc = "Manage LSP/Formatters...",
 							action = ":Mason",
 							key = "m",
 						},
@@ -780,7 +782,6 @@ MEMENTO VIVERE]],
 		build = "make install_jsregexp",
 		config = function()
 			require("luasnip.loaders.from_vscode").lazy_load()
-			require("luasnip").filetype_extend("vimwiki", { "markdown" })
 			require("luasnip").filetype_extend("scratch", { "markdown" })
 			local filetypes = {
 				"c",
@@ -867,7 +868,6 @@ MEMENTO VIVERE]],
 					"github:Crashdummyy/mason-registry",
 				},
 				ui = {
-					border = "rounded",
 					check_outdated_packages_on_open = true,
 					backdrop = 100,
 				},
@@ -881,7 +881,6 @@ MEMENTO VIVERE]],
 					floating_window = true,
 					toggle_key = "<M-x>",
 					bind = true,
-					handler_opts = { border = "rounded" },
 				}, bufnr)
 
 				-- if client.server_capabilities.inlayHintProvider then
@@ -1891,7 +1890,6 @@ MEMENTO VIVERE]],
 								"yaml",
 								"markdown",
 								"markdown.mdx",
-								"vimwiki",
 								"graphql",
 								"template",
 								"handlebars",
@@ -2019,26 +2017,17 @@ MEMENTO VIVERE]],
 		cmd = "Oil",
 		opts = {
 			default_file_explorer = false,
+			-- columns = {
+			-- 	"icon",
+			-- 	"permissions",
+			-- 	"size",
+			-- 	{ "mtime", format = "%d/%m/%Y %H:%M" },
+			-- },
 			keymaps = {
 				["<C-s>"] = false,
 				["<C-v>"] = "actions.select_vsplit",
 			},
 			view_options = { show_hidden = true },
-			float = {
-				border = "rounded",
-			},
-			confirmation = {
-				border = "rounded",
-			},
-			progress = {
-				border = "rounded",
-			},
-			ssh = {
-				border = "rounded",
-			},
-			keymaps_help = {
-				border = "rounded",
-			},
 		},
 	},
 	{
@@ -2120,36 +2109,6 @@ MEMENTO VIVERE]],
 	-- ────────────────────────────────── U ──────────────────────────────────
 	-- ────────────────────────────────── V ──────────────────────────────────
 	-- { "VidocqH/lsp-lens.nvim", opts = {} },
-	{
-		"vimwiki/vimwiki",
-		name = "vimwiki",
-		cmd = {
-			"VimwikiIndex",
-			"VimwikiVar",
-			"VimwikiTabIndex",
-			"VimwikiUISelect",
-			"VimwikiDiaryIndex",
-			"VimwikiShowVersion",
-			"VimwikiMakeDiaryNote",
-			"VimwikiTabMakeDiaryNote",
-			"VimwikiDiaryGenerateLinks",
-			"VimwikiMakeTomorrowDiaryNote",
-			"VimwikiMakeYesterdayDiaryNote",
-		},
-		keys = { "<leader>w" },
-		ft = { "vimwiki", "vimwiki_markdown_custom" },
-		init = function()
-			-- vim.cmd("autocmd FileType vimwiki set filetype=markdown")
-			vim.treesitter.language.register("markdown", "vimwiki")
-			vim.g.vimwiki_listsyms = "    x"
-			vim.g.vimwiki_markdown_link_ext = 1
-			vim.g.vimwiki_global_ext = 0
-			vim.g.vimwiki_list = {
-				{ path = os.getenv("HOME") .. "/notes/wiki/", syntax = "markdown", ext = ".md", auto_diary_index = 1 },
-			}
-			vim.g.vimwiki_ext2syntax = { [".md"] = "markdown", [".mkd"] = "markdown", [".wiki"] = "media" }
-		end,
-	},
 	-- ────────────────────────────────── W ──────────────────────────────────
 	-- {
 	-- 	"willothy/flatten.nvim",
