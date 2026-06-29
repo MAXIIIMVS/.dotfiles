@@ -355,7 +355,7 @@ function _G.MyTabLine()
 		end
 		-- %iT makes the tab clickable with a mouse
 		s = s .. "%" .. i .. "T"
-		s = s .. "| " .. i .. ". " .. my_tab_label(i) .. " "
+		s = s .. "▍ " .. i .. ". " .. my_tab_label(i) .. " "
 	end
 	-- Fill the rest of the tabline space and reset click targets
 	s = s .. "%#TabLineFill#%T"
@@ -733,9 +733,9 @@ function term_debug()
 		vim.cmd("Gdb")
 		vim.cmd("wincmd x")
 		vim.cmd("Gdb")
-		vim.cmd("resize 25")
+		vim.cmd("resize 35")
 		vim.cmd("Source")
-		vim.cmd("resize 25")
+		vim.cmd("resize 35")
 		vim.cmd("Gdb")
 		vim.api.nvim_feedkeys("dashboard -enabled off\n", "n", true)
 		-- vim.api.nvim_feedkeys("dashboard -layout registers\n", "n", true)

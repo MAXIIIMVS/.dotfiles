@@ -225,6 +225,14 @@ return require("lazy").setup({
 							end)
 						end
 					end,
+					open_system = function(picker, item)
+						item = item or picker:current()
+						if not item or not item.file then
+							return
+						end
+						vim.ui.open(item.file)
+						return true -- close the picker
+					end,
 				},
 				hidden = true,
 				-- ignored = true,
@@ -282,6 +290,7 @@ return require("lazy").setup({
 							["<c-b>"] = { "list_scroll_up", mode = { "i", "n" } },
 							["<C-c>"] = { "close", mode = { "i", "n" } },
 							["<c-t>"] = { "open_in_new_tab", mode = { "n", "i" }, desc = "Open in new tab" },
+							["<c-o>"] = { "open_system", mode = { "n", "i" } },
 						},
 					},
 				},
@@ -332,6 +341,7 @@ MEMENTO VIVERE]],
 							desc = "Restore Session",
 							action = function()
 								require("resession").load(vim.fn.getcwd(), { dir = "dirsession", notify = false })
+								vim.cmd("ScopeLoadState")
 							end,
 							key = "s",
 						},

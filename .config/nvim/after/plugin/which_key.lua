@@ -1171,6 +1171,7 @@ require("which-key").add({
 	{
 		"<space>ss",
 		function()
+			vim.cmd("ScopeSaveState")
 			require("resession").save(vim.fn.getcwd(), { dir = "dirsession", notify = true })
 		end,
 		desc = "Save the session",

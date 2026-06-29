@@ -32,7 +32,7 @@ function! MyTabLine()
         let l:tabnr = i + 1
         let l:s .= (l:tabnr == tabpagenr() ? '%#TabLineSel#' : '%#TabLine#')
         let l:s .= '%' . l:tabnr . 'T'
-        let l:s .= '| ' . l:tabnr . '. ' . MyTabLabel(l:tabnr) . ' '
+        let l:s .= '▍ ' . l:tabnr . '. ' . MyTabLabel(l:tabnr) . ' '
     endfor
     let l:s .= '%#TabLineFill#%T'
     return l:s

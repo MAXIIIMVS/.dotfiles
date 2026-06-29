@@ -200,7 +200,7 @@ local function apply_highlights()
 
 		-- MatchParen / Structural Marks
 		groups.MatchParen = { bg = "#504945", fg = "NONE", bold = true, underline = true, sp = "#bdae93" }
-		groups.Underlined = { fg = "#83a598", underline = true, sp = "#83a598" }
+		groups.Underlined = { fg = p.blue, underline = true, sp = p.blue }
 
 		-- Diagnostics & Correct Error Underline Color
 		groups.DiagnosticError = { fg = "#ff5f5f" }
@@ -243,7 +243,7 @@ local function apply_highlights()
 		groups.DiffText = { bg = "#575268", fg = "NONE" }
 
 		-- Tree-sitter & LSP Semantic Token Mapping for Variables
-		local dark_var_color = "#83a598"
+		local dark_var_color = p.blue
 		groups["@variable"] = { fg = dark_var_color }
 		groups["@variable.member"] = { fg = dark_var_color }
 		groups["@property"] = { fg = dark_var_color }
@@ -273,7 +273,7 @@ local function apply_highlights()
 			groups.Pmenu = { fg = "#d0d0d0", bg = "NONE" }
 			groups.TabLine = { bg = "NONE", fg = "#5f5f5f" }
 			groups.TabLineFill = { bg = "NONE", fg = "NONE" }
-			groups.TabLineSel = { fg = dark_text, bg = "NONE" }
+			groups.TabLineSel = { fg = p.yellow, bg = "NONE" }
 			groups.StatusLine = { bg = "NONE", fg = "NONE" }
 			groups.StatusLineNC = { bg = "NONE", fg = "NONE" }
 			groups.StatusLineTerm = { bg = "NONE", fg = "NONE" }
