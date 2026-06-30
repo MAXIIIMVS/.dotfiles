@@ -464,9 +464,7 @@ require("which-key").add({
 	},
 	{
 		"gs",
-		function()
-			require("lsp_signature").toggle_float_win()
-		end,
+		"<cmd>lua vim.lsp.buf.signature_help()<CR>",
 		desc = "Show signature",
 		nowait = true,
 		remap = false,

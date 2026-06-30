@@ -870,7 +870,6 @@ MEMENTO VIVERE]],
 		event = { "BufReadPre", "BufNewFile" },
 		cmd = { "Mason", "MasonInstall", "MasonInstallAll", "MasonUpdate", "MasonUninstallAll" },
 		dependencies = {
-			"ray-x/lsp_signature.nvim",
 			"hrsh7th/cmp-nvim-lsp",
 		},
 		config = function()
@@ -888,13 +887,6 @@ MEMENTO VIVERE]],
 
 			local capabilities = require("cmp_nvim_lsp").default_capabilities()
 			local on_attach = function(client, bufnr)
-				require("lsp_signature").on_attach({
-					hint_enable = false,
-					floating_window = true,
-					toggle_key = "<M-x>",
-					bind = true,
-				}, bufnr)
-
 				-- if client.server_capabilities.inlayHintProvider then
 				-- 	vim.lsp.inlay_hint.enable(true, {
 				-- 		bufnr = bufnr,
@@ -1510,7 +1502,6 @@ MEMENTO VIVERE]],
 	-- ────────────────────────────────── Q ──────────────────────────────────
 	-- ────────────────────────────────── R ──────────────────────────────────
 	{ "rafamadriz/friendly-snippets", event = { "BufNewFile", "BufReadPost", "BufFilePost" } },
-	{ "ray-x/lsp_signature.nvim", event = "LspAttach" },
 	{
 		"rcarriga/nvim-dap-ui",
 		dependencies = { "mfussenegger/nvim-dap", "nvim-neotest/nvim-nio" },
