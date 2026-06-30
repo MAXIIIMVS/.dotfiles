@@ -17,7 +17,7 @@ This is my personal Neovim configuration. It is designed for productivity, codin
   - `fd` → optional, used by path completions (e.g., `cmp-path`)
   - `fzf` → optional, for fuzzy file finding if integrated
   - `lazygit` → optional, for Git workflow
-  - `gnome-pomodoro` → optional, for lualine Pomodoro status
+  - `gnome-pomodoro` → optional, for tablie Pomodoro status
   - `zoxide` → optional, for faster directory navigation
   - LaTeX toolchain (`pdflatex`, `latexmk`, etc.) → used by `vimtex` for LaTeX compilation
 
@@ -25,14 +25,14 @@ This is my personal Neovim configuration. It is designed for productivity, codin
 
 ## Features
 
-- Async Pomodoro timer in lualine (requires gnome-pomodoro)
+- Async Pomodoro timer in tabline (requires gnome-pomodoro)
 - Second-accurate countdown with local timer
 - Automatic LSP and Treesitter setup via Mason
 - Git integration with gutter signs and lazygit support
 - Automatic project root detection (vim-rooter)
 - Todo comment highlighting with rg support
 - Snippets and completion (LuaSnip + nvim-cmp)
-- Dynamic statusline and icons via lualine + web-devicons
+- Dynamic statusline
 - Fast directory navigation with zoxide
 
 ## Usage Notes

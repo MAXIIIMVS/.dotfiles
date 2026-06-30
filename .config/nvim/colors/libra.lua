@@ -134,7 +134,7 @@ local function apply_highlights()
 		Debug = { fg = p.red },
 
 		-- Window Navigation / Tabs
-		StatusLine = { fg = p.bg4, bg = p.fg1, reverse = true },
+		StatusLine = { fg = p.fg1, bg = p.bg4, reverse = true },
 		StatusLineNC = { fg = p.bg2, bg = p.fg4, reverse = true },
 		TabLine = { fg = p.fg4, bg = "#130f1e" },
 		TabLineFill = { fg = p.fg4, bg = p.bg4 },
@@ -226,7 +226,7 @@ local function apply_highlights()
 		groups.VertSplit = { fg = "#5f5f5f" }
 		groups.TabLineFill = { bg = "#130F1E" }
 		groups.TabLineSel = { fg = p.yellow, bg = p.normal }
-		groups.TabLinePomodoro = { fg = p.yellow, bold = true }
+		groups.TabLinePomodoro = { fg = p.yellow }
 
 		-- Lists / Custom Search Highlights (#5f431f)
 		groups.QuickFixLine = { bg = "#38384C", bold = true }
@@ -275,10 +275,6 @@ local function apply_highlights()
 			groups.TabLine = { bg = "NONE", fg = "#5f5f5f" }
 			groups.TabLineFill = { bg = "NONE", fg = "NONE" }
 			groups.TabLineSel = { fg = p.yellow, bg = "NONE" }
-			groups.StatusLine = { bg = "NONE", fg = "NONE" }
-			groups.StatusLineNC = { bg = "NONE", fg = "NONE" }
-			groups.StatusLineTerm = { bg = "NONE", fg = "NONE" }
-			groups.StatusLineTermNC = { bg = "NONE", fg = "NONE" }
 			groups.Search = { bg = "#5f431f", fg = "NONE" }
 			groups.IncSearch = { bg = "#5f431f", fg = "NONE" }
 			groups.CurSearch = { bg = "#5f431f", fg = "NONE" }
@@ -372,8 +368,6 @@ local function apply_highlights()
 		groups.WarningMsg = { fg = "#df8e1d", bg = "NONE" }
 
 		-- Navigation Layout UI
-		groups.StatusLine = { fg = light_text, bg = is_transparent and "NONE" or "#dce0e8" }
-		groups.StatusLineNC = { fg = "#bcc0cc", bg = is_transparent and "NONE" or "#e6e9ef" }
 		groups.TabLine = { fg = "#9ca0b0", bg = "#dce0e8" }
 		groups.TabLineFill = { fg = "NONE", bg = is_transparent and "NONE" or "#e6e9ef" }
 		groups.TabLineSel = { fg = light_text, bg = is_transparent and "NONE" or "#eff1f5" }
@@ -410,6 +404,63 @@ local function apply_highlights()
 		groups.debugPC = { fg = "NONE", bg = "#dce0e8" }
 		groups.debugBreakpoint = { fg = "#9ca0b0", bg = "#eff1f5" }
 	end
+
+	-- DYNAMIC STATUSLINE CONTAINER SYNCING TO EDITOR NORMAL BACKGROUND
+	local target_bg = groups.Normal.bg or "NONE"
+
+	-- Precise original layout color matrix mapping
+	local colors = {
+		fg = "#bbc2cf",
+		yellow = "#ECBE7B",
+		cyan = "#008080",
+		darkblue = "#081633",
+		green = "#98be65",
+		orange = "#FF8800",
+		violet = "#a9a1e1",
+		magenta = "#c678dd",
+		blue = "#51afef",
+		red = "#ec5f67",
+		tmux = "#E9AD0C",
+	}
+
+	-- Structural Container Mappings
+	groups.StatusLine = { fg = colors.fg, bg = target_bg }
+	groups.StatusLineNC = { fg = colors.fg, bg = target_bg }
+	groups.StatusLineTerm = { fg = colors.fg, bg = target_bg }
+	groups.StatusLineTermNC = { fg = colors.fg, bg = target_bg }
+
+	-- Component Custom Setups
+	groups.StatuslineDefault = { fg = colors.magenta, bg = target_bg, bold = true }
+	groups.StatuslinePercentage = { fg = colors.cyan, bg = target_bg, bold = true }
+	groups.StatuslineLSP = { fg = colors.yellow, bg = target_bg, bold = true }
+	groups.StatuslineFill = { fg = "NONE", bg = target_bg }
+
+	-- New Dynamic Component Highlights Locked to Normal Background
+	groups.StatuslineMacro = { fg = colors.red, bg = target_bg, bold = true }
+	groups.StatuslineSearchCount = { fg = colors.orange, bg = target_bg, bold = true }
+	groups.StatuslineSelection = { fg = colors.violet, bg = target_bg, bold = true }
+
+	-- Mode Specific Color Implementations
+	groups.StatuslineMode_n = { fg = colors.tmux, bg = target_bg, bold = true }
+	groups.StatuslineMode_i = { fg = colors.green, bg = target_bg, bold = true }
+	groups.StatuslineMode_v = { fg = colors.blue, bg = target_bg, bold = true }
+	groups.StatuslineMode_V = { fg = colors.blue, bg = target_bg, bold = true }
+	groups.StatuslineMode_vB = { fg = colors.blue, bg = target_bg, bold = true }
+	groups.StatuslineMode_c = { fg = colors.magenta, bg = target_bg, bold = true }
+	groups.StatuslineMode_no = { fg = colors.red, bg = target_bg, bold = true }
+	groups.StatuslineMode_s = { fg = colors.orange, bg = target_bg, bold = true }
+	groups.StatuslineMode_S = { fg = colors.orange, bg = target_bg, bold = true }
+	groups.StatuslineMode_sB = { fg = colors.orange, bg = target_bg, bold = true }
+	groups.StatuslineMode_ic = { fg = colors.yellow, bg = target_bg, bold = true }
+	groups.StatuslineMode_R = { fg = colors.violet, bg = target_bg, bold = true }
+	groups.StatuslineMode_Rv = { fg = colors.violet, bg = target_bg, bold = true }
+	groups.StatuslineMode_cv = { fg = colors.red, bg = target_bg, bold = true }
+	groups.StatuslineMode_ce = { fg = colors.red, bg = target_bg, bold = true }
+	groups.StatuslineMode_r = { fg = colors.cyan, bg = target_bg, bold = true }
+	groups.StatuslineMode_rm = { fg = colors.cyan, bg = target_bg, bold = true }
+	groups.StatuslineMode_r_q = { fg = colors.cyan, bg = target_bg, bold = true }
+	groups.StatuslineMode_bang = { fg = colors.red, bg = target_bg, bold = true }
+	groups.StatuslineMode_t = { fg = colors.red, bg = target_bg, bold = true }
 
 	-- Apply the exact compiled colors
 	for group, opts in pairs(groups) do

@@ -1367,20 +1367,6 @@ require("which-key").add({
 		remap = false,
 	},
 	-- { "<space>tS", "<cmd>silent Sleuth<CR>", desc = "sleuth", nowait = true, remap = false },
-	-- {
-	-- 	"<space>tS",
-	-- 	function()
-	-- 		if vim.o.statusline == "" then
-	-- 			require("lualine").hide({ unhide = true })
-	-- 		else
-	-- 			require("lualine").hide({ unhide = false })
-	-- 			vim.o.statusline = "" -- "" is same as "%t %m"
-	-- 		end
-	-- 	end,
-	-- 	desc = "Statusline/lualine",
-	-- 	nowait = true,
-	-- 	remap = false,
-	-- },
 	{
 		"<space>tS",
 		function()
