@@ -126,6 +126,7 @@ vim.g.python3_host_prog = "/usr/bin/python3"
 -- vim.o.smarttab = true
 -- b.smartindent = true
 vim.o.tabline = "%!v:lua.MyTabLine()"
+vim.o.showtabline = 2 -- show tabline even if only one tab is open
 vim.o.tabstop = 2
 vim.o.shiftwidth = 2
 -- vim.o.softtabstop = 2
@@ -156,7 +157,6 @@ vim.o.autoindent = true
 vim.o.hlsearch = true
 vim.o.incsearch = true
 vim.o.showcmd = true
--- vim.o.showtabline = 2 -- show tabline even if only one tab is open
 vim.o.cmdheight = 0
 vim.o.laststatus = 3
 vim.g.laststatus = 3
@@ -342,23 +342,147 @@ local function my_tab_label(tabnr)
 	return vim.fn.fnamemodify(bufname, ":t")
 end
 
+-- 1. Check executables EXACTLY ONCE on startup
+local has_pomodoro = vim.fn.executable("gnome-pomodoro") == 1 and vim.fn.executable("gdbus") == 1
+local pomodoro_text = ""
+
+-- 2. Only run the background monitoring loops if the tools exist
+if has_pomodoro then
+	local state = nil
+	local duration = 0
+	local elapsed = 0
+	local paused = false
+
+	local function update_display()
+		local remaining = math.max(duration - elapsed, 0)
+		local minutes = math.floor(remaining / 60)
+		local seconds = math.floor(remaining % 60)
+
+		local icon = ""
+		if paused then
+			icon = ""
+		elseif state == "pomodoro" then
+			icon = ""
+		elseif state == "short-break" or state == "long-break" then
+			icon = " "
+		end
+
+		if state then
+			pomodoro_text = string.format("%s %02d:%02d", icon, minutes, seconds)
+		else
+			pomodoro_text = icon
+		end
+	end
+
+	local function refresh_ui()
+		update_display()
+		vim.schedule(function()
+			vim.cmd("redrawtabline") -- Triggers tabline redraw only when the timer actually changes
+		end)
+	end
+
+	local function parse_dbus_output(output)
+		if not output then
+			return
+		end
+		local changed = false
+
+		local new_elapsed = output:match("'Elapsed': <([%d%.]+)>")
+		if new_elapsed then
+			elapsed = tonumber(new_elapsed)
+			changed = true
+		end
+
+		local new_paused = output:match("'IsPaused': <(%a+)>")
+		if new_paused then
+			paused = (new_paused == "true")
+			changed = true
+		end
+
+		local new_state = output:match("'State': <'([^']+)'>")
+		if new_state then
+			state = new_state
+			changed = true
+		end
+
+		local new_duration = output:match("'StateDuration': <([%d%.]+)>")
+		if new_duration then
+			duration = tonumber(new_duration)
+			changed = true
+		end
+
+		if changed then
+			refresh_ui()
+		end
+	end
+
+	local monitor = vim.system({
+		"gdbus",
+		"monitor",
+		"--session",
+		"--dest",
+		"org.gnome.Pomodoro",
+		"--object-path",
+		"/org/gnome/Pomodoro",
+	}, {
+		stdout = function(_, data)
+			if data then
+				parse_dbus_output(data)
+			end
+		end,
+	})
+
+	vim.system({
+		"gdbus",
+		"call",
+		"--session",
+		"--dest",
+		"org.gnome.Pomodoro",
+		"--object-path",
+		"/org/gnome/Pomodoro",
+		"--method",
+		"org.freedesktop.DBus.Properties.GetAll",
+		"org.gnome.Pomodoro",
+	}, { text = true }, function(obj)
+		if obj.code == 0 and obj.stdout then
+			parse_dbus_output(obj.stdout)
+		end
+	end)
+
+	vim.api.nvim_create_autocmd("VimLeavePre", {
+		callback = function()
+			if monitor then
+				monitor:kill()
+			end
+		end,
+	})
+end
+
+-- 3. The Tabline function stays blazing fast because it only reads a pre-calculated string
 function _G.MyTabLine()
 	local s = ""
 	local total_tabs = vim.fn.tabpagenr("$")
 	local current_tab = vim.fn.tabpagenr()
+
 	for i = 1, total_tabs do
-		-- Set highlight group based on active state
 		if i == current_tab then
 			s = s .. "%#TabLineSel#"
 		else
 			s = s .. "%#TabLine#"
 		end
-		-- %iT makes the tab clickable with a mouse
 		s = s .. "%" .. i .. "T"
 		s = s .. "▍ " .. i .. ". " .. my_tab_label(i) .. " "
 	end
-	-- Fill the rest of the tabline space and reset click targets
+
 	s = s .. "%#TabLineFill#%T"
+
+	-- No extra logic here; just checking a variable. Blazing fast.
+	if pomodoro_text ~= "" then
+		s = s .. "%="
+		-- Apply the custom highlight group here, then clear it back to TabLineFill
+		s = s .. "%#TabLinePomodoro# " .. pomodoro_text .. " %#TabLineFill#"
+	end
+
 	return s
 end
 
