@@ -932,6 +932,24 @@ end
 -- │                        Autocmds                         │
 -- ╰─────────────────────────────────────────────────────────╯
 
+vim.api.nvim_create_autocmd("TabLeave", {
+	callback = function()
+		if vim.g.zen_mode then
+			vim.g.switching_tab = true
+			Snacks.zen()
+		end
+	end,
+})
+
+vim.api.nvim_create_autocmd("TabEnter", {
+	callback = function()
+		if vim.g.switching_tab then
+			Snacks.zen()
+			vim.g.switching_tab = false
+		end
+	end,
+})
+
 local yank_group = vim.api.nvim_create_augroup("HighlightYank", { clear = true })
 
 vim.api.nvim_create_autocmd("TextYankPost", {

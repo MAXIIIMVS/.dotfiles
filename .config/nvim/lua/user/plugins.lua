@@ -380,13 +380,15 @@ MEMENTO VIVERE]],
 			zen = {
 				enabled = true,
 				toggles = { dim = false },
-				show = { statusline = true },
+				show = { statusline = true, tabline = true },
 				on_open = function()
 					vim.g.zen_mode = true
 					require("toggleterm").setup({ direction = "float" })
 				end,
 				on_close = function()
-					vim.g.zen_mode = false
+					if not vim.g.switching_tab then
+						vim.g.zen_mode = false
+					end
 					require("toggleterm").setup({ direction = "horizontal" })
 				end,
 			},
