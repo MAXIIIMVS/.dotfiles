@@ -67,7 +67,7 @@ local function search_count()
 	if not ok or next(result) == nil or result.total == 0 then
 		return ""
 	end
-	return string.format("%%#StatuslineSearchCount#[%d/%d]%%*", result.current, result.total)
+	return string.format("%%#StatuslineSearchCount#[%d/%d] %%*", result.current, result.total)
 end
 
 local function selection_count()
@@ -189,6 +189,15 @@ vim.api.nvim_create_autocmd("RecordingLeave", {
 	pattern = "*",
 	callback = function()
 		vim.cmd("redrawstatus")
+	end,
+})
+
+vim.api.nvim_create_autocmd("BufWinLeave", {
+	pattern = "*",
+	callback = function()
+		if vim.o.laststatus ~= 3 then
+			vim.o.laststatus = 3
+		end
 	end,
 })
 

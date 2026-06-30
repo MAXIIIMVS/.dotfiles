@@ -1414,11 +1414,6 @@ require("which-key").add({
 		nowait = true,
 		remap = false,
 	},
-	{ "<leader>d", group = "DevDocs", nowait = true, remap = false },
-	{ "<leader>dd", ":DevDocs delete ", desc = "Delete devdocs for ...", nowait = true, remap = false, silent = false },
-	{ "<leader>df", "<cmd>DevDocs fetch<CR>", desc = "Fetch DevDocs", nowait = true, remap = false },
-	{ "<leader>dg", ":DevDocs get ", desc = "Get devdocs for ...", nowait = true, remap = false, silent = false },
-	{ "<leader>di", "<cmd>DevDocs install<CR>", desc = "Install DevDocs", nowait = true, remap = false },
 	{ "<leader>h", group = "Hex", nowait = true, remap = false },
 	{ "<leader>hr", "<cmd>%!xxd<CR> :set filetype=xxd<CR>", desc = "Show", nowait = true, remap = false },
 	{

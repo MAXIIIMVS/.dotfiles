@@ -750,15 +750,6 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 	end,
 })
 
-vim.api.nvim_create_autocmd("BufWinLeave", {
-	pattern = "*",
-	callback = function()
-		if vim.o.laststatus ~= 3 then
-			vim.o.laststatus = 3
-		end
-	end,
-})
-
 vim.api.nvim_create_autocmd("TermOpen", {
 	callback = function()
 		vim.cmd("startinsert")

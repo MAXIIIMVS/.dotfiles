@@ -860,12 +860,6 @@ MEMENTO VIVERE]],
 	-- ────────────────────────────────── M ──────────────────────────────────
 	{ "MagicDuck/grug-far.nvim", opts = {}, cmd = { "GrugFar", "GrugFarWithin" } },
 	{
-		"maskudo/devdocs.nvim",
-		dependencies = "folke/snacks.nvim",
-		cmd = "DevDocs",
-		opts = {},
-	},
-	{
 		"mason-org/mason.nvim",
 		event = { "BufReadPre", "BufNewFile" },
 		cmd = { "Mason", "MasonInstall", "MasonInstallAll", "MasonUpdate", "MasonUninstallAll" },
