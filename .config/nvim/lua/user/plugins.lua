@@ -344,10 +344,7 @@ MEMENTO VIVERE]],
 						{
 							icon = " ",
 							desc = "Restore Session",
-							action = function()
-								require("resession").load(vim.fn.getcwd(), { dir = "dirsession", notify = false })
-								vim.cmd("ScopeLoadState")
-							end,
+							action = load_session,
 							key = "s",
 						},
 						{

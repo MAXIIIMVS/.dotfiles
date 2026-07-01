@@ -50,6 +50,7 @@ require("which-key").add({
 	{ ",h", "<cmd>silent lua Snacks.picker.keymaps()<CR>", desc = "Keymaps", nowait = true, remap = false },
 	{ ",M", "<cmd>messages<CR>", desc = "Messages", nowait = true, remap = false },
 	{ ",m", "<cmd>lua Snacks.picker.notifications()<CR>", desc = "Notifications", nowait = true, remap = false },
+	{ ",o", "<cmd>tabo<CR>", desc = "Close other tabs", nowait = true, remap = false },
 	{ ",q", "<cmd>tabclose<CR>", desc = "Close tab", nowait = true, remap = false },
 	{
 		",r",
@@ -1149,33 +1150,44 @@ require("which-key").add({
 	},
 	{ "<space>s", group = "Session", nowait = true, remap = false },
 	{
+		"<space>sD",
+		function()
+			local session_name = vim.g.last_session_owner or vim.fn.getcwd()
+			require("resession").delete(session_name, { dir = "dirsession", notify = true })
+			vim.g.last_session_owner = nil
+		end,
+		desc = "Delete the main session",
+		nowait = true,
+		remap = false,
+	},
+	{
 		"<space>sd",
 		function()
 			require("resession").delete(vim.fn.getcwd(), { dir = "dirsession", notify = true })
+			if vim.g.last_session_owner == vim.fn.getcwd() then
+				vim.g.last_session_owner = nil
+			end
 		end,
-		desc = "Delete the session",
+		desc = "Delete the session for current directory",
 		nowait = true,
 		remap = false,
 	},
+	{ "<space>sl", load_session, desc = "Load the session", nowait = true, remap = false },
 	{
-		"<space>sl",
-		function()
-			require("resession").load(vim.fn.getcwd(), { dir = "dirsession", notify = false })
-		end,
-		desc = "Load the session",
-		nowait = true,
-		remap = false,
-	},
-	{
-		"<space>ss",
+		"<space>so",
 		function()
 			vim.cmd("ScopeSaveState")
-			require("resession").save(vim.fn.getcwd(), { dir = "dirsession", notify = true })
+			local target = vim.fn.getcwd()
+			require("resession").save(target, { dir = "dirsession", notify = true })
+			if vim.g.last_session_owner == nil then
+				vim.g.last_session_owner = target
+			end
 		end,
-		desc = "Save the session",
+		desc = "Own a session for current directory",
 		nowait = true,
 		remap = false,
 	},
+	{ "<space>ss", save_session, desc = "Save the session", nowait = true, remap = false },
 	{
 		"<space>r",
 		function()

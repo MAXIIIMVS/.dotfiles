@@ -302,6 +302,29 @@ endfunction
 -- │                        Functions                        │
 -- ╰─────────────────────────────────────────────────────────╯
 
+function save_session()
+	pcall(vim.cmd, "ScopeSaveState")
+	local session_name = vim.g.last_session_owner or vim.fn.getcwd()
+	require("resession").save(session_name, { dir = "dirsession", notify = true })
+	if vim.g.last_session_owner == nil then
+		vim.g.last_session_owner = session_name
+	end
+end
+
+function load_session()
+	local target = vim.fn.getcwd()
+	local ok, err = pcall(function()
+		require("resession").load(target, { dir = "dirsession", notify = false })
+	end)
+	if ok then
+		vim.g.last_session_owner = target
+		vim.cmd("ScopeLoadState")
+	else
+		vim.g.last_session_owner = nil
+		vim.notify("No session found or failed to load: " .. target, vim.log.levels.WARN)
+	end
+end
+
 function lsp_disabled()
 	local cwd = vim.fn.getcwd()
 	return vim.fn.filereadable(cwd .. "/.disable_lsp") == 1
@@ -816,12 +839,10 @@ vim.api.nvim_create_autocmd("ColorScheme", {
 	end,
 })
 
-local startup_cwd = vim.fn.getcwd()
 vim.api.nvim_create_autocmd("VimLeavePre", {
 	callback = function()
-		if vim.bo.filetype ~= "snacks_dashboard" then
-			pcall(vim.cmd, "ScopeSaveState")
-			require("resession").save(startup_cwd, { dir = "dirsession", notify = false })
+		if vim.g.las and vim.bo.filetype ~= "snacks_dashboard" then
+			save_session()
 		end
 	end,
 })
