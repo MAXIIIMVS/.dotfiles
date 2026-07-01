@@ -10,7 +10,6 @@ if vim.fn.exists("syntax_on") == 1 then
 end
 vim.g.colors_name = "libra"
 
--- 1. True Retrobox Palette Definitions (Upstream Base)
 local retro_dark = {
 	bg0 = "#282828",
 	bg1 = "#3c3836",
@@ -35,7 +34,31 @@ local retro_dark = {
 	search_bg = "#766c34",
 	normal = "#1A1528",
 	border = "#554d80",
-	changed = "#8CF8F7", -- for changed highlight
+	changed = "#8CF8F7",
+	text = "#CDD6F5",
+	float_bg = "#181826",
+	cursor_line_bg = "#29283B",
+	string_fg = "#D7AF5F",
+	non_text = "#9ca0b1",
+	whitespace = "#444444",
+	visual_selection = "#45475b",
+	constant_custom = "#D19407",
+	match_paren_bg = "#504945",
+	diag_error = "#ff5f5f",
+	diag_warn = "#ffaf00",
+	diag_info = "#5fafff",
+	diag_hint = "#5fffaf",
+	float_sel_bg = "#2f4f75",
+	color_column_bg = "#313245",
+	split_lines = "#5f5f5f",
+	tab_fill = "#130F1E",
+	qf_line_bg = "#38384C",
+	diff_add_bg = "#2a332d",
+	diff_change_bg = "#3a2e36",
+	diff_delete_bg = "#3e2d2e",
+	diff_text_bg = "#575268",
+	text_muted = "#a0a0b0",
+	text_subtle = "#8f8f99",
 }
 
 local retro_light = {
@@ -60,6 +83,30 @@ local retro_light = {
 	sign_bg = "#fbf1c7",
 	visual_bg = "#eaeda3",
 	search_bg = "#bdae93",
+	text = "#4c4f69",
+	float_bg = "#ECECF0",
+	cursor_line_bg = "#e9ebf1",
+	string_fg = "#40a02b",
+	non_text = "#9ca0b0",
+	whitespace = "#787575",
+	visual_selection = "#bcc0cc",
+	constant_custom = "#fe640b",
+	match_paren_bg = "NONE",
+	diag_error = "#cc241d",
+	diag_warn = "#d79921",
+	diag_info = "#458588",
+	diag_hint = "#689d6a",
+	float_sel_bg = "#ccd0da",
+	color_column_bg = "#e6e9ef",
+	split_lines = "#dce0e8",
+	tab_fill = "#e6e9ef",
+	qf_line_bg = "#d0baf3",
+	diff_add_bg = "#d0e2d1",
+	diff_change_bg = "#e0e7f5",
+	diff_delete_bg = "#eac8d3",
+	diff_text_bg = "#b0c7f5",
+	text_muted = "#7c7f93",
+	text_subtle = "#8f8f99",
 }
 
 local function apply_highlights()
@@ -67,13 +114,10 @@ local function apply_highlights()
 	local p = (bg == "dark") and retro_dark or retro_light
 	local is_transparent = vim.g.is_transparent or false
 
-	-- 2. Baseline Retrobox Structure
 	local groups = {
-		-- Normal Environment
 		Normal = { fg = p.fg1, bg = p.bg0 },
 		NormalFloat = { fg = p.fg1, bg = p.bg1 },
 
-		-- UI Elements
 		CursorLine = { bg = p.bg1 },
 		CursorLineNr = { fg = p.yellow, bg = p.bg1 },
 		LineNr = { fg = p.bg3 },
@@ -83,20 +127,17 @@ local function apply_highlights()
 		WinSeparator = { fg = p.bg3, bg = "NONE" },
 		ColorColumn = { bg = p.bg1 },
 
-		-- Selection & Search
 		Visual = { bg = p.visual_bg },
 		VisualNOS = { bg = p.visual_bg },
 		Search = { bg = p.search_bg, fg = "NONE" },
 		IncSearch = { bg = p.orange, fg = p.bg0 },
 
-		-- Text Elements
 		Comment = { fg = p.grey },
 		NonText = { fg = p.bg2 },
 		Whitespace = { fg = p.bg2 },
 		SpecialKey = { fg = p.bg2 },
 		Todo = { fg = p.fg0, bg = p.bg0, bold = true },
 
-		-- Syntax Highlighting
 		Constant = { fg = p.purple },
 		Character = { fg = p.purple },
 		Number = { fg = p.purple },
@@ -133,20 +174,17 @@ local function apply_highlights()
 		SpecialComment = { fg = p.grey },
 		Debug = { fg = p.red },
 
-		-- Window Navigation / Tabs
 		StatusLine = { fg = p.fg1, bg = p.bg4, reverse = true },
 		StatusLineNC = { fg = p.bg2, bg = p.fg4, reverse = true },
 		TabLine = { fg = p.fg4, bg = "#130f1e" },
 		TabLineFill = { fg = p.fg4, bg = p.bg4 },
 		TabLineSel = { fg = p.green, bg = p.normal },
 
-		-- Completion Menus
 		Pmenu = { fg = p.fg1, bg = p.bg2 },
 		PmenuSel = { fg = p.bg0, bg = p.blue },
 		PmenuSbar = { bg = p.bg2 },
 		PmenuThumb = { bg = p.border },
 
-		-- Diagnostics
 		DiagnosticError = { fg = p.red },
 		DiagnosticWarn = { fg = p.yellow },
 		DiagnosticInfo = { fg = p.blue },
@@ -157,31 +195,25 @@ local function apply_highlights()
 		DiagnosticUnderlineHint = { underline = true, sp = p.aqua },
 	}
 
-	-- 3. Apply Your Precise Overrides (Takes Precedence)
 	if bg == "dark" then
-		-- Global Dark Base Overrides (Applied to both Opaque and Transparent Dark)
-		local dark_text = "#CDD6F5"
-		groups.Normal = { fg = dark_text, bg = p.normal }
-		groups.NormalFloat = { fg = dark_text, bg = "#181826" }
-		groups.CursorLine = { bg = "#29283B" }
-		groups.Function = { fg = "#B8BB26", bold = false }
-		groups.Title = { fg = "#B8BB26", bold = false }
-		groups.String = { fg = "#D7AF5F" }
-		groups.NonText = { fg = "#9ca0b1" }
-		groups.Whitespace = { fg = "#444444" }
-		groups.Visual = { bg = "#45475b", fg = "NONE" }
-		groups.VisualNOS = { bg = "#45475b", fg = "NONE" }
+		groups.Normal = { fg = p.text, bg = p.normal }
+		groups.NormalFloat = { fg = p.text, bg = p.float_bg }
+		groups.CursorLine = { bg = p.cursor_line_bg }
+		groups.Function = { fg = p.green, bold = false }
+		groups.Title = { fg = p.green, bold = false }
+		groups.String = { fg = p.string_fg }
+		groups.NonText = { fg = p.non_text }
+		groups.Whitespace = { fg = p.whitespace }
+		groups.Visual = { bg = p.visual_selection, fg = "NONE" }
+		groups.VisualNOS = { bg = p.visual_selection, fg = "NONE" }
 
-		-- Constants, Literals, and Core Types
-		local dark_constant = "#D19407"
-		groups.Constant = { fg = dark_constant }
+		groups.Constant = { fg = p.constant_custom }
 		-- groups.Character = { fg = dark_constant }
 		-- groups.Number = { fg = dark_constant }
 		-- groups.Boolean = { fg = dark_constant }
 		-- groups.Float = { fg = dark_constant }
 		groups["@type.builtin"] = { link = "Type" }
 
-		-- Complete Punctuation & Operator Mapping for Dark Mode (Fixes white symbols)
 		groups.Operator = { fg = p.orange }
 		groups.Delimiter = { fg = p.orange }
 		groups["@operator"] = { fg = p.orange }
@@ -190,145 +222,147 @@ local function apply_highlights()
 		groups["@punctuation.bracket"] = { fg = p.orange }
 		groups["@punctuation.special"] = { fg = p.orange }
 
-		-- Global Preprocessor and Macro Names (e.g., #define MAX_COUNT)
-		local dark_macro = p.aqua
-		groups.PreProc = { fg = dark_macro }
-		groups.Define = { fg = dark_macro }
-		groups.Macro = { fg = dark_macro }
-		groups["@macro"] = { fg = dark_macro, bold = true }
-		groups["@keyword.directive"] = { fg = dark_macro }
+		groups.PreProc = { fg = p.aqua }
+		groups.Define = { fg = p.aqua }
+		groups.Macro = { fg = p.aqua }
+		groups["@macro"] = { fg = p.aqua, bold = true }
+		groups["@keyword.directive"] = { fg = p.aqua }
 
-		-- MatchParen / Structural Marks
-		groups.MatchParen = { bg = "#504945", fg = "NONE", bold = true, underline = true, sp = "#bdae93" }
+		groups.MatchParen = { bg = p.match_paren_bg, fg = "NONE", bold = true, underline = true, sp = p.fg3 }
 		groups.Underlined = { fg = p.blue, underline = true, sp = p.blue }
 
-		-- Diagnostics & Correct Error Underline Color
-		groups.DiagnosticError = { fg = "#ff5f5f" }
-		groups.DiagnosticWarn = { fg = "#ffaf00" }
-		groups.DiagnosticInfo = { fg = "#5fafff" }
-		groups.DiagnosticHint = { fg = "#5fffaf" }
-		groups.DiagnosticUnderlineError = { underline = true, sp = "#ff5f5f" }
-		groups.DiagnosticUnderlineWarn = { underline = true, sp = "#ffaf00" }
-		groups.DiagnosticUnderlineInfo = { underline = true, sp = "#5fafff" }
-		groups.DiagnosticUnderlineHint = { underline = true, sp = "#5fffaf" }
+		groups.DiagnosticError = { fg = p.diag_error }
+		groups.DiagnosticWarn = { fg = p.diag_warn }
+		groups.DiagnosticInfo = { fg = p.diag_info }
+		groups.DiagnosticHint = { fg = p.diag_hint }
+		groups.DiagnosticUnderlineError = { underline = true, sp = p.diag_error }
+		groups.DiagnosticUnderlineWarn = { underline = true, sp = p.diag_warn }
+		groups.DiagnosticUnderlineInfo = { underline = true, sp = p.diag_info }
+		groups.DiagnosticUnderlineHint = { underline = true, sp = p.diag_hint }
 
-		-- Completion / Floats
-		groups.Pmenu = { fg = dark_text, bg = "#181826" }
-		groups.PmenuSel = { fg = dark_text, bg = "#444444" }
-		groups.FloatBorder = { fg = p.border, bg = "#181826" }
+		groups.Pmenu = { fg = p.text, bg = p.float_bg }
+		groups.PmenuSel = { fg = p.text, bg = p.float_sel_bg }
+		groups.FloatBorder = { fg = p.border, bg = p.float_bg }
 
-		-- Structure Layouts
-		groups.SignColumn = { bg = p.normal, fg = dark_text }
+		groups.SignColumn = { bg = p.normal, fg = p.text }
 		groups.FoldColumn = { bg = p.normal }
-		groups.CursorLineNr = { bg = p.normal, fg = "#ffaf00", bold = true }
-		groups.ColorColumn = { bg = "#313245" }
+		groups.CursorLineNr = { bg = p.normal, fg = p.diag_warn, bold = true }
+		groups.ColorColumn = { bg = p.color_column_bg }
 		groups.WinSeparator = { fg = p.border }
-		groups.VertSplit = { fg = "#5f5f5f" }
-		groups.TabLineFill = { bg = "#130F1E" }
+		groups.VertSplit = { fg = p.split_lines }
+		groups.TabLineFill = { bg = p.tab_fill }
 		groups.TabLineSel = { fg = p.yellow, bg = p.normal }
 		groups.TabLinePomodoro = { fg = p.yellow, bg = p.normal }
 
-		-- Lists / Custom Search Highlights (#5f431f)
-		groups.QuickFixLine = { bg = "#38384C", bold = true }
-		groups.Search = { bg = "#2f4f75", fg = "NONE" }
-		groups.IncSearch = { bg = "#fe8019", fg = p.normal, bold = true }
-		groups.CurSearch = { bg = "#fabd2f", fg = p.normal, bold = true }
+		groups.QuickFixLine = { bg = p.qf_line_bg, bold = true }
+		groups.Search = { bg = p.float_sel_bg, fg = "NONE" }
+		groups.IncSearch = { bg = p.orange, fg = p.normal, bold = true }
+		groups.CurSearch = { bg = p.yellow, fg = p.normal, bold = true }
 		groups.ErrorMsg = { bg = "NONE" }
-		groups.debugPC = { bg = "#45475b" }
-		groups.SnacksIndent = { fg = "#444444" }
+		groups.debugPC = { bg = p.visual_selection }
+		groups.SnacksIndent = { fg = p.whitespace }
 
-		-- Diff Mode Handling
-		groups.DiffAdd = { bg = "#2a332d", fg = "NONE" }
-		groups.DiffChange = { bg = "#3a2e36", fg = "NONE" }
-		groups.DiffDelete = { bg = "#3e2d2e", fg = "NONE" }
-		groups.DiffText = { bg = "#575268", fg = "NONE" }
+		groups.DiffAdd = { bg = p.diff_add_bg, fg = "NONE" }
+		groups.DiffChange = { bg = p.diff_change_bg, fg = "NONE" }
+		groups.DiffDelete = { bg = p.diff_delete_bg, fg = "NONE" }
+		groups.DiffText = { bg = p.diff_text_bg, fg = "NONE" }
 
-		-- Tree-sitter & LSP Semantic Token Mapping for Variables
-		local dark_var_color = p.blue
-		groups["@variable"] = { fg = dark_var_color }
-		groups["@variable.member"] = { fg = dark_var_color }
-		groups["@property"] = { fg = dark_var_color }
+		groups["@variable"] = { fg = p.blue }
+		groups["@variable.member"] = { fg = p.blue }
+		groups["@property"] = { fg = p.blue }
 
-		-- Spell Checking Highlights (Dark Mode)
-		groups.SpellBad = { undercurl = true, sp = "#ff5f5f" }
-		groups.SpellCap = { undercurl = true, sp = "#5fafff" }
-		groups.SpellRare = { undercurl = true, sp = "#5fffaf" }
-		groups.SpellLocal = { undercurl = true, sp = "#ffaf00" }
+		groups.SpellBad = { undercurl = true, sp = p.diag_error }
+		groups.SpellCap = { undercurl = true, sp = p.diag_info }
+		groups.SpellRare = { undercurl = true, sp = p.diag_hint }
+		groups.SpellLocal = { undercurl = true, sp = p.diag_warn }
 
-		-- Cmp Menu Specifics
-		groups.CmpItemAbbr = { fg = "#a0a0b0" }
-		groups.CmpItemAbbrMatch = { fg = "#ffaf00", bold = true }
-		groups.CmpItemAbbrMatchFuzzy = { fg = "#ffaf00" }
-		groups.CmpItemKind = { fg = "#7fafff", bg = "#181826" }
-		groups.CmpItemMenu = { fg = "#8f8f99", bg = "#181826", italic = true }
+		groups.CmpItemAbbr = { fg = p.text_muted }
+		groups.CmpItemAbbrMatch = { fg = p.diag_warn, bold = true }
+		groups.CmpItemAbbrMatchFuzzy = { fg = p.diag_warn }
+		groups.CmpItemKind = { fg = "#7fafff", bg = p.float_bg }
+		groups.CmpItemMenu = { fg = p.text_subtle, bg = p.float_bg, italic = true }
 
-		-- Conditional Transparent Modifications
+		groups.BlinkCmpMenu = { fg = p.text, bg = p.float_bg }
+		groups.BlinkCmpMenuBorder = { fg = p.border, bg = p.float_bg }
+		groups.BlinkCmpMenuSelection = { fg = "NONE", bg = p.float_sel_bg, bold = true }
+		groups.BlinkCmpLabel = { fg = p.text_muted }
+		groups.BlinkCmpLabelMatch = { fg = p.diag_warn, bold = true }
+		groups.BlinkCmpKind = { fg = "#7fafff", bg = p.float_bg }
+		groups.BlinkCmpSource = { fg = p.text_subtle, bg = p.float_bg, italic = true }
+		groups.BlinkCmpDoc = { fg = p.text, bg = p.float_bg }
+		groups.BlinkCmpDocBorder = { fg = p.border, bg = p.float_bg }
+		groups.BlinkCmpSignatureHelp = { fg = p.text, bg = p.float_bg }
+		groups.BlinkCmpSignatureHelpBorder = { fg = p.border, bg = p.float_bg }
+
 		if is_transparent then
-			groups.Normal = { fg = dark_text, bg = "NONE" }
-			groups.NormalFloat = { fg = dark_text, bg = "NONE" }
+			local transparent_border = p.split_lines
+			groups.Normal = { fg = p.text, bg = "NONE" }
+			groups.NormalFloat = { fg = p.text, bg = "NONE" }
 			groups.SignColumn = { bg = "NONE" }
 			groups.FoldColumn = { bg = "NONE" }
 			groups.CursorLineNr = { bg = "NONE", fg = "NONE" }
-			groups.FloatBorder = { fg = "#5f5f5f", bg = "NONE" }
-			groups.VertSplit = { bg = "NONE", fg = "#5f5f5f" }
+			groups.FloatBorder = { fg = transparent_border, bg = "NONE" }
+			groups.VertSplit = { bg = "NONE", fg = transparent_border }
 			groups.Pmenu = { fg = "#d0d0d0", bg = "NONE" }
-			groups.TabLine = { bg = "NONE", fg = "#5f5f5f" }
+			groups.TabLine = { bg = "NONE", fg = transparent_border }
 			groups.TabLineFill = { bg = "NONE", fg = "NONE" }
 			groups.TabLineSel = { fg = p.yellow, bg = "NONE" }
 			groups.Search = { bg = "#5f431f", fg = "NONE" }
 			groups.IncSearch = { bg = "#5f431f", fg = "NONE" }
 			groups.CurSearch = { bg = "#5f431f", fg = "NONE" }
-			groups.SnacksIndent = { fg = "#504945" }
+			groups.SnacksIndent = { fg = p.bg2 }
 			groups.CmpItemKind = { fg = "#7fafff", bg = "NONE" }
-			groups.CmpItemMenu = { fg = "#8f8f99", bg = "NONE", italic = true }
+			groups.CmpItemMenu = { fg = p.text_subtle, bg = "NONE", italic = true }
 
-			groups.DiagnosticError = { fg = "#ff5f5f", bold = true }
-			groups.DiagnosticWarn = { fg = "#ffaf00", bold = true }
+			groups.BlinkCmpMenu = { fg = "#d0d0d0", bg = "NONE" }
+			groups.BlinkCmpMenuBorder = { fg = transparent_border, bg = "NONE" }
+			groups.BlinkCmpKind = { fg = "#7fafff", bg = "NONE" }
+			groups.BlinkCmpSource = { fg = p.text_subtle, bg = "NONE", italic = true }
+			groups.BlinkCmpDoc = { fg = p.text, bg = "NONE" }
+			groups.BlinkCmpDocBorder = { fg = transparent_border, bg = "NONE" }
+			groups.BlinkCmpSignatureHelp = { fg = p.text, bg = "NONE" }
+			groups.BlinkCmpSignatureHelpBorder = { fg = transparent_border, bg = "NONE" }
+
+			groups.DiagnosticError = { fg = p.diag_error, bold = true }
+			groups.DiagnosticWarn = { fg = p.diag_warn, bold = true }
 		end
 	else
-		-- 4. Light Mode Overrides
-		local light_text = "#4c4f69"
-		groups.Normal = { fg = light_text, bg = is_transparent and "NONE" or "#eff1f5" }
-		groups.NormalFloat = { fg = light_text, bg = is_transparent and "NONE" or "#ECECF0" }
-		groups.CursorLine = { fg = "NONE", bg = "#e9ebf1" }
+		groups.Normal = { fg = p.text, bg = is_transparent and "NONE" or "#eff1f5" }
+		groups.NormalFloat = { fg = p.text, bg = is_transparent and "NONE" or p.float_bg }
+		groups.CursorLine = { fg = "NONE", bg = p.cursor_line_bg }
 		groups.CursorLineNr = { fg = "#7287fd", bg = "NONE" }
-		groups.LineNr = { fg = "#bcc0cc", bg = "NONE" }
-		groups.Comment = { fg = "#7c7f93", bg = "NONE" }
-		groups.NonText = { fg = "#9ca0b0", bg = "NONE" }
-		groups.Whitespace = { fg = "#787575" }
+		groups.LineNr = { fg = p.visual_selection, bg = "NONE" }
+		groups.Comment = { fg = p.text_muted, bg = "NONE" }
+		groups.NonText = { fg = p.non_text, bg = "NONE" }
+		groups.Whitespace = { fg = p.whitespace }
 		groups["@type.builtin"] = { link = "Type" }
 
-		-- Complete Punctuation & Operator Mapping for Light Mode
-		groups.Operator = { fg = light_text }
-		groups.Delimiter = { fg = light_text }
-		groups["@operator"] = { fg = light_text }
-		groups["@punctuation"] = { fg = light_text }
-		groups["@punctuation.delimiter"] = { fg = light_text }
-		groups["@punctuation.bracket"] = { fg = light_text }
-		groups["@punctuation.special"] = { fg = light_text }
+		groups.Operator = { fg = p.text }
+		groups.Delimiter = { fg = p.text }
+		groups["@operator"] = { fg = p.text }
+		groups["@punctuation"] = { fg = p.text }
+		groups["@punctuation.delimiter"] = { fg = p.text }
+		groups["@punctuation.bracket"] = { fg = p.text }
+		groups["@punctuation.special"] = { fg = p.text }
 
-		-- Fix Light Underline Colors
-		groups.MatchParen = { fg = "#fe640b", bg = "NONE", underline = true, sp = "#fe640b" }
+		groups.MatchParen = { fg = p.constant_custom, bg = "NONE", underline = true, sp = p.constant_custom }
 		groups.Underlined = { fg = "#1e66f5", underline = true, sp = "#1e66f5" }
 
-		-- Structure & Layout Borders
-		groups.SignColumn = { fg = "#bcc0cc", bg = "NONE" }
-		groups.FoldColumn = { fg = "#9ca0b0", bg = "NONE" }
-		groups.FloatBorder = { fg = "#1e66f5", bg = "#ECECF0" }
-		groups.ColorColumn = { fg = "NONE", bg = "#e6e9ef" }
-		groups.VertSplit = { fg = "#dce0e8", bg = "NONE" }
-		groups.CursorColumn = { fg = "NONE", bg = "#e6e9ef" }
+		groups.SignColumn = { fg = p.visual_selection, bg = "NONE" }
+		groups.FoldColumn = { fg = p.non_text, bg = "NONE" }
+		groups.FloatBorder = { fg = "#1e66f5", bg = p.float_bg }
+		groups.ColorColumn = { fg = "NONE", bg = p.color_column_bg }
+		groups.WinSeparator = { fg = p.split_lines, bg = "NONE" }
+		groups.CursorColumn = { fg = "NONE", bg = p.color_column_bg }
 
-		-- Selection / Search
-		groups.Visual = { fg = "NONE", bg = "#bcc0cc" }
-		groups.VisualNOS = { fg = "NONE", bg = "#bcc0cc" }
-		groups.Search = { fg = light_text, bg = "#a8daf0" }
+		groups.Visual = { fg = "NONE", bg = p.visual_selection }
+		groups.VisualNOS = { fg = "NONE", bg = p.visual_selection }
+		groups.Search = { fg = p.text, bg = "#a8daf0" }
 		groups.CurSearch = { fg = "NONE", bg = "#fc8fc3" }
 
-		-- Core Syntax Structure
 		groups.Function = { fg = "#1e66f5", bg = "NONE" }
 		groups.Title = { fg = "#1e66f5", bg = "NONE" }
-		groups.String = { fg = "#40a02b", bg = "NONE" }
+		groups.String = { fg = p.string_fg, bg = "NONE" }
 		groups.Keyword = { fg = "#8839ef", bg = "NONE" }
 		groups.Statement = { fg = "#8839ef", bg = "NONE" }
 		groups.Conditional = { fg = "#8839ef", bg = "NONE" }
@@ -336,7 +370,7 @@ local function apply_highlights()
 		groups.Exception = { fg = "#8839ef", bg = "NONE" }
 		groups.Include = { fg = "#8839ef", bg = "NONE" }
 		groups.Macro = { fg = "#8839ef", bg = "NONE" }
-		groups.Constant = { fg = "#fe640b", bg = "NONE" }
+		groups.Constant = { fg = p.constant_custom, bg = "NONE" }
 		groups.Identifier = { fg = "#dd7878", bg = "NONE" }
 		groups.Type = { fg = "#df8e1d", bg = "NONE" }
 		groups.StorageClass = { fg = "#df8e1d", bg = "NONE" }
@@ -348,67 +382,69 @@ local function apply_highlights()
 		groups["@macro"] = { fg = "#8839ef", bold = true }
 		groups["@keyword.directive"] = { fg = "#8839ef" }
 
-		-- Tree-sitter & LSP Semantic Token Mapping for Variables
-		local light_var_color = "#458588"
-		groups["@variable"] = { fg = light_var_color }
-		groups["@variable.member"] = { fg = light_var_color }
-		groups["@property"] = { fg = light_var_color }
+		groups["@variable"] = { fg = p.blue }
+		groups["@variable.member"] = { fg = p.blue }
+		groups["@property"] = { fg = p.blue }
 
-		-- Diagnostics & Light Underline Colors
-		groups.DiagnosticError = { fg = "#cc241d", bold = true }
-		groups.DiagnosticWarn = { fg = "#d79921" }
-		groups.DiagnosticInfo = { fg = "#458588" }
-		groups.DiagnosticHint = { fg = "#689d6a" }
-		groups.DiagnosticUnderlineError = { underline = true, sp = "#cc241d" }
-		groups.DiagnosticUnderlineWarn = { underline = true, sp = "#d79921" }
-		groups.DiagnosticUnderlineInfo = { underline = true, sp = "#458588" }
-		groups.DiagnosticUnderlineHint = { underline = true, sp = "#689d6a" }
+		groups.DiagnosticError = { fg = p.diag_error, bold = true }
+		groups.DiagnosticWarn = { fg = p.diag_warn }
+		groups.DiagnosticInfo = { fg = p.diag_info }
+		groups.DiagnosticHint = { fg = p.diag_hint }
+		groups.DiagnosticUnderlineError = { underline = true, sp = p.diag_error }
+		groups.DiagnosticUnderlineWarn = { underline = true, sp = p.diag_warn }
+		groups.DiagnosticUnderlineInfo = { underline = true, sp = p.diag_info }
+		groups.DiagnosticUnderlineHint = { underline = true, sp = p.diag_hint }
 		groups.Error = { fg = "#d20f39", bg = "NONE" }
 		groups.ErrorMsg = { fg = "#d20f39", bg = "NONE" }
 		groups.WarningMsg = { fg = "#df8e1d", bg = "NONE" }
 
-		-- Navigation Layout UI
-		groups.TabLine = { fg = "#9ca0b0", bg = "#dce0e8" }
-		groups.TabLineFill = { fg = "NONE", bg = is_transparent and "NONE" or "#e6e9ef" }
-		groups.TabLineSel = { fg = light_text, bg = is_transparent and "NONE" or "#eff1f5" }
+		groups.TabLine = { fg = p.non_text, bg = p.split_lines }
+		groups.TabLineFill = { fg = "NONE", bg = is_transparent and "NONE" or p.tab_fill }
+		groups.TabLineSel = { fg = p.text, bg = is_transparent and "NONE" or "#eff1f5" }
 
-		-- Popup Completion Menus
-		groups.Pmenu = { fg = "#7c7f93", bg = is_transparent and "NONE" or "#e6e9ef" }
-		groups.PmenuSel = { fg = "NONE", bg = "#ccd0da" }
-		groups.PmenuSbar = { fg = "NONE", bg = "#ccd0da" }
-		groups.PmenuThumb = { fg = "NONE", bg = "#9ca0b0" }
-		groups.PmenuExtra = { fg = "#9ca0b0", bg = "#e6e9ef" }
-		groups.PmenuExtraSel = { fg = "#9ca0b0", bg = "#ccd0da" }
-		groups.PmenuMatch = { fg = light_text, bg = "NONE" }
+		groups.Pmenu = { fg = p.text_muted, bg = is_transparent and "NONE" or p.tab_fill }
+		groups.PmenuSel = { fg = "NONE", bg = p.float_sel_bg }
+		groups.PmenuSbar = { fg = "NONE", bg = p.float_sel_bg }
+		groups.PmenuThumb = { fg = "NONE", bg = p.non_text }
+		groups.PmenuExtra = { fg = p.non_text, bg = p.tab_fill }
+		groups.PmenuExtraSel = { fg = p.non_text, bg = p.float_sel_bg }
+		groups.PmenuMatch = { fg = p.text, bg = "NONE" }
 		groups.PmenuMatchSel = { fg = "NONE", bg = "NONE" }
 
-		-- Autocomplete Engine Targets
-		groups.CmpItemAbbr = { fg = "#7c7f93" }
+		groups.CmpItemAbbr = { fg = p.text_muted }
 		groups.CmpItemAbbrMatch = { fg = "#1e66f5", bold = true }
 		groups.CmpItemAbbrMatchFuzzy = { fg = "#1e66f5" }
 		groups.CmpItemKind = { fg = "#1e66f5", bg = "NONE" }
-		groups.CmpItemMenu = { fg = "#8f8f99", bg = "NONE", italic = true }
+		groups.CmpItemMenu = { fg = p.text_subtle, bg = "NONE", italic = true }
 
-		-- Spell Checking Highlights (Light Mode)
-		groups.SpellBad = { undercurl = true, sp = "#cc241d" }
-		groups.SpellCap = { undercurl = true, sp = "#458588" }
-		groups.SpellRare = { undercurl = true, sp = "#689d6a" }
-		groups.SpellLocal = { undercurl = true, sp = "#d79921" }
+		groups.BlinkCmpMenu = { fg = p.text_muted, bg = is_transparent and "NONE" or p.tab_fill }
+		groups.BlinkCmpMenuBorder = { fg = "#1e66f5", bg = is_transparent and "NONE" or p.float_bg }
+		groups.BlinkCmpMenuSelection = { fg = "NONE", bg = p.float_sel_bg, bold = true }
+		groups.BlinkCmpLabel = { fg = p.text_muted }
+		groups.BlinkCmpLabelMatch = { fg = "#1e66f5", bold = true }
+		groups.BlinkCmpKind = { fg = "#1e66f5", bg = "NONE" }
+		groups.BlinkCmpSource = { fg = p.text_subtle, bg = "NONE", italic = true }
+		groups.BlinkCmpDoc = { fg = p.text, bg = is_transparent and "NONE" or p.float_bg }
+		groups.BlinkCmpDocBorder = { fg = "#1e66f5", bg = is_transparent and "NONE" or p.float_bg }
+		groups.BlinkCmpSignatureHelp = { fg = p.text, bg = is_transparent and "NONE" or p.float_bg }
+		groups.BlinkCmpSignatureHelpBorder = { fg = "#1e66f5", bg = is_transparent and "NONE" or p.float_bg }
 
-		-- Misc Targets
-		groups.QuickFixLine = { fg = "NONE", bg = "#d0baf3" }
-		groups.DiffAdd = { fg = "NONE", bg = "#d0e2d1" }
-		groups.DiffChange = { fg = "NONE", bg = "#e0e7f5" }
-		groups.DiffDelete = { fg = "NONE", bg = "#eac8d3" }
-		groups.DiffText = { fg = "NONE", bg = "#b0c7f5" }
-		groups.debugPC = { fg = "NONE", bg = "#dce0e8" }
-		groups.debugBreakpoint = { fg = "#9ca0b0", bg = "#eff1f5" }
+		groups.SpellBad = { undercurl = true, sp = p.diag_error }
+		groups.SpellCap = { undercurl = true, sp = p.diag_info }
+		groups.SpellRare = { undercurl = true, sp = p.diag_hint }
+		groups.SpellLocal = { undercurl = true, sp = p.diag_warn }
+
+		groups.QuickFixLine = { fg = "NONE", bg = p.qf_line_bg }
+		groups.DiffAdd = { fg = "NONE", bg = p.diff_add_bg }
+		groups.DiffChange = { fg = "NONE", bg = p.diff_change_bg }
+		groups.DiffDelete = { fg = "NONE", bg = p.diff_delete_bg }
+		groups.DiffText = { fg = "NONE", bg = p.diff_text_bg }
+		groups.debugPC = { fg = "NONE", bg = p.split_lines }
+		groups.debugBreakpoint = { fg = p.non_text, bg = "#eff1f5" }
 	end
 
-	-- DYNAMIC STATUSLINE CONTAINER SYNCING TO EDITOR NORMAL BACKGROUND
 	local target_bg = groups.Normal.bg or "NONE"
 
-	-- Precise original layout color matrix mapping
 	local colors = {
 		fg = "#bbc2cf",
 		yellow = "#ECBE7B",
@@ -423,24 +459,20 @@ local function apply_highlights()
 		tmux = "#E9AD0C",
 	}
 
-	-- Structural Container Mappings
 	groups.StatusLine = { fg = colors.fg, bg = target_bg }
 	groups.StatusLineNC = { fg = colors.fg, bg = target_bg }
 	groups.StatusLineTerm = { fg = colors.fg, bg = target_bg }
 	groups.StatusLineTermNC = { fg = colors.fg, bg = target_bg }
 
-	-- Component Custom Setups
 	groups.StatuslineDefault = { fg = colors.magenta, bg = target_bg, bold = true }
 	groups.StatuslinePercentage = { fg = colors.cyan, bg = target_bg, bold = true }
 	groups.StatuslineLSP = { fg = colors.yellow, bg = target_bg, bold = true }
 	groups.StatuslineFill = { fg = "NONE", bg = target_bg }
 
-	-- New Dynamic Component Highlights Locked to Normal Background
 	groups.StatuslineMacro = { fg = colors.red, bg = target_bg, bold = true }
 	groups.StatuslineSearchCount = { fg = colors.orange, bg = target_bg, bold = true }
 	groups.StatuslineSelection = { fg = colors.violet, bg = target_bg, bold = true }
 
-	-- Mode Specific Color Implementations
 	groups.StatuslineMode_n = { fg = colors.tmux, bg = target_bg, bold = true }
 	groups.StatuslineMode_i = { fg = colors.green, bg = target_bg, bold = true }
 	groups.StatuslineMode_v = { fg = colors.blue, bg = target_bg, bold = true }
@@ -462,7 +494,6 @@ local function apply_highlights()
 	groups.StatuslineMode_bang = { fg = colors.red, bg = target_bg, bold = true }
 	groups.StatuslineMode_t = { fg = colors.red, bg = target_bg, bold = true }
 
-	-- Apply the exact compiled colors
 	for group, opts in pairs(groups) do
 		hl(0, group, opts)
 	end

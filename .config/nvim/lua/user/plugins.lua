@@ -477,217 +477,6 @@ MEMENTO VIVERE]],
 		},
 		cmd = { "CsvViewEnable", "CsvViewDisable", "CsvViewToggle" },
 	},
-	{
-		"hrsh7th/nvim-cmp",
-		event = { "InsertEnter", "CmdlineEnter" },
-		dependencies = { "L3MON4D3/LuaSnip" },
-		config = function()
-			local cmp = require("cmp")
-			local luasnip = require("luasnip")
-			local kind_icons = {
-				Text = "󰉿",
-				Method = "󰆧",
-				Function = "󰊕",
-				Constructor = "",
-				Field = "󰜢",
-				Variable = "󰀫",
-				Class = "󰠱",
-				Interface = "",
-				Module = "",
-				Property = "󰜢",
-				Unit = "󰑭",
-				Value = "󰎠",
-				Enum = "",
-				Keyword = "󰌋",
-				Snippet = "",
-				Color = "󰏘",
-				File = "󰈙",
-				Reference = "󰈇",
-				Folder = "󰉋",
-				EnumMember = "",
-				Constant = "󰏿",
-				Struct = "󰙅",
-				Event = "",
-				Operator = "󰆕",
-				TypeParameter = "",
-			}
-
-			-- NOTE: if you want to change the popup width, do this
-			-- max_width = 50 -- you can set this in window.completion
-			-- MAX_ABBR_WIDTH = 30
-			-- MAX_MENU_WIDTH = 18
-
-			-- Controls how wide the actual suggestion name (like strftime_l~) can be before truncating it.
-			local MAX_ABBR_WIDTH = 35
-			-- Controls the right-side column, like function signatures or [LSP].
-			local MAX_MENU_WIDTH = 23
-
-			local function format(entry, vim_item)
-				if vim.api.nvim_get_mode().mode == "c" then
-					return vim_item -- don't format in cmdline mode
-				end
-				local icon = kind_icons[vim_item.kind] or ""
-				local kind = vim_item.kind or ""
-				local abbr = vim_item.abbr or ""
-
-				-- optional truncation
-				if #abbr > MAX_ABBR_WIDTH then
-					abbr = abbr:sub(1, MAX_ABBR_WIDTH - 1) .. "…"
-				end
-
-				if #kind > MAX_MENU_WIDTH then
-					kind = kind:sub(1, MAX_MENU_WIDTH - 1) .. "…"
-				end
-
-				vim_item.abbr = icon .. " " .. abbr
-				vim_item.kind = "(" .. kind .. ")"
-				vim_item.menu = ""
-				return vim_item
-			end
-
-			local has_words_before = function()
-				unpack = unpack or table.unpack
-				local line, col = unpack(vim.api.nvim_win_get_cursor(0))
-				return col ~= 0
-					and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
-			end
-
-			cmp.setup.cmdline({ "/", "?" }, {
-				mapping = cmp.mapping.preset.cmdline(),
-				sources = {
-					{ name = "buffer" },
-				},
-			})
-
-			-- (if you enabled `native_menu`, this won't work anymore).
-			cmp.setup.cmdline(":", {
-				-- mapping = require("cmp").mapping.preset.cmdline(),
-				mapping = cmp.mapping.preset.cmdline({
-					["<Tab>"] = {
-						c = function(_)
-							if cmp.visible() then
-								if #cmp.get_entries() == 1 then
-									cmp.confirm({ select = true })
-								else
-									cmp.select_next_item()
-								end
-							else
-								cmp.complete()
-								if #cmp.get_entries() == 1 then
-									cmp.confirm({ select = true })
-								end
-							end
-						end,
-					},
-					["<S-Tab>"] = {
-						c = function(_)
-							if cmp.visible() then
-								if #cmp.get_entries() == 1 then
-									cmp.confirm({ select = true })
-								else
-									cmp.select_prev_item()
-								end
-							else
-								cmp.complete()
-								if #cmp.get_entries() == 1 then
-									cmp.confirm({ select = true })
-								end
-							end
-						end,
-					},
-				}),
-				sources = cmp.config.sources({
-					{ name = "path" },
-				}, {
-					{ name = "cmdline" },
-				}),
-			})
-
-			cmp.setup({
-				formatting = { format = format },
-				preselect = cmp.PreselectMode.None,
-				-- completion = {
-				-- 	autocomplete = false,
-				-- },
-				window = {
-					completion = cmp.config.window.bordered({
-						col_offset = -2,
-						side_padding = 1,
-					}),
-					documentation = cmp.config.window.bordered({
-						max_width = 60,
-						max_height = 10,
-					}),
-				},
-				snippet = {
-					expand = function(args)
-						luasnip.lsp_expand(args.body)
-					end,
-				},
-				mapping = cmp.mapping.preset.insert({
-					-- ["<C-u>"] = cmp.mapping.scroll_docs(-4),
-					-- ["<C-d>"] = cmp.mapping.scroll_docs(4),
-					["<C-Space>"] = cmp.mapping.complete({}),
-					["<C-c>"] = cmp.mapping.abort(),
-					["<CR>"] = require("cmp").mapping.confirm({ select = true }),
-					["<Tab>"] = cmp.mapping(function(fallback)
-						if cmp.visible() then
-							if #cmp.get_entries() == 1 then
-								cmp.confirm({ select = true })
-							else
-								cmp.select_next_item()
-							end
-						elseif luasnip.locally_jumpable(1) then
-							luasnip.jump(1)
-						elseif has_words_before() then
-							cmp.complete()
-							if #cmp.get_entries() == 1 then
-								cmp.confirm({ select = true })
-							end
-						else
-							fallback()
-						end
-					end, { "i", "s" }),
-					["<S-Tab>"] = cmp.mapping(function(fallback)
-						if cmp.visible() then
-							cmp.select_prev_item()
-						elseif luasnip.jumpable(-1) then
-							luasnip.jump(-1)
-						else
-							fallback()
-						end
-					end, { "i", "s" }),
-				}),
-				performance = {
-					debounce = 0,
-					throttle = 0,
-				},
-				sources = cmp.config.sources({
-					{ name = "vim-dadbod-completion" },
-					{ name = "nvim_lsp" },
-					{
-						name = "luasnip",
-						entry_filter = function()
-							return not require("cmp.config.context").in_treesitter_capture("string")
-								and not require("cmp.config.context").in_syntax_group("String")
-						end,
-					},
-					{ name = "buffer" },
-					{ name = "emoji", option = { insert = false } },
-					{ name = "path" },
-				}, {
-					{ name = "calc" },
-					-- { name = "nvim_lua" },
-				}),
-			})
-		end,
-	},
-	{ "hrsh7th/cmp-buffer", event = { "InsertEnter", "CmdlineEnter" }, dependencies = "hrsh7th/nvim-cmp" },
-	{ "hrsh7th/cmp-calc", event = { "InsertEnter" }, dependencies = "hrsh7th/nvim-cmp" },
-	{ "hrsh7th/cmp-cmdline", event = { "CmdlineEnter", "InsertEnter" }, dependencies = "hrsh7th/nvim-cmp" },
-	{ "hrsh7th/cmp-emoji", event = { "InsertEnter" }, dependencies = "hrsh7th/nvim-cmp" },
-	{ "hrsh7th/cmp-nvim-lsp", event = "LspAttach", dependencies = "hrsh7th/nvim-cmp" },
-	{ "hrsh7th/cmp-path", event = { "InsertEnter", "CmdlineEnter" }, dependencies = "hrsh7th/nvim-cmp" },
 	-- ────────────────────────────────── I ──────────────────────────────────
 	{
 		"itchyny/calendar.vim",
@@ -863,9 +652,7 @@ MEMENTO VIVERE]],
 		"mason-org/mason.nvim",
 		event = { "BufReadPre", "BufNewFile" },
 		cmd = { "Mason", "MasonInstall", "MasonInstallAll", "MasonUpdate", "MasonUninstallAll" },
-		dependencies = {
-			"hrsh7th/cmp-nvim-lsp",
-		},
+		dependencies = {},
 		config = function()
 			require("mason").setup({
 				registries = {
@@ -878,8 +665,7 @@ MEMENTO VIVERE]],
 				},
 				max_concurrent_installers = 1,
 			})
-
-			local capabilities = require("cmp_nvim_lsp").default_capabilities()
+			local capabilities = require("blink.cmp").get_lsp_capabilities()
 			local on_attach = function(client, bufnr)
 				-- if client.server_capabilities.inlayHintProvider then
 				-- 	vim.lsp.inlay_hint.enable(true, {
@@ -1564,9 +1350,102 @@ MEMENTO VIVERE]],
 	{ "romainl/vim-cool", event = { "CmdlineEnter" }, keys = { "#", "*", "n", "N" } },
 	-- ────────────────────────────────── S ──────────────────────────────────
 	{
-		"saadparwaiz1/cmp_luasnip",
-		event = { "BufNewFile", "BufReadPost", "BufFilePost" },
-		dependencies = { "nvim-cmp", "LuaSnip" },
+		"saghen/blink.cmp",
+		event = { "InsertEnter", "CmdlineEnter" },
+		version = "v1",
+		dependencies = {
+			"L3MON4D3/LuaSnip",
+			"rafamadriz/friendly-snippets",
+			{ "joelazar/blink-calc" },
+			{ "moyiz/blink-emoji.nvim" },
+			{ "kristijanhusak/vim-dadbod-completion", ft = { "sql", "mysql", "plsql" }, lazy = true },
+		},
+		opts = {
+			appearance = { nerd_font_variant = "mono" },
+			completion = {
+				menu = { border = "rounded" },
+				documentation = { auto_show = true, window = { border = "rounded" } },
+			},
+			signature = { enabled = true, window = { border = "rounded" } },
+
+			-- High-performance native pipeline
+			sources = {
+				-- Explicit fallback precedence order
+				default = { "lsp", "snippets", "dadbod", "calc", "emoji", "path", "buffer" },
+				providers = {
+					snippets = {
+						transform_items = function(ctx, items)
+							local node = vim.treesitter.get_node()
+							if node and vim.tbl_contains({ "string", "string_content" }, node:type()) then
+								return vim.tbl_filter(function(item)
+									return item.kind ~= vim.lsp.protocol.CompletionItemKind.Snippet
+								end, items)
+							end
+							return items
+						end,
+					},
+					dadbod = {
+						name = "DadBod",
+						module = "vim_dadbod_completion.blink",
+						enabled = function()
+							return vim.bo.filetype == "sql"
+						end,
+					},
+					calc = {
+						name = "calc",
+						module = "blink-calc", -- Native runtime math
+					},
+					emoji = {
+						name = "Emoji",
+						module = "blink-emoji", -- Native asynchronous emoji provider
+					},
+				},
+			},
+
+			-- Optimized nvim-cmp Keymaps
+			keymap = {
+				preset = "none",
+				["<C-Space>"] = { "show", "show_documentation", "hide_documentation" },
+				["<C-c>"] = { "cancel", "fallback" },
+				["<CR>"] = { "accept", "fallback" },
+				["<Tab>"] = {
+					function(cmp)
+						if cmp.is_visible() then
+							if #cmp.get_items() == 1 then
+								return cmp.accept()
+							end
+							return cmp.select_next()
+						end
+					end,
+					"snippet_forward",
+					"fallback",
+				},
+				["<S-Tab>"] = {
+					function(cmp)
+						if cmp.is_visible() then
+							if #cmp.get_items() == 1 then
+								return cmp.accept()
+							end
+							return cmp.select_prev()
+						end
+					end,
+					"snippet_backward",
+					"fallback",
+				},
+				["<C-n>"] = { "select_next", "fallback" },
+				["<C-p>"] = { "select_prev", "fallback" },
+			},
+			cmdline = {
+				enabled = true,
+				keymap = {
+					preset = "none",
+					["<Tab>"] = { "show_and_insert_or_accept_single", "select_next" },
+					["<S-Tab>"] = { "show_and_insert_or_accept_single", "select_prev" },
+					["<C-n>"] = { "select_next" },
+					["<C-p>"] = { "select_prev" },
+				},
+			},
+		},
 	},
 	{ "seblyng/roslyn.nvim", opts = { silent = true }, ft = { "cs" } },
 	{
