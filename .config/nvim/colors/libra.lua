@@ -48,7 +48,7 @@ local retro_dark = {
 	diag_warn = "#ffaf00",
 	diag_info = "#5fafff",
 	diag_hint = "#5fffaf",
-	float_sel_bg = "#2f4f75",
+	float_sel_bg = "#45475b", -- same as visual_selection
 	color_column_bg = "#313245",
 	split_lines = "#5f5f5f",
 	tab_fill = "#130F1E",
@@ -252,7 +252,7 @@ local function apply_highlights()
 		groups.VertSplit = { fg = p.split_lines }
 		groups.TabLineFill = { bg = p.tab_fill }
 		groups.TabLineSel = { fg = p.yellow, bg = p.normal }
-		groups.TabLinePomodoro = { fg = p.yellow, bg = p.normal }
+		groups.TabLinePomodoro = { fg = p.yellow }
 
 		groups.QuickFixLine = { bg = p.qf_line_bg, bold = true }
 		groups.Search = { bg = p.float_sel_bg, fg = "NONE" }

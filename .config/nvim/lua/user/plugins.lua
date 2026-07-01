@@ -1367,16 +1367,16 @@ MEMENTO VIVERE]],
 				documentation = { auto_show = true, window = { border = "rounded" } },
 			},
 			signature = { enabled = true, window = { border = "rounded" } },
-
-			-- High-performance native pipeline
+			snippets = {
+				preset = "luasnip",
+			},
 			sources = {
-				-- Explicit fallback precedence order
 				default = { "lsp", "snippets", "dadbod", "calc", "emoji", "path", "buffer" },
 				providers = {
 					snippets = {
 						transform_items = function(ctx, items)
-							local node = vim.treesitter.get_node()
-							if node and vim.tbl_contains({ "string", "string_content" }, node:type()) then
+							local ok, node = pcall(vim.treesitter.get_node)
+							if ok and node and vim.tbl_contains({ "string", "string_content" }, node:type()) then
 								return vim.tbl_filter(function(item)
 									return item.kind ~= vim.lsp.protocol.CompletionItemKind.Snippet
 								end, items)
@@ -1388,21 +1388,19 @@ MEMENTO VIVERE]],
 						name = "DadBod",
 						module = "vim_dadbod_completion.blink",
 						enabled = function()
-							return vim.bo.filetype == "sql"
+							return vim.tbl_contains({ "sql", "mysql", "plsql" }, vim.bo.filetype)
 						end,
 					},
 					calc = {
 						name = "calc",
-						module = "blink-calc", -- Native runtime math
+						module = "blink-calc",
 					},
 					emoji = {
 						name = "Emoji",
-						module = "blink-emoji", -- Native asynchronous emoji provider
+						module = "blink-emoji",
 					},
 				},
 			},
-
-			-- Optimized nvim-cmp Keymaps
 			keymap = {
 				preset = "none",
 				["<C-Space>"] = { "show", "show_documentation", "hide_documentation" },

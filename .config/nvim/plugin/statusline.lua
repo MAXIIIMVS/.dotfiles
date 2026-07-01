@@ -125,7 +125,7 @@ local function update_lsp_cache(bufnr)
 		end
 	end
 
-	lsp_cache[bufnr] = #names > 0 and ("[" .. table.concat(names, ", ") .. "]") or ""
+	lsp_cache[bufnr] = #names > 0 and ("[" .. table.concat(names, ", ") .. "] ") or ""
 end
 
 vim.api.nvim_create_autocmd({ "LspAttach", "LspDetach", "BufEnter" }, {
@@ -159,12 +159,12 @@ _G.native_statusline = function()
 		mode_tag,
 		PATH_LINE,
 		LINE_COL,
+		PERCENTAGE,
 		MIDDLE_GAP,
 		s_count,
 		v_count,
 		macro_status,
 		lsp_status,
-		PERCENTAGE,
 		right_bar,
 	})
 end
