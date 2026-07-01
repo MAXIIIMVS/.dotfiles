@@ -816,11 +816,12 @@ vim.api.nvim_create_autocmd("ColorScheme", {
 	end,
 })
 
+local startup_cwd = vim.fn.getcwd()
 vim.api.nvim_create_autocmd("VimLeavePre", {
 	callback = function()
 		if vim.bo.filetype ~= "snacks_dashboard" then
-			vim.cmd("ScopeSaveState")
-			require("resession").save(vim.fn.getcwd(), { dir = "dirsession", notify = false })
+			pcall(vim.cmd, "ScopeSaveState")
+			require("resession").save(startup_cwd, { dir = "dirsession", notify = false })
 		end
 	end,
 })

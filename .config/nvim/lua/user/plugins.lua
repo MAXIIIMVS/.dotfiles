@@ -204,24 +204,29 @@ return require("lazy").setup({
 			picker = {
 				actions = {
 					open_in_new_tab = function(picker, item)
-						-- NOTE: this has a bug, if the file is from another project. To
-						-- fix it, first open the file in a buffer in current tab, then move
-						-- it to a new tab, then others will work fine.
 						if item and item.file then
+							-- 1. Resolve the explicit absolute path using the picker's CWD
+							local picker_cwd = picker:cwd()
+							local abs_path = item.file
+							if not (abs_path:sub(1, 1) == "/" or abs_path:match("^%a:")) then
+								abs_path = vim.fs.joinpath(picker_cwd, item.file)
+							end
+							abs_path = vim.fn.fnamemodify(abs_path, ":p")
 							picker:close()
 							vim.schedule(function()
-								-- 1. Get the current buffer in the active window
-								local bufnr = vim.api.nvim_get_current_buf()
-								-- 2. Check if the current tab has more than one window
+								-- 2. Check if current tab is a single, pristine empty buffer
 								local tab_wins = vim.api.nvim_tabpage_list_wins(0)
-								-- 3. Check if the current buffer is empty, unnamed, and untouched
-								local is_empty_buf = vim.api.nvim_buf_get_name(bufnr) == ""
-									and not vim.bo[bufnr].modified
-									and vim.api.nvim_buf_line_count(bufnr) == 1
-									and vim.api.nvim_buf_get_lines(bufnr, 0, 1, false)[1] == ""
-								-- 4. Decide command: use current tab if it's a single, pristine empty buffer
+								local cur_bufnr = vim.api.nvim_get_current_buf()
+								local is_empty_buf = vim.api.nvim_buf_get_name(cur_bufnr) == ""
+									and not vim.bo[cur_bufnr].modified
+									and vim.api.nvim_buf_line_count(cur_bufnr) == 1
+									and vim.api.nvim_buf_get_lines(cur_bufnr, 0, 1, false)[1] == ""
+								-- 3. Decide command: use current tab or open a brand new one
 								local cmd = (#tab_wins == 1 and is_empty_buf) and "edit " or "tabedit "
-								vim.cmd(cmd .. vim.fn.fnameescape(item.file))
+								-- Executing this command with the absolute path ensures
+								-- Neovim triggers BufRead/BufNew events *inside* the correct tab context,
+								-- allowing scope.nvim to properly track it.
+								vim.cmd(cmd .. vim.fn.fnameescape(abs_path))
 							end)
 						end
 					end,
@@ -380,7 +385,7 @@ MEMENTO VIVERE]],
 			zen = {
 				enabled = true,
 				toggles = { dim = false },
-				show = { statusline = true, tabline = true },
+				show = { statusline = true, tabline = false },
 				on_open = function()
 					vim.g.zen_mode = true
 					require("toggleterm").setup({ direction = "float" })
@@ -1356,8 +1361,6 @@ MEMENTO VIVERE]],
 		dependencies = {
 			"L3MON4D3/LuaSnip",
 			"rafamadriz/friendly-snippets",
-			{ "joelazar/blink-calc" },
-			{ "moyiz/blink-emoji.nvim" },
 			{ "kristijanhusak/vim-dadbod-completion", ft = { "sql", "mysql", "plsql" }, lazy = true },
 		},
 		opts = {
@@ -1371,7 +1374,7 @@ MEMENTO VIVERE]],
 				preset = "luasnip",
 			},
 			sources = {
-				default = { "lsp", "snippets", "dadbod", "calc", "emoji", "path", "buffer" },
+				default = { "lsp", "snippets", "dadbod", "path", "buffer" },
 				providers = {
 					snippets = {
 						transform_items = function(ctx, items)
@@ -1390,14 +1393,6 @@ MEMENTO VIVERE]],
 						enabled = function()
 							return vim.tbl_contains({ "sql", "mysql", "plsql" }, vim.bo.filetype)
 						end,
-					},
-					calc = {
-						name = "calc",
-						module = "blink-calc",
-					},
-					emoji = {
-						name = "Emoji",
-						module = "blink-emoji",
 					},
 				},
 			},
