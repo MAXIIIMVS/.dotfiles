@@ -427,14 +427,6 @@ function set_transparency(state)
 	end
 end
 
-function tmux_nv()
-	if vim.env.TMUX then
-		local val = vim.fn.system("tmux show-environment -g NVIM_TRANSPARENT 2>/dev/null")
-		return val:match("NVIM_TRANSPARENT=(%d)") == "1"
-	end
-	return false
-end
-
 function apply_cursorline(win)
 	if not vim.api.nvim_win_is_valid(win) then
 		return
@@ -566,41 +558,6 @@ function get_highlight(group)
 		end
 	end
 	return dict
-end
-
-local function is_tmux_running()
-	return vim.env.TMUX ~= nil and vim.env.TMUX ~= ""
-end
-
-local function set_tmux_window_bg(color)
-	if not is_tmux_running() then
-		return
-	end
-
-	local args
-	if color == "default" then
-		args = { "set-option", "-wu", "@nvim_bg" }
-	else
-		args = { "set-option", "-w", "@nvim_bg", color }
-	end
-
-	-- Run the initial tmux setting asynchronously
-	vim.loop.spawn("tmux", { args = args }, function(code)
-		if code == 0 then
-			-- Once set, queue the refresh-client call asynchronously on the main loop
-			vim.schedule(function()
-				vim.loop.spawn("tmux", { args = { "refresh-client", "-S" } }, function() end)
-			end)
-		end
-	end)
-end
-
-local function sync_statusline_with_tmux()
-	local normal_hl = vim.api.nvim_get_hl(0, { name = "Normal" })
-	local current_background = normal_hl.bg and string.format("#%06x", normal_hl.bg) or "default"
-
-	vim.api.nvim_set_hl(0, "StatusLine", { bg = current_background == "default" and "NONE" or "bg" })
-	set_tmux_window_bg(current_background)
 end
 
 function get_git_hash()
@@ -841,22 +798,6 @@ vim.api.nvim_create_autocmd("FileType", {
 	pattern = "lua",
 	callback = function()
 		vim.bo.commentstring = "-- %s"
-	end,
-})
-
-local tmux_group = vim.api.nvim_create_augroup("sync_tmux", { clear = true })
-
-vim.api.nvim_create_autocmd("ColorScheme", {
-	group = tmux_group,
-	callback = function()
-		vim.schedule(sync_statusline_with_tmux)
-	end,
-})
-
-vim.api.nvim_create_autocmd("VimLeave", {
-	group = tmux_group,
-	callback = function()
-		set_tmux_window_bg("default")
 	end,
 })
 
