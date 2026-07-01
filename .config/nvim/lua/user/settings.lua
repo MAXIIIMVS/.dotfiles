@@ -320,8 +320,20 @@ function load_session()
 		vim.g.last_session_owner = target
 		vim.cmd("ScopeLoadState")
 	else
-		vim.g.last_session_owner = nil
-		vim.notify("No session found or failed to load: " .. target, vim.log.levels.WARN)
+		local session_files = vim.fs.find("Session.vim", {
+			path = target,
+			upward = false, -- Only look downwards into the current root
+			limit = 1,
+		})
+		if #session_files > 0 then
+			local session_path = session_files[1]
+			pcall(vim.cmd, "source " .. vim.fn.fnameescape(session_path))
+			save_session()
+			vim.notify("Converted legacy Session.vim to resession for: " .. target, vim.log.levels.INFO)
+		else
+			vim.g.last_session_owner = nil
+			vim.notify("No session found or failed to load: " .. target, vim.log.levels.WARN)
+		end
 	end
 end
 
@@ -841,7 +853,7 @@ vim.api.nvim_create_autocmd("ColorScheme", {
 
 vim.api.nvim_create_autocmd("VimLeavePre", {
 	callback = function()
-		if vim.g.las and vim.bo.filetype ~= "snacks_dashboard" then
+		if vim.g.last_session_owner ~= nil and vim.bo.filetype ~= "snacks_dashboard" then
 			save_session()
 		end
 	end,

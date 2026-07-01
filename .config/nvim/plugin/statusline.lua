@@ -54,6 +54,7 @@ for mode, hl in pairs(mode_hl_map) do
 end
 
 local PATH_LINE = " %#StatuslineDefault#%f%*"
+local MODIFIED = " %#StatuslineMacro#%m%*"
 local LINE_COL = " %#StatuslinePercentage#%l:%c%*"
 local MIDDLE_GAP = "%#StatuslineFill#%=%*"
 local PERCENTAGE = "%#StatuslinePercentage# %p%% %*"
@@ -160,6 +161,7 @@ _G.native_statusline = function()
 		PATH_LINE,
 		LINE_COL,
 		PERCENTAGE,
+		MODIFIED,
 		MIDDLE_GAP,
 		s_count,
 		v_count,

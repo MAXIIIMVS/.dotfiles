@@ -4,32 +4,48 @@ local function my_tab_label(tabnr)
 	if not buflist or #buflist == 0 then
 		return "[No Name]"
 	end
+
+	-- OPTIMIZED: Use getbufvar instead of vim.bo to prevent object allocation thrashing.
+	-- This checks if ANY active window buffer in this tab is modified.
+	local is_tab_modified = false
+	for _, b in ipairs(buflist) do
+		if vim.fn.getbufvar(b, "&modified") == 1 then
+			is_tab_modified = true
+			break
+		end
+	end
+
 	local bufnr = buflist[winnr] or buflist[1]
 	local win_id = vim.fn.win_getid(winnr, tabnr)
 	if win_id and win_id > 0 then
 		local win_config = vim.api.nvim_win_get_config(win_id)
-		-- Floating windows have a 'relative' key set (e.g., 'editor', 'win', 'cursor')
 		if win_config.relative and win_config.relative ~= "" then
-			-- Loop through the tab's buffers to find a normal one
 			for _, b in ipairs(buflist) do
-				if vim.bo[b].buftype == "" and vim.fn.bufname(b) ~= "" then
+				-- OPTIMIZED: getbufvar used here as well for buftype
+				if vim.fn.getbufvar(b, "&buftype") == "" and vim.fn.bufname(b) ~= "" then
 					bufnr = b
 					break
 				end
 			end
 		end
 	end
+
 	local bufname = vim.fn.bufname(bufnr)
+	local mod_suffix = is_tab_modified and " ●" or ""
+
 	if bufname == "" then
-		return "[No Name]"
+		return "[No Name]" .. mod_suffix
 	end
-	local buftype = vim.bo[bufnr].buftype
+
+	-- OPTIMIZED: getbufvar used here instead of vim.bo
+	local buftype = vim.fn.getbufvar(bufnr, "&buftype")
 	if buftype == "terminal" then
-		return " Terminal"
+		return " Terminal" .. mod_suffix
 	elseif buftype == "help" then
-		return "󰘥 Help"
+		return "󰘥 Help" .. mod_suffix
 	end
-	return vim.fn.fnamemodify(bufname, ":t")
+
+	return vim.fn.fnamemodify(bufname, ":t") .. mod_suffix
 end
 
 -- 1. Check executables EXACTLY ONCE on startup
