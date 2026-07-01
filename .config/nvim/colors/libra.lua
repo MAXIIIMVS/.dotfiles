@@ -226,7 +226,7 @@ local function apply_highlights()
 		groups.VertSplit = { fg = "#5f5f5f" }
 		groups.TabLineFill = { bg = "#130F1E" }
 		groups.TabLineSel = { fg = p.yellow, bg = p.normal }
-		groups.TabLinePomodoro = { fg = p.yellow }
+		groups.TabLinePomodoro = { fg = p.yellow, bg = p.normal }
 
 		-- Lists / Custom Search Highlights (#5f431f)
 		groups.QuickFixLine = { bg = "#38384C", bold = true }
